@@ -5,7 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace ExamTrainBot.Commands
+namespace ExamBotPC.Commands
 {
     abstract class Command
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
-namespace ExamTrainBot
+namespace ExamBotPC
 {
     public static partial class APIKeys
     {

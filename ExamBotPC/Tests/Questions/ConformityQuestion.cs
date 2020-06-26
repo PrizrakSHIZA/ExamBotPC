@@ -7,7 +7,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace ExamTrainBot.Tests.Questions
+namespace ExamBotPC.Tests.Questions
 {
     [Serializable]
     class ConformityQuestion : Question

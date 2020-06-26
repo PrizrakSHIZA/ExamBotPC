@@ -1,9 +1,9 @@
-﻿using ExamTrainBot.Tests.Questions;
+﻿using ExamBotPC.Tests.Questions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExamTrainBot.Tests
+namespace ExamBotPC.Tests
 {
     [Serializable]
     public class Test

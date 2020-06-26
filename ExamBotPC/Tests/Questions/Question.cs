@@ -4,7 +4,7 @@ using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 
-namespace ExamTrainBot.Tests.Questions
+namespace ExamBotPC.Tests.Questions
 {
     [Serializable]
     public abstract class Question

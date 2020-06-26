@@ -4,7 +4,7 @@ using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 
-namespace ExamTrainBot.Commands
+namespace ExamBotPC.Commands
 {
     class HelpCommand : Command
     {
@@ -17,7 +17,7 @@ namespace ExamTrainBot.Commands
             string list = "";
             foreach (Command command in Program.commands)
             {
-                if (command.forAdmin & Program.users.Find(u => u.id == e.Message.Chat.Id).isadmin)
+                if (command.forAdmin & Program.users.Find(u => u.id == e.Message.Chat.Id).admin)
                     list += "Admin: " + command.Name + "\n";
                 else if (!command.forAdmin)
                     list += command.Name + "\n";
