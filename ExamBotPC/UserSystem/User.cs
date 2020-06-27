@@ -15,9 +15,9 @@ namespace ExamBotPC
         public bool subscriber, admin, ontest = false;
         public int currentquestion = 0, coins = 0, health = 5, group = 0;
         public long curator;
-        public List<int> points = new List<int>();
+        public int[] points = new int[Program.alltests.Count];
         public List<Test> completedtests = new List<Test>();
-        public List<bool[]> mistakes = new List<bool[]>();
+        public bool[][] mistakes = new bool[Program.alltests.Count][];
         public DateTime nextwebinar;
 
         public static int currenttest = 0;
@@ -37,13 +37,13 @@ namespace ExamBotPC
             this.admin = admin;
             if (points != "" || tests != "" || mistakes != "")
             {
-                this.points = points.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+                this.points = JsonSerializer.Deserialize<int[]>(points); //points.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
                 int[] temp = tests.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
                 for (int i = 0; i < temp.Length; i++)
                 {
                     completedtests.Add(Program.alltests[temp[i] - 1]);
                 }
-                this.mistakes = JsonSerializer.Deserialize<List<bool[]>>(mistakes);
+                this.mistakes = JsonSerializer.Deserialize<bool[][]>(mistakes);
             }
             this.coins = coins;
             this.health = health;

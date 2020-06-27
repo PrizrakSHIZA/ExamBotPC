@@ -41,6 +41,7 @@ namespace ExamBotPC
 
         static int Type = 2; //homework
         static Timer timer;
+        static Timer homeworktimer;
 
         static void Main(string[] args)
         {
@@ -80,21 +81,27 @@ namespace ExamBotPC
                 {
                     await bot.SendTextMessageAsync(user.id, "Правильно!");
                     user.currentquestion++;
-                    user.points[^1] += question.points;
+                    user.points[testlist[User.currenttest].id - 1] += question.points;
                 }
                 else
                 {
                     await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                    user.mistakes[^1][user.currentquestion] = true;
+                    user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
                     user.currentquestion++;
                 }
                 //Check if its last question in test
                 if (user.currentquestion >= testlist[User.currenttest].questions.Count)
                 {
-                    ExecuteMySql($"UPDATE Users SET Points = CONCAT(points, '{user.points[^1] + 1};'), Mistakes = CONCAT(Mistakes, '{string.Join(';', user.mistakes)}') WHERE ID = {user.id}");
-                    user.ontest = false;
-                    user.currentquestion = 0;
-                    await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points[^1]} балів!");
+                    if (ExecuteMySql($"UPDATE Users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}, Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
+                    {
+                        user.ontest = false;
+                        user.currentquestion = 0;
+                        await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points[testlist[User.currenttest].id - 1]} балів!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error!");
+                    }
                 }
                 else
                 {
@@ -131,12 +138,12 @@ namespace ExamBotPC
                     {
                         await bot.SendTextMessageAsync(user.id, "Правильно!");
                         user.currentquestion++;
-                        user.points[^1] += question.points;
+                        user.points[testlist[User.currenttest].id - 1] += question.points;
                     }
                     else
                     {
                         await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                        user.mistakes[^1][user.currentquestion] = true;
+                        user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
                         user.currentquestion++;
                     }
                 }
@@ -145,21 +152,27 @@ namespace ExamBotPC
                 {
                     await bot.SendTextMessageAsync(user.id, "Правильно!");
                     user.currentquestion++;
-                    user.points[^1] += question.points;
+                    user.points[testlist[User.currenttest].id - 1] += question.points;
                 }
                 else
                 {
                     await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                    user.mistakes[^1][user.currentquestion] = true;
+                    user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
                     user.currentquestion++;
                 }
                 //Check if its last question in test
                 if (user.currentquestion >= testlist[User.currenttest].questions.Count)
                 {
-                    ExecuteMySql($"UPDATE Users SET Points = CONCAT(points, '{user.points[^1] + 1};'), Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}");
-                    user.ontest = false;
-                    user.currentquestion = 0;
-                    await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points[^1]} балів!");
+                    if (ExecuteMySql($"UPDATE Users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}', Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
+                    {
+                        user.ontest = false;
+                        user.currentquestion = 0;
+                        await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points[testlist[User.currenttest].id - 1]} балів!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error!");
+                    }
                 }
                 else
                 {
@@ -194,10 +207,16 @@ namespace ExamBotPC
 
         private static void AddAllCommands()
         {
+            commands.Add(new A_RestartTimer());
+            commands.Add(new A_Send());
+            commands.Add(new A_TestAll());
+            commands.Add(new A_TestId());
+            commands.Add(new A_TestList());
+            commands.Add(new A_TimerSet());
+            commands.Add(new A_TimerTurn());
             commands.Add(new AskCmd());
             commands.Add(new BalanceCmd());
             commands.Add(new HelpCommand());
-            commands.Add(new A_Send());
             commands.Add(new SheduleCmd());
             commands.Sort((x, y) => string.Compare(x.Name, y.Name));
         }
@@ -286,16 +305,16 @@ namespace ExamBotPC
             else
             {
                 //add test to DB
-                if (ExecuteMySql($"UPDATE Users SET CompletedTests = CONCAT(CompletedTests, '{User.currenttest + 1};') WHERE Admin = 1"))
+                if (true)
                 {
                     foreach (User u in Program.users)
                     {
                         if (u.subscriber)
                         {
-                            bool[] tempbool = Enumerable.Repeat(false, testlist[User.currenttest].questions.Count + 1).ToArray();
-                            u.mistakes.Add(tempbool);
+                            bool[] tempbool = Enumerable.Repeat(false, testlist[User.currenttest].questions.Count).ToArray();
+                            u.mistakes[testlist[User.currenttest].id - 1] = tempbool;
 
-                            u.points.Add(0);
+                            u.points[testlist[User.currenttest].id - 1] = 0;
                             u.completedtests.Add(Program.testlist[User.currenttest]);
                             u.ontest = true;
                             u.currentquestion = 0;
@@ -323,13 +342,24 @@ namespace ExamBotPC
 
         public static void RestartTimer()
         {
-            webinars = webinars.OrderBy(x => x.date).ToList();
-
-            Timer t = new Timer(new TimerCallback(StopTest));
-            DateTime temptime = webinars[0].date;
+            //delete last timer
+            if(homeworktimer != null)
+                homeworktimer.Dispose();
+            homeworktimer = null;
+            //get next webinar datetime
+            List<Webinar> shedule = webinars;
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].date <= DateTime.Now)
+                    shedule.RemoveAt(i);
+            }
+            shedule = shedule.OrderBy(x => x.date).ToList();
+            //set new timer
+            homeworktimer = new Timer(new TimerCallback(StopTest));
+            DateTime temptime = shedule[0].date;
 
             int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
-            t.Change(msUntilTime, Timeout.Infinite);
+            homeworktimer.Change(msUntilTime, Timeout.Infinite);
         }
 
         public async static void StopTest(object state)
@@ -345,18 +375,23 @@ namespace ExamBotPC
                     {
                         await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.");
                         u.subscriber = false;
+                        ExecuteMySql($"UPDATE users SET (health, subscriber) VALUES (0, 0) WHERE id = {u.id}");
                     }
                     else
+                    {
                         await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Теперь у вас {u.health} життів.");
+                        ExecuteMySql($"UPDATE users SET health = {u.health} WHERE id = {u.id}");
+                    }
                 }
                 u.GetNextWebinar();
+                RestartTimer();
             }
         }
 
         public static void LoadFromDB()
         {
-            //try
-            //{
+            try
+            {
                 con.Open();
 
                 //Load Questions
@@ -459,12 +494,12 @@ namespace ExamBotPC
                 reader.Close();
 
                 con.Close();
-            //}
-            //catch (Exception exception)
-            //{
-            //    Console.WriteLine(exception.Message);
-            //    Console.WriteLine("Потрібен перезапуск");
-            //}
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.WriteLine("Потрібен перезапуск");
+            }
 }
 
         public static bool ExecuteMySql(string command)
