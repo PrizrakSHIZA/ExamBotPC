@@ -50,12 +50,21 @@ namespace ExamBotPC
             this.group = group;
             this.curator = curator;
 
-            //get next webinar
+            GetNextWebinar();
+        }
+
+        public void GetNextWebinar()
+        {
             List<Webinar> shedule = new List<Webinar>();
             string[] webinarsIds = Program.groups[this.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in webinarsIds)
             {
                 shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
+            }
+            for(int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].date <= DateTime.Now)
+                    shedule.RemoveAt(i);
             }
             shedule = shedule.OrderBy(x => x.date).ToList();
             nextwebinar = shedule[0].date;

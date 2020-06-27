@@ -349,19 +349,14 @@ namespace ExamBotPC
                     else
                         await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Теперь у вас {u.health} життів.");
                 }
-            }
-            //remove passed webinars
-            foreach (Webinar w in webinars)
-            {
-                if (w.date >= DateTime.Now)
-                    webinars.Remove(w);
+                u.GetNextWebinar();
             }
         }
 
         public static void LoadFromDB()
         {
-            try
-            {
+            //try
+            //{
                 con.Open();
 
                 //Load Questions
@@ -425,10 +420,19 @@ namespace ExamBotPC
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    if(reader.GetDateTime("Date") < DateTime.Now)
-                        webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date"), reader.GetInt32("id")));
+                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date")));
                 }
-                webinars = webinars.OrderBy(x => x.date).ToList();
+                reader.Close();
+
+                //Load groups
+                command = $"SELECT * FROM groups";
+                cmd = new MySqlCommand(command, Program.con);
+
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    groups.Add(reader.GetString("webinars"));
+                }
                 reader.Close();
 
                 //Load Users
@@ -454,25 +458,13 @@ namespace ExamBotPC
                 }
                 reader.Close();
 
-                //Load groups
-                command = $"SELECT * FROM groups";
-                cmd = new MySqlCommand(command, Program.con);
-
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    groups.Add(reader.GetString("webinars"));
-                }
-                reader.Close();
-
-
                 con.Close();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                Console.WriteLine("Потрібен перезапуск");
-            }
+            //}
+            //catch (Exception exception)
+            //{
+            //    Console.WriteLine(exception.Message);
+            //    Console.WriteLine("Потрібен перезапуск");
+            //}
 }
 
         public static bool ExecuteMySql(string command)
