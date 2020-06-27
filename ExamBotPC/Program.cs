@@ -11,6 +11,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using ExamBotPC.UserSystem;
+using System.Net;
 
 namespace ExamBotPC
 {
@@ -20,8 +21,10 @@ namespace ExamBotPC
         public static List<Command> commands = new List<Command>();
         public static List<User> users = new List<User>();
         public static List<Test> testlist = new List<Test>();
+        public static List<Test> alltests = new List<Test>();
         public static List<Question> questions = new List<Question>();
         public static List<Webinar> webinars = new List<Webinar>();
+        public static List<string> groups = new List<string>();
         public static DateTime TestTime = DateTime.Today.AddHours(14);
         public static MySqlConnection con = new MySqlConnection(
                     new MySqlConnectionStringBuilder()
@@ -36,6 +39,7 @@ namespace ExamBotPC
         public static bool useTimer = false;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
 
+        static int Type = 2; //homework
         static Timer timer;
 
         static void Main(string[] args)
@@ -193,7 +197,7 @@ namespace ExamBotPC
             commands.Add(new AskCmd());
             commands.Add(new BalanceCmd());
             commands.Add(new HelpCommand());
-            commands.Add(new SendCmd());
+            commands.Add(new A_Send());
             commands.Add(new SheduleCmd());
             commands.Sort((x, y) => string.Compare(x.Name, y.Name));
         }
@@ -299,12 +303,8 @@ namespace ExamBotPC
                             Program.testlist[User.currenttest].questions[0].Ask(u.id);
                         }
                     }
-                    //timer to 0:00
-                    Timer t = new Timer(new TimerCallback(StopTest));
-                    DateTime temptime = DateTime.Today.AddHours(23).AddMinutes(59);
-
-                    int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
-                    t.Change(msUntilTime, Timeout.Infinite);
+                    //Timer until next webinar
+                    RestartTimer();
 
                     InitializeTimer(TestTime.Hour, TestTime.Minute);
                 }
@@ -321,16 +321,40 @@ namespace ExamBotPC
             }
         }
 
+        public static void RestartTimer()
+        {
+            webinars = webinars.OrderBy(x => x.date).ToList();
+
+            Timer t = new Timer(new TimerCallback(StopTest));
+            DateTime temptime = webinars[0].date;
+
+            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+            t.Change(msUntilTime, Timeout.Infinite);
+        }
+
         public async static void StopTest(object state)
         {
             foreach (User u in Program.users)
             {
-                if (u.ontest)
+                if (u.nextwebinar <= DateTime.Now && u.ontest)
                 {
                     u.ontest = false;
                     u.currentquestion = 0;
-                    await Program.bot.SendTextMessageAsync(u.id, $"Час на тест закінчився. Ви набрали: {u.points[^1]} балів!");
+                    u.health -= 1;
+                    if (u.health <= 0)
+                    {
+                        await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.");
+                        u.subscriber = false;
+                    }
+                    else
+                        await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Теперь у вас {u.health} життів.");
                 }
+            }
+            //remove passed webinars
+            foreach (Webinar w in webinars)
+            {
+                if (w.date >= DateTime.Now)
+                    webinars.Remove(w);
             }
         }
 
@@ -386,7 +410,11 @@ namespace ExamBotPC
                     {
                         q.Add(questions[Int32.Parse(ids[i]) - 1]);
                     }
-                    testlist.Add(new Test(reader.GetString("rule"), q));
+                    //load all tests
+                    alltests.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
+                    //create list with current subject tests
+                    if (reader.GetInt32("Type") == Program.Type)
+                        testlist.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
                 }
                 reader.Close();
 
@@ -397,8 +425,10 @@ namespace ExamBotPC
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date")));
+                    if(reader.GetDateTime("Date") < DateTime.Now)
+                        webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date"), reader.GetInt32("id")));
                 }
+                webinars = webinars.OrderBy(x => x.date).ToList();
                 reader.Close();
 
                 //Load Users
@@ -424,6 +454,18 @@ namespace ExamBotPC
                 }
                 reader.Close();
 
+                //Load groups
+                command = $"SELECT * FROM groups";
+                cmd = new MySqlCommand(command, Program.con);
+
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    groups.Add(reader.GetString("webinars"));
+                }
+                reader.Close();
+
+
                 con.Close();
             }
             catch (Exception exception)
@@ -431,7 +473,7 @@ namespace ExamBotPC
                 Console.WriteLine(exception.Message);
                 Console.WriteLine("Потрібен перезапуск");
             }
-        }
+}
 
         public static bool ExecuteMySql(string command)
         {

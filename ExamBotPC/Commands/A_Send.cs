@@ -5,7 +5,7 @@ using Telegram.Bot.Args;
 
 namespace ExamBotPC.Commands
 {
-    class SendCmd : Command
+    class A_Send : Command
     {
         public override string Name => "/send";
 

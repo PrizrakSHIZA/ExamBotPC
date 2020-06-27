@@ -21,25 +21,14 @@ namespace ExamBotPC.Commands
 
             Program.con.Open();
 
-            //Load groups
-            string command = $"SELECT * FROM groups WHERE id = {user.group}";
-            MySqlCommand cmd = new MySqlCommand(command, Program.con);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            string webinarsarr = "";
-            while (reader.Read())
-            {
-                webinarsarr = reader.GetString("webinars");
-            }
-            reader.Close();
 
             //Get only needed webinars
-            string[] webinarsIds = webinarsarr.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            string[] webinarsIds = Program.groups[user.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in webinarsIds)
             {
                 shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
             }
-            shedule.OrderBy( x => x.date).ToList();
+            shedule = shedule.OrderBy( x => x.date).ToList();
             
             //Create shedules string
             string text = "";
