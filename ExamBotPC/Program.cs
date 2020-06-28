@@ -39,7 +39,7 @@ namespace ExamBotPC
         public static bool useTimer = false;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
 
-        static int Type = 2; //homework
+        static int Type = (int)SubjectType.Ukrainian;
         static Timer timer, HMTimer, WebinarTimer;
         static Timer homeworktimer;
 
@@ -277,18 +277,20 @@ namespace ExamBotPC
             Webinar webinar = new Webinar();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].type == 1)
+                if (shedule[i].type == Type)
                 {
                     webinar = shedule[i];
-                    return;
+                    break;
                 }
             }
             //set new timer
             HMTimer = new Timer(new TimerCallback(HomeworkNotification));
             DateTime temptime = webinar.date.AddHours(-10);
-
-            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
-            HMTimer.Change(msUntilTime, Timeout.Infinite);
+            if (temptime > DateTime.Now)
+            {
+                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+                HMTimer.Change(msUntilTime, Timeout.Infinite);
+            }
         }
 
         public static void WebinarNotificationTimer()
@@ -309,18 +311,22 @@ namespace ExamBotPC
             Webinar webinar = new Webinar();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].type == 1)
+                if (shedule[i].type == Type)
                 {
                     webinar = shedule[i];
-                    return;
+                    break;
                 }
             }
             //set new timer
             WebinarTimer = new Timer(new TimerCallback(WebinarNotification));
             DateTime temptime = webinar.date.AddHours(-2);
 
-            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
-            WebinarTimer.Change(msUntilTime, Timeout.Infinite);
+            if (temptime > DateTime.Now)
+            {
+                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+                WebinarTimer.Change(msUntilTime, Timeout.Infinite);
+                Console.WriteLine(msUntilTime);
+            }
         }
 
         public static void InitializeTimer(int hour, int minute)
@@ -388,6 +394,7 @@ namespace ExamBotPC
 
         public async static void WebinarNotification(object state)
         {
+            Console.WriteLine("In norification");
             foreach (User u in users)
             {
                 if (u.nextwebinar > DateTime.Now.AddHours(-2))
@@ -603,6 +610,13 @@ namespace ExamBotPC
                 Console.WriteLine($"Помилка у виконанні команди до Бази данних. Текст помилки:\n{exception.Message}");
                 return false;
             }
+        }
+
+        public enum SubjectType : int
+        {
+            Nothing = 0,
+            Ukrainian = 1,
+            TrainUkrainian = 2,
         }
     }
 }
