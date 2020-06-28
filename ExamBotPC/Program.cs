@@ -40,7 +40,7 @@ namespace ExamBotPC
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
 
         static int Type = 2; //homework
-        static Timer timer;
+        static Timer timer, HMTimer, WebinarTimer;
         static Timer homeworktimer;
 
         static void Main(string[] args)
@@ -52,7 +52,9 @@ namespace ExamBotPC
             //Add all commands
             AddAllCommands();
 
-            //Initialize timer
+            //Initialize timers
+            HMNotificationTimer();
+            WebinarNotificationTimer();
             InitializeTimer(TestTime.Hour, TestTime.Minute);
 
             //Initialize bot client
@@ -208,13 +210,13 @@ namespace ExamBotPC
         private static void AddAllCommands()
         {
             commands.Add(new A_RestartTimer());
-            commands.Add(new A_Send());
+            //commands.Add(new A_Send());
             commands.Add(new A_TestAll());
             commands.Add(new A_TestId());
             commands.Add(new A_TestList());
             commands.Add(new A_TimerSet());
             commands.Add(new A_TimerTurn());
-            commands.Add(new AskCmd());
+            //commands.Add(new AskCmd());
             commands.Add(new BalanceCmd());
             commands.Add(new HelpCommand());
             commands.Add(new SheduleCmd());
@@ -257,6 +259,70 @@ namespace ExamBotPC
             return keyboardInline;
         }
 
+        public static void HMNotificationTimer()
+        {
+            //delete last timer
+            if (HMTimer != null)
+                HMTimer.Dispose();
+            HMTimer = null;
+            //get next webinar datetime
+            List<Webinar> shedule = webinars;
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].date <= DateTime.Now)
+                    shedule.RemoveAt(i);
+            }
+            shedule = shedule.OrderBy(x => x.date).ToList();
+            //Find nearest webinar for current subject
+            Webinar webinar = new Webinar();
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].type == 1)
+                {
+                    webinar = shedule[i];
+                    return;
+                }
+            }
+            //set new timer
+            HMTimer = new Timer(new TimerCallback(HomeworkNotification));
+            DateTime temptime = webinar.date.AddHours(-10);
+
+            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+            HMTimer.Change(msUntilTime, Timeout.Infinite);
+        }
+
+        public static void WebinarNotificationTimer()
+        {
+            //delete last timer
+            if (WebinarTimer != null)
+                WebinarTimer.Dispose();
+            WebinarTimer = null;
+            //get next webinar datetime
+            List<Webinar> shedule = webinars;
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].date <= DateTime.Now)
+                    shedule.RemoveAt(i);
+            }
+            shedule = shedule.OrderBy(x => x.date).ToList();
+            //Find nearest webinar for current subject
+            Webinar webinar = new Webinar();
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].type == 1)
+                {
+                    webinar = shedule[i];
+                    return;
+                }
+            }
+            //set new timer
+            WebinarTimer = new Timer(new TimerCallback(WebinarNotification));
+            DateTime temptime = webinar.date.AddHours(-2);
+
+            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+            WebinarTimer.Change(msUntilTime, Timeout.Infinite);
+        }
+
         public static void InitializeTimer(int hour, int minute)
         {
             TestTime = DateTime.Today.AddHours(hour).AddMinutes(minute);
@@ -286,6 +352,48 @@ namespace ExamBotPC
                     timer.Dispose();
                 timer = null;
             }
+        }
+
+        public static void RestartTimer()
+        {
+            //delete last timer
+            if (homeworktimer != null)
+                homeworktimer.Dispose();
+            homeworktimer = null;
+            //get next webinar datetime
+            List<Webinar> shedule = webinars;
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].date <= DateTime.Now)
+                    shedule.RemoveAt(i);
+            }
+            shedule = shedule.OrderBy(x => x.date).ToList();
+            //set new timer
+            homeworktimer = new Timer(new TimerCallback(StopTest));
+            DateTime temptime = shedule[0].date;
+
+            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+            homeworktimer.Change(msUntilTime, Timeout.Infinite);
+        }
+
+        private async static void HomeworkNotification(object state)
+        {
+            foreach (User u in users)
+            {
+                if (u.nextwebinar > DateTime.Now.AddHours(-10))
+                    await bot.SendTextMessageAsync(u.id, "Нагудую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
+            }
+            HMNotificationTimer();
+        }
+
+        public async static void WebinarNotification(object state)
+        {
+            foreach (User u in users)
+            {
+                if (u.nextwebinar > DateTime.Now.AddHours(-2))
+                    await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
+            }
+            HMNotificationTimer();
         }
 
         public async static void TestAll(object state)
@@ -338,28 +446,6 @@ namespace ExamBotPC
                     }
                 }
             }
-        }
-
-        public static void RestartTimer()
-        {
-            //delete last timer
-            if(homeworktimer != null)
-                homeworktimer.Dispose();
-            homeworktimer = null;
-            //get next webinar datetime
-            List<Webinar> shedule = webinars;
-            for (int i = 0; i < shedule.Count; i++)
-            {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
-            }
-            shedule = shedule.OrderBy(x => x.date).ToList();
-            //set new timer
-            homeworktimer = new Timer(new TimerCallback(StopTest));
-            DateTime temptime = shedule[0].date;
-
-            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
-            homeworktimer.Change(msUntilTime, Timeout.Infinite);
         }
 
         public async static void StopTest(object state)
@@ -455,7 +541,7 @@ namespace ExamBotPC
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date")));
+                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date"), reader.GetInt32("Type")));
                 }
                 reader.Close();
 
