@@ -116,7 +116,7 @@ namespace ExamBotPC
         private async static void Bot_OnMessage(object sender, MessageEventArgs e)
         {
             User user;
-
+            Console.WriteLine(e.Message.Chat.InviteLink);
             //check if user is subscriber
             if (users.Find(x => x.id == e.Message.Chat.Id) != default(User))
             {
@@ -454,7 +454,7 @@ namespace ExamBotPC
                 {
                     foreach (User u in Program.users)
                     {
-                        if (u.subscriber && u.subjects.Contains(Type.ToString()))
+                        if (u.subscriber && u.subjects.Contains(Type.ToString()) && u.health > 0)
                         {
                             bool[] tempbool = Enumerable.Repeat(false, testlist[User.currenttest].questions.Count).ToArray();
                             u.mistakes[testlist[User.currenttest].id - 1] = tempbool;
@@ -498,7 +498,7 @@ namespace ExamBotPC
                     {
                         await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.");
                         u.subscriber = false;
-                        ExecuteMySql($"UPDATE users SET (health, subscriber) VALUES (0, 0) WHERE id = {u.id}");
+                        ExecuteMySql($"UPDATE users SET (health) VALUES (0) WHERE id = {u.id}");
                     }
                     else
                     {
@@ -616,7 +616,8 @@ namespace ExamBotPC
                         reader.GetInt32("Coins"),
                         reader.GetInt32("Health"),
                         reader.GetInt32("Group"),
-                        reader.GetInt32("Curator")
+                        reader.GetInt32("Curator"),
+                        reader.GetString("Subjects")
                         ));
                 }
                 reader.Close();
@@ -672,7 +673,8 @@ namespace ExamBotPC
                         reader.GetInt32("Coins"),
                         reader.GetInt32("Health"),
                         reader.GetInt32("Group"),
-                        reader.GetInt32("Curator")
+                        reader.GetInt32("Curator"),
+                        reader.GetString("Subjects")
                     ));
                 }
             }
