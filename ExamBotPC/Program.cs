@@ -39,8 +39,8 @@ namespace ExamBotPC
         public static string password = APIKeys.password;
         public static bool useTimer = false;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
-
-        static int Type = (int)SubjectType.Ukrainian;
+        public static int Type = (int)SubjectType.Ukrainian;
+        
         static Timer timer, HMTimer, WebinarTimer;
         static Timer homeworktimer;
 
@@ -116,7 +116,7 @@ namespace ExamBotPC
         private async static void Bot_OnMessage(object sender, MessageEventArgs e)
         {
             User user;
-            Console.WriteLine(e.Message.Chat.InviteLink);
+
             //check if user is subscriber
             if (users.Find(x => x.id == e.Message.Chat.Id) != default(User))
             {
@@ -125,10 +125,6 @@ namespace ExamBotPC
                 {
                     if (ExecuteMySql($"UPDATE users SET subjects = CONCAT(subjects, '{Type};') WHERE id = {user.id}"))
                         user.subjects += $"{Type};";
-                }
-                else
-                {
-                    return;
                 }
             }
             else
@@ -143,7 +139,6 @@ namespace ExamBotPC
 
             var text = e?.Message?.Text;
             if (text == null) return;
-
             //If user completing test
             else if (user.ontest)
             {
@@ -237,6 +232,7 @@ namespace ExamBotPC
             commands.Add(new BalanceCmd());
             commands.Add(new HelpCommand());
             commands.Add(new SheduleCmd());
+            commands.Add(new StopCmd());
             commands.Sort((x, y) => string.Compare(x.Name, y.Name));
         }
 
