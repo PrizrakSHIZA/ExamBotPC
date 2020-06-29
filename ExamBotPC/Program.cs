@@ -26,7 +26,6 @@ namespace ExamBotPC
         public static List<Question> questions = new List<Question>();
         public static List<Webinar> webinars = new List<Webinar>();
         public static List<string> groups = new List<string>();
-        public static DateTime TestTime = DateTime.Today.AddHours(14);
         public static MySqlConnection con = new MySqlConnection(
                     new MySqlConnectionStringBuilder()
                     {
@@ -37,7 +36,7 @@ namespace ExamBotPC
                     }.ConnectionString
                 );
         public static string password = APIKeys.password;
-        public static bool useTimer = false;
+        public static bool useTimer = true;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
         public static int Type = (int)SubjectType.Ukrainian;
         
@@ -56,7 +55,7 @@ namespace ExamBotPC
             //Initialize timers
             HMNotificationTimer();
             WebinarNotificationTimer();
-            InitializeTimer(TestTime.Hour, TestTime.Minute);
+            InitializeTimer();
 
             //Initialize bot client
             bot = new TelegramBotClient(APIKeys.TestBotApi) { Timeout = TimeSpan.FromSeconds(10) };
@@ -283,24 +282,9 @@ namespace ExamBotPC
             if (HMTimer != null)
                 HMTimer.Dispose();
             HMTimer = null;
-            //get next webinar datetime
-            List<Webinar> shedule = webinars;
-            for (int i = 0; i < shedule.Count; i++)
-            {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
-            }
-            shedule = shedule.OrderBy(x => x.date).ToList();
-            //Find nearest webinar for current subject
-            Webinar webinar = new Webinar();
-            for (int i = 0; i < shedule.Count; i++)
-            {
-                if (shedule[i].type == Type)
-                {
-                    webinar = shedule[i];
-                    break;
-                }
-            }
+
+            Webinar webinar = GetNextWebinar();
+
             //set new timer
             HMTimer = new Timer(new TimerCallback(HomeworkNotification));
             DateTime temptime = webinar.date.AddHours(-10);
@@ -321,24 +305,9 @@ namespace ExamBotPC
             if (WebinarTimer != null)
                 WebinarTimer.Dispose();
             WebinarTimer = null;
-            //get next webinar datetime
-            List<Webinar> shedule = webinars;
-            for (int i = 0; i < shedule.Count; i++)
-            {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
-            }
-            shedule = shedule.OrderBy(x => x.date).ToList();
-            //Find nearest webinar for current subject
-            Webinar webinar = new Webinar();
-            for (int i = 0; i < shedule.Count; i++)
-            {
-                if (shedule[i].type == Type)
-                {
-                    webinar = shedule[i];
-                    break;
-                }
-            }
+
+            Webinar webinar = GetNextWebinar();
+
             //set new timer
             WebinarTimer = new Timer(new TimerCallback(WebinarNotification));
             DateTime temptime = webinar.date.AddHours(-2);
@@ -350,9 +319,11 @@ namespace ExamBotPC
             }
         }
 
-        public static void InitializeTimer(int hour, int minute)
+        public static void InitializeTimer()
         {
-            TestTime = DateTime.Today.AddHours(hour).AddMinutes(minute);
+            Webinar webinar = GetNextWebinar();
+
+            DateTime TestTime = webinar.date;
             if (useTimer)
             {
                 if (timer != null)
@@ -361,12 +332,6 @@ namespace ExamBotPC
 
                 // Figure how much time until seted time
                 DateTime now = DateTime.Now;
-
-                // If it's already past setted time, wait until setted time tomorrow    
-                if (now > TestTime)
-                {
-                    TestTime = TestTime.AddDays(1.0);
-                }
 
                 int msUntilTime = (int)((TestTime - now).TotalMilliseconds);
 
@@ -414,7 +379,7 @@ namespace ExamBotPC
             HMNotificationTimer();
         }
 
-        public async static void WebinarNotification(object state)
+        private async static void WebinarNotification(object state)
         {
             foreach (User u in users)
             {
@@ -422,6 +387,30 @@ namespace ExamBotPC
                     await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
             }
             HMNotificationTimer();
+        }
+
+        private static Webinar GetNextWebinar()
+        {
+            UpdateWebinars();
+
+            List<Webinar> shedule = webinars;
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].date <= DateTime.Now)
+                    shedule.RemoveAt(i);
+            }
+            shedule = shedule.OrderBy(x => x.date).ToList();
+            //Find nearest webinar for current subject
+            Webinar webinar = new Webinar();
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].type == Type)
+                {
+                    webinar = shedule[i];
+                    return webinar;
+                }
+            }
+            return null;
         }
 
         //Tests part
@@ -466,7 +455,7 @@ namespace ExamBotPC
                     //Timer until next webinar
                     RestartTimer();
 
-                    InitializeTimer(TestTime.Hour, TestTime.Minute);
+                    InitializeTimer();
                 }
                 else
                 {
