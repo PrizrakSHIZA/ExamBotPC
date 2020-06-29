@@ -11,7 +11,7 @@ namespace ExamBotPC.Tests.Questions
     [Serializable]
     class TestQuestion : Question
     {
-
+        public override int id { get ; set; }
         public override string text { get; set; }
         public override int points { get; set; }
         public override string[] variants { get; set; }
@@ -26,7 +26,7 @@ namespace ExamBotPC.Tests.Questions
             await Program.bot.SendTextMessageAsync(user.id, text, replyMarkup: keyboard);
         }
 
-        public TestQuestion(string text, int points, string[] variants, int columns, string answer)
+        public TestQuestion(int id, string text, int points, string[] variants, int columns, string answer)
         {
             this.text = text;
             this.points = points;

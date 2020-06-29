@@ -9,6 +9,7 @@ namespace ExamBotPC.Tests.Questions
     [Serializable]
     public abstract class Question
     {
+        public abstract int id { get; set; }
         public abstract string text { get; set; }
         public abstract int points { get; set; }
         public abstract string[] variants { get; set; }

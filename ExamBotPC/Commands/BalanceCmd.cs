@@ -13,6 +13,7 @@ namespace ExamBotPC.Commands
 
         public async override void Execute(MessageEventArgs e)
         {
+            Program.UpdateUsers();
             User user = Program.GetCurrentUser(e);
             await Program.bot.SendTextMessageAsync(user.id, $"На вашому балансі {user.coins} конінів!");
         }

@@ -12,6 +12,7 @@ namespace ExamBotPC.Tests.Questions
     [Serializable]
     class ConformityQuestion : Question
     {
+        public override int id { get; set; }
         public override string text { get; set; }
         public override int points { get; set; }
         public override dynamic answer { get; set; }
@@ -27,7 +28,7 @@ namespace ExamBotPC.Tests.Questions
             await Program.bot.SendTextMessageAsync(user.id, text + rule);
         }
 
-        public ConformityQuestion(string text, int points, string answer)
+        public ConformityQuestion(int id, string text, int points, string answer)
         {
             this.text = text;
             this.points = points;

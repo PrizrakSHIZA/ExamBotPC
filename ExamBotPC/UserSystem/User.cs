@@ -16,6 +16,7 @@ namespace ExamBotPC
         public int currentquestion = 0, coins = 0, health = 5, group = 0;
         public long curator;
         public int[] points = new int[Program.alltests.Count];
+        public string subjects;
         public List<Test> completedtests = new List<Test>();
         public bool[][] mistakes = new bool[Program.alltests.Count][];
         public DateTime nextwebinar;
@@ -29,7 +30,7 @@ namespace ExamBotPC
             this.name = name;
             this.subscriber = false;
         }
-        public User(long id, string name, bool subscriber, bool admin, string points, string tests, string mistakes, int coins, int health, int group, long curator)
+        public User(long id, string name, bool subscriber, bool admin, string points, string tests, string mistakes, int coins, int health, int group, long curator, string subjects)
         {
             this.id = id;
             this.name = name;
@@ -49,7 +50,7 @@ namespace ExamBotPC
             this.health = health;
             this.group = group;
             this.curator = curator;
-
+            this.subjects = subjects;
             GetNextWebinar();
         }
 

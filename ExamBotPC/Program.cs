@@ -12,6 +12,7 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using ExamBotPC.UserSystem;
 using System.Net;
+using Telegram.Bot.Types;
 
 namespace ExamBotPC
 {
@@ -114,14 +115,31 @@ namespace ExamBotPC
 
         private async static void Bot_OnMessage(object sender, MessageEventArgs e)
         {
-            //Add user in temp var
-            User user = GetCurrentUser(e);
+            User user;
 
             //check if user is subscriber
-            if (!user.subscriber && !user.admin)
+            if (users.Find(x => x.id == e.Message.Chat.Id) != default(User))
             {
+                user = GetCurrentUser(e);
+                if (!user.subjects.Contains($"{Type};"))
+                {
+                    if (ExecuteMySql($"UPDATE users SET subjects = CONCAT(subjects, '{Type};') WHERE id = {user.id}"))
+                        user.subjects += $"{Type};";
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (ExecuteMySql($"INSERT INTO Users(ID, Name, Soname, Date, Subjects) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};')"))
+                    users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, false, false, "", "", "", 0, 0, 0, 0, $"{Type};"));
                 return;
             }
+
+            //Add user in temp var
+            user = GetCurrentUser(e);
 
             var text = e?.Message?.Text;
             if (text == null) return;
@@ -214,7 +232,6 @@ namespace ExamBotPC
             commands.Add(new A_TestAll());
             commands.Add(new A_TestId());
             commands.Add(new A_TestList());
-            commands.Add(new A_TimerSet());
             commands.Add(new A_TimerTurn());
             //commands.Add(new AskCmd());
             commands.Add(new BalanceCmd());
@@ -259,8 +276,13 @@ namespace ExamBotPC
             return keyboardInline;
         }
 
+        //Timers part
         public static void HMNotificationTimer()
         {
+            //Update Data
+            UpdateWebinars();
+            UpdateUsers();
+
             //delete last timer
             if (HMTimer != null)
                 HMTimer.Dispose();
@@ -295,6 +317,10 @@ namespace ExamBotPC
 
         public static void WebinarNotificationTimer()
         {
+            //Update Data
+            UpdateWebinars();
+            UpdateUsers();
+
             //delete last timer
             if (WebinarTimer != null)
                 WebinarTimer.Dispose();
@@ -325,7 +351,6 @@ namespace ExamBotPC
             {
                 int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
                 WebinarTimer.Change(msUntilTime, Timeout.Infinite);
-                Console.WriteLine(msUntilTime);
             }
         }
 
@@ -362,6 +387,7 @@ namespace ExamBotPC
 
         public static void RestartTimer()
         {
+            UpdateWebinars();
             //delete last timer
             if (homeworktimer != null)
                 homeworktimer.Dispose();
@@ -394,7 +420,6 @@ namespace ExamBotPC
 
         public async static void WebinarNotification(object state)
         {
-            Console.WriteLine("In norification");
             foreach (User u in users)
             {
                 if (u.nextwebinar > DateTime.Now.AddHours(-2))
@@ -403,8 +428,13 @@ namespace ExamBotPC
             HMNotificationTimer();
         }
 
+        //Tests part
         public async static void TestAll(object state)
         {
+            UpdateGroups();
+            UpdateTests();
+            UpdateUsers();
+            UpdateWebinars();
             //Check if program have test to send
             if (User.currenttest + 1 > testlist.Count)
             {
@@ -424,7 +454,7 @@ namespace ExamBotPC
                 {
                     foreach (User u in Program.users)
                     {
-                        if (u.subscriber)
+                        if (u.subscriber && u.subjects.Contains(Type.ToString()))
                         {
                             bool[] tempbool = Enumerable.Repeat(false, testlist[User.currenttest].questions.Count).ToArray();
                             u.mistakes[testlist[User.currenttest].id - 1] = tempbool;
@@ -481,6 +511,7 @@ namespace ExamBotPC
             }
         }
 
+        // Database part
         public static void LoadFromDB()
         {
             try
@@ -498,23 +529,27 @@ namespace ExamBotPC
                     {
                         case 1:
                             questions.Add(new TestQuestion(
-                        reader.GetString("text"),
-                        reader.GetInt32("points"),
-                        reader.GetString("variants").Replace(" ", "").Split(delimiterChars),
-                        reader.GetInt32("columns"),
-                        reader.GetString("answer"))); break;
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetInt32("points"),
+                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars),
+                                reader.GetInt32("columns"),
+                                reader.GetString("answer")
+                                )); break;
                         case 2:
                             questions.Add(new FreeQuestion(
-                        reader.GetString("text"),
-                        reader.GetInt32("points"),
-                        reader.GetString("answer")
-                        )); break;
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetInt32("points"),
+                                reader.GetString("answer")
+                                )); break;
                         case 3:
                             questions.Add(new ConformityQuestion(
-                        reader.GetString("text"),
-                        reader.GetInt32("points"),
-                        reader.GetString("answer")
-                        )); break;
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetInt32("points"),
+                                reader.GetString("answer")
+                                )); break;
                         default: break;
                     }
                 }
@@ -594,6 +629,170 @@ namespace ExamBotPC
                 Console.WriteLine("Потрібен перезапуск");
             }
 }
+
+        public static void UpdateUsers()
+        {
+            con.Open();
+            //Load Users
+            string command = "SELECT * FROM users";
+            MySqlCommand cmd = new MySqlCommand(command, con);
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                long id = reader.GetInt32("id");
+                if (users.Find(x => x.id == id) != default(User))
+                {
+                    User user = users.Find(x => x.id == id);
+                    user.subscriber = Convert.ToBoolean(reader.GetUInt32("Subscriber"));
+                    user.admin = Convert.ToBoolean(reader.GetUInt32("Admin"));
+                    user.points = JsonSerializer.Deserialize<int[]>(reader.GetString("points"));
+                    user.completedtests.Clear();
+                    int[] temp = reader.GetString("CompletedTests").Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();                
+                    for (int i = 0; i < temp.Length; i++)
+                    {
+                        user.completedtests.Add(Program.alltests[temp[i] - 1]);
+                    }
+                    user.mistakes = JsonSerializer.Deserialize<bool[][]>(reader.GetString("Mistakes"));
+                    user.coins = reader.GetInt32("Coins");
+                    user.health = reader.GetInt32("Health");
+                    user.group = reader.GetInt32("Group");
+                    user.curator = reader.GetInt32("Curator");
+                }
+                else
+                {
+                    users.Add(new User(
+                        reader.GetInt32("ID"),
+                        reader.GetString("Name") + " " + reader.GetString("Soname"),
+                        Convert.ToBoolean(reader.GetUInt32("Subscriber")),
+                        Convert.ToBoolean(reader.GetUInt32("Admin")),
+                        reader.GetString("Points"),
+                        reader.GetString("CompletedTests"),
+                        reader.GetString("Mistakes"),
+                        reader.GetInt32("Coins"),
+                        reader.GetInt32("Health"),
+                        reader.GetInt32("Group"),
+                        reader.GetInt32("Curator")
+                    ));
+                }
+            }
+            reader.Close();
+
+            con.Close();
+
+        }
+
+        public static void UpdateTests()
+        {
+            try
+            {
+                con.Open();
+
+                //Load Questions
+                string command = "SELECT * FROM questions";
+                MySqlCommand cmd = new MySqlCommand(command, con);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                questions.Clear();
+                while (reader.Read())
+                {
+                    switch (reader.GetInt32("type"))
+                    {
+                        case 1:
+                            questions.Add(new TestQuestion(
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetInt32("points"),
+                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars),
+                                reader.GetInt32("columns"),
+                                reader.GetString("answer")
+                                )); break;
+                        case 2:
+                            questions.Add(new FreeQuestion(
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetInt32("points"),
+                                reader.GetString("answer")
+                                )); break;
+                        case 3:
+                            questions.Add(new ConformityQuestion(
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetInt32("points"),
+                                reader.GetString("answer")
+                                )); break;
+                        default: break;
+                    }
+
+                }
+                reader.Close();
+
+                //Load Tests
+                command = "SELECT * FROM tests";
+                cmd = new MySqlCommand(command, con);
+
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars);
+                    List<Question> q = new List<Question>();
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        q.Add(questions[Int32.Parse(ids[i]) - 1]);
+                    }
+                    //load all tests
+                    alltests.Clear();
+                    alltests.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
+                    //create list with current subject tests
+                    testlist.Clear();
+                    if (reader.GetInt32("Type") == Program.Type)
+                        testlist.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
+                }
+                reader.Close();
+
+                con.Close();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.WriteLine("Потрібен перезапуск");
+            }
+        }
+
+        public static void UpdateWebinars()
+        {
+            con.Open();
+            string command = "SELECT * FROM webinars";
+            MySqlCommand cmd = new MySqlCommand(command, con);
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            webinars.Clear();
+            while (reader.Read())
+            {
+                webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date"), reader.GetInt32("Type")));
+            }
+            reader.Close();
+
+            con.Close();
+        }
+
+        public static void UpdateGroups()
+        {
+            con.Open();
+
+            string command = $"SELECT * FROM groups";
+            MySqlCommand cmd = new MySqlCommand(command, Program.con);
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            groups.Clear();
+            while (reader.Read())
+            {
+                groups.Add(reader.GetString("webinars"));
+            }
+            reader.Close();
+
+            con.Close();
+        }
 
         public static bool ExecuteMySql(string command)
         {
