@@ -323,7 +323,7 @@ namespace ExamBotPC
         {
             Webinar webinar = GetNextWebinar();
 
-            DateTime TestTime = webinar.date;
+            DateTime TestTime = webinar.date.AddHours(2);
             if (useTimer)
             {
                 if (timer != null)
@@ -334,7 +334,6 @@ namespace ExamBotPC
                 DateTime now = DateTime.Now;
 
                 int msUntilTime = (int)((TestTime - now).TotalMilliseconds);
-
                 // Set the timer to elapse only once, at setted teme.
                 timer.Change(msUntilTime, Timeout.Infinite);
             }
@@ -393,11 +392,11 @@ namespace ExamBotPC
         {
             UpdateWebinars();
 
-            List<Webinar> shedule = webinars;
-            for (int i = 0; i < shedule.Count; i++)
+            List<Webinar> shedule = new List<Webinar>(webinars);
+            foreach (Webinar w in webinars)
             {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
+                if (w.date < DateTime.Now)
+                    shedule.Remove(w);
             }
             shedule = shedule.OrderBy(x => x.date).ToList();
             //Find nearest webinar for current subject
@@ -499,8 +498,8 @@ namespace ExamBotPC
         // Database part
         public static void LoadFromDB()
         {
-            try
-            {
+            //try
+            //{
                 con.Open();
 
                 //Load Questions
@@ -517,7 +516,7 @@ namespace ExamBotPC
                                 reader.GetInt32("id"),
                                 reader.GetString("text"),
                                 reader.GetInt32("points"),
-                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars),
+                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries),
                                 reader.GetInt32("columns"),
                                 reader.GetString("answer")
                                 )); break;
@@ -547,7 +546,7 @@ namespace ExamBotPC
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars);
+                    string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
                     List<Question> q = new List<Question>();
                     for (int i = 0; i < ids.Length; i++)
                     {
@@ -608,12 +607,12 @@ namespace ExamBotPC
                 reader.Close();
 
                 con.Close();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                Console.WriteLine("Потрібен перезапуск");
-            }
+            //}
+            //catch (Exception exception)
+            //{
+            //    Console.WriteLine(exception.Message);
+            //    Console.WriteLine("Потрібен перезапуск");
+            //}
 }
 
         public static void UpdateUsers()
@@ -632,14 +631,16 @@ namespace ExamBotPC
                     User user = users.Find(x => x.id == id);
                     user.subscriber = Convert.ToBoolean(reader.GetUInt32("Subscriber"));
                     user.admin = Convert.ToBoolean(reader.GetUInt32("Admin"));
-                    user.points = JsonSerializer.Deserialize<int[]>(reader.GetString("points"));
+                    if(reader.GetString("Points") != "")
+                        user.points = JsonSerializer.Deserialize<int[]>(reader.GetString("Points"));
                     user.completedtests.Clear();
                     int[] temp = reader.GetString("CompletedTests").Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();                
                     for (int i = 0; i < temp.Length; i++)
                     {
                         user.completedtests.Add(Program.alltests[temp[i] - 1]);
                     }
-                    user.mistakes = JsonSerializer.Deserialize<bool[][]>(reader.GetString("Mistakes"));
+                    if (reader.GetString("Mistakes") != "")
+                        user.mistakes = JsonSerializer.Deserialize<bool[][]>(reader.GetString("Mistakes"));
                     user.coins = reader.GetInt32("Coins");
                     user.health = reader.GetInt32("Health");
                     user.group = reader.GetInt32("Group");
@@ -690,7 +691,7 @@ namespace ExamBotPC
                                 reader.GetInt32("id"),
                                 reader.GetString("text"),
                                 reader.GetInt32("points"),
-                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars),
+                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries),
                                 reader.GetInt32("columns"),
                                 reader.GetString("answer")
                                 )); break;
@@ -719,19 +720,19 @@ namespace ExamBotPC
                 cmd = new MySqlCommand(command, con);
 
                 reader = cmd.ExecuteReader();
+                alltests.Clear();
+                testlist.Clear();
                 while (reader.Read())
                 {
-                    string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars);
+                    string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
                     List<Question> q = new List<Question>();
                     for (int i = 0; i < ids.Length; i++)
                     {
                         q.Add(questions[Int32.Parse(ids[i]) - 1]);
                     }
                     //load all tests
-                    alltests.Clear();
                     alltests.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
                     //create list with current subject tests
-                    testlist.Clear();
                     if (reader.GetInt32("Type") == Program.Type)
                         testlist.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
                 }

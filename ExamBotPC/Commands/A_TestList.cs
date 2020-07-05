@@ -19,6 +19,9 @@ namespace ExamBotPC.Commands
             User user = Program.GetCurrentUser(e);
             try
             {
+                Console.WriteLine(Program.alltests.Count);
+                Console.WriteLine(Program.testlist.Count);
+
                 string text = "";
                 int index = e.Message.Text.IndexOf(" ");
                 if (index == -1)

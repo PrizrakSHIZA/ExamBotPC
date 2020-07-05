@@ -18,7 +18,11 @@ namespace ExamBotPC.Commands
         {
             List<Webinar> shedule = new List<Webinar>();
             User user = Program.GetCurrentUser(e);
-
+            if (user.group == 0)
+            {
+                await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групу! Зверніться до куратора або адміністрації.");
+                return;
+            }
             Program.con.Open();
 
             //Get only needed webinars

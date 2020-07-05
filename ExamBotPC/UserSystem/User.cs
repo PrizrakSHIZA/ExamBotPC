@@ -57,18 +57,25 @@ namespace ExamBotPC
         public void GetNextWebinar()
         {
             List<Webinar> shedule = new List<Webinar>();
-            string[] webinarsIds = Program.groups[this.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in webinarsIds)
+            if (group == 0)
             {
-                shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
+                nextwebinar = new DateTime(1,1,1,1,1,1);
             }
-            for(int i = 0; i < shedule.Count; i++)
+            else 
             {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
+                string[] webinarsIds = Program.groups[this.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
+                foreach (string s in webinarsIds)
+                {
+                    shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
+                }
+                for (int i = 0; i < shedule.Count; i++)
+                {
+                    if (shedule[i].date <= DateTime.Now)
+                        shedule.RemoveAt(i);
+                }
+                shedule = shedule.OrderBy(x => x.date).ToList();
+                nextwebinar = shedule[0].date;
             }
-            shedule = shedule.OrderBy(x => x.date).ToList();
-            nextwebinar = shedule[0].date;
         }
     }
 }
