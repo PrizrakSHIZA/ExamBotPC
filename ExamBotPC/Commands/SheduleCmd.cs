@@ -23,7 +23,8 @@ namespace ExamBotPC.Commands
                 await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групу! Зверніться до куратора або адміністрації.");
                 return;
             }
-            Program.con.Open();
+            MySqlConnection con = new MySqlConnection(Program.connectionString);
+            con.Open();
 
             //Get only needed webinars
             string[] webinarsIds = Program.groups[user.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
@@ -45,7 +46,7 @@ namespace ExamBotPC.Commands
             }
             await Program.bot.SendTextMessageAsync(user.id, text);
 
-            Program.con.Close();
+            con.Close();
         }
     }
 }

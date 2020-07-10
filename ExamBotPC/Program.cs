@@ -11,8 +11,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using ExamBotPC.UserSystem;
-using System.Net;
-using Telegram.Bot.Types;
+using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace ExamBotPC
 {
@@ -26,36 +25,36 @@ namespace ExamBotPC
         public static List<Question> questions = new List<Question>();
         public static List<Webinar> webinars = new List<Webinar>();
         public static List<string> groups = new List<string>();
-        public static MySqlConnection con = new MySqlConnection(
-                    new MySqlConnectionStringBuilder()
-                    {
-                        Server = APIKeys.DBServer,
-                        Database = APIKeys.DBName,
-                        UserID = APIKeys.DBUser,
-                        Password = APIKeys.DBPassword
-                    }.ConnectionString
-                );
+        public static string connectionString = new MySqlConnectionStringBuilder()
+        {
+            Server = APIKeys.DBServer,
+            Database = APIKeys.DBName,
+            UserID = APIKeys.DBUser,
+            Password = APIKeys.DBPassword,
+            ConvertZeroDateTime = true
+        }.ConnectionString;
         public static string password = APIKeys.password;
         public static bool useTimer = true;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
         public static int Type = (int)SubjectType.Ukrainian;
-        
-        static Timer timer, HMTimer, WebinarTimer;
-        static Timer homeworktimer;
+
+        static DateTime users_update, tests_update, webinars_update, groups_update; 
+        static Timer timer, homeworktimer, HMTimer, WebinarTimer;
 
         static void Main(string[] args)
         {
             //Loading data
             LoadFromDB();
-            //SaveSystem.Load();
 
+            users_update = tests_update = webinars_update = groups_update = DateTime.Now;
             //Add all commands
             AddAllCommands();
 
             //Initialize timers
-            HMNotificationTimer();
-            WebinarNotificationTimer();
-            InitializeTimer();
+            UpdateDBTimer();
+            //HMNotificationTimer();
+            //WebinarNotificationTimer();
+            //InitializeTimer();
 
             //Initialize bot client
             bot = new TelegramBotClient(APIKeys.TestBotApi) { Timeout = TimeSpan.FromSeconds(10) };
@@ -272,12 +271,16 @@ namespace ExamBotPC
         }
 
         //Timers part
+        public static void UpdateDBTimer()
+        {
+            System.Timers.Timer DBChecker = new System.Timers.Timer(TimeSpan.FromMinutes(2).TotalMilliseconds);
+            DBChecker.AutoReset = true;
+            DBChecker.Elapsed += CheckForUpdates;
+            DBChecker.Enabled = true;
+        }
+
         public static void HMNotificationTimer()
         {
-            //Update Data
-            UpdateWebinars();
-            UpdateUsers();
-
             //delete last timer
             if (HMTimer != null)
                 HMTimer.Dispose();
@@ -297,10 +300,6 @@ namespace ExamBotPC
 
         public static void WebinarNotificationTimer()
         {
-            //Update Data
-            UpdateWebinars();
-            UpdateUsers();
-
             //delete last timer
             if (WebinarTimer != null)
                 WebinarTimer.Dispose();
@@ -318,7 +317,7 @@ namespace ExamBotPC
                 WebinarTimer.Change(msUntilTime, Timeout.Infinite);
             }
         }
-
+        
         public static void InitializeTimer()
         {
             Webinar webinar = GetNextWebinar();
@@ -344,10 +343,9 @@ namespace ExamBotPC
                 timer = null;
             }
         }
-
+        
         public static void RestartTimer()
         {
-            UpdateWebinars();
             //delete last timer
             if (homeworktimer != null)
                 homeworktimer.Dispose();
@@ -390,8 +388,6 @@ namespace ExamBotPC
 
         private static Webinar GetNextWebinar()
         {
-            UpdateWebinars();
-
             List<Webinar> shedule = new List<Webinar>(webinars);
             foreach (Webinar w in webinars)
             {
@@ -411,14 +407,10 @@ namespace ExamBotPC
             }
             return null;
         }
-
+        
         //Tests part
         public async static void TestAll(object state)
         {
-            UpdateGroups();
-            UpdateTests();
-            UpdateUsers();
-            UpdateWebinars();
             //Check if program have test to send
             if (User.currenttest + 1 > testlist.Count)
             {
@@ -500,12 +492,14 @@ namespace ExamBotPC
         {
             //try
             //{
+                MySqlConnection con = new MySqlConnection(connectionString);
+
                 con.Open();
 
                 //Load Questions
                 string command = "SELECT * FROM questions";
                 MySqlCommand cmd = new MySqlCommand(command, con);
-
+                
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -567,13 +561,13 @@ namespace ExamBotPC
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date"), reader.GetInt32("Type")));
+                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetInt32("Day"), reader.GetDateTime("Time"), reader.GetDateTime("EndDate"), reader.GetInt32("Type")));
                 }
                 reader.Close();
 
                 //Load groups
                 command = $"SELECT * FROM groups";
-                cmd = new MySqlCommand(command, Program.con);
+                cmd = new MySqlCommand(command, con);
 
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -615,8 +609,54 @@ namespace ExamBotPC
             //}
 }
 
+        public static void CheckForUpdates(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            MySqlConnection con = new MySqlConnection(connectionString);
+            con.Open();
+            string command = "SELECT * FROM updates";
+            MySqlCommand cmd = new MySqlCommand(command, con);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                switch (reader.GetString("Name"))
+                {
+                    case "users":
+                        if (users_update < reader.GetDateTime("LastUpdate"))
+                        {
+                            users_update = reader.GetDateTime("LastUpdate");
+                            UpdateUsers();
+                        }
+                        break;
+                    case "tests":
+                        if (tests_update < reader.GetDateTime("LastUpdate"))
+                        {
+                            tests_update = reader.GetDateTime("LastUpdate");
+                            UpdateTests();
+                        }
+                        break;
+                    case "webinars":
+                        if (webinars_update < reader.GetDateTime("LastUpdate"))
+                        {
+                            webinars_update = reader.GetDateTime("LastUpdate");
+                            UpdateWebinars();
+                        }
+                        break;
+                    case "groups":
+                        if (groups_update < reader.GetDateTime("LastUpdate"))
+                        {
+                            groups_update = reader.GetDateTime("LastUpdate");
+                            UpdateGroups();
+                        }
+                        break;
+                    default: break;
+                }
+            }
+            con.Close();
+        }
+
         public static void UpdateUsers()
         {
+            MySqlConnection con = new MySqlConnection(connectionString);
             con.Open();
             //Load Users
             string command = "SELECT * FROM users";
@@ -674,6 +714,7 @@ namespace ExamBotPC
         {
             try
             {
+                MySqlConnection con = new MySqlConnection(connectionString);
                 con.Open();
 
                 //Load Questions
@@ -749,6 +790,7 @@ namespace ExamBotPC
 
         public static void UpdateWebinars()
         {
+            MySqlConnection con = new MySqlConnection(connectionString);
             con.Open();
             string command = "SELECT * FROM webinars";
             MySqlCommand cmd = new MySqlCommand(command, con);
@@ -757,7 +799,7 @@ namespace ExamBotPC
             webinars.Clear();
             while (reader.Read())
             {
-                webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetDateTime("Date"), reader.GetInt32("Type")));
+                webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetInt32("Day"), reader.GetDateTime("Time"), reader.GetDateTime("EndDate"), reader.GetInt32("Type")));
             }
             reader.Close();
 
@@ -766,10 +808,11 @@ namespace ExamBotPC
 
         public static void UpdateGroups()
         {
+            MySqlConnection con = new MySqlConnection(connectionString);
             con.Open();
 
             string command = $"SELECT * FROM groups";
-            MySqlCommand cmd = new MySqlCommand(command, Program.con);
+            MySqlCommand cmd = new MySqlCommand(command, con);
 
             MySqlDataReader reader = cmd.ExecuteReader();
             groups.Clear();
@@ -786,7 +829,8 @@ namespace ExamBotPC
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand(command, Program.con);
+                MySqlConnection con = new MySqlConnection(connectionString);
+                MySqlCommand cmd = new MySqlCommand(command, con);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();

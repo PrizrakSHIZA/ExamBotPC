@@ -15,7 +15,6 @@ namespace ExamBotPC.Commands
 
         public async override void Execute(MessageEventArgs e)
         {
-            Program.UpdateTests();
             User user = Program.GetCurrentUser(e);
             try
             {
