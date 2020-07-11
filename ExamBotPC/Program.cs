@@ -11,7 +11,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using ExamBotPC.UserSystem;
-using Org.BouncyCastle.Asn1.Mozilla;
+using System.Globalization;
 
 namespace ExamBotPC
 {
@@ -38,8 +38,9 @@ namespace ExamBotPC
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
         public static int Type = (int)SubjectType.Ukrainian;
 
+        static int currentwebinar;
         static DateTime users_update, tests_update, webinars_update, groups_update; 
-        static Timer timer, homeworktimer, HMTimer, WebinarTimer;
+        static Timer TestTimer, StopTimer, HMTimer, WebinarTimer;
 
         static void Main(string[] args)
         {
@@ -52,9 +53,9 @@ namespace ExamBotPC
 
             //Initialize timers
             UpdateDBTimer();
-            //HMNotificationTimer();
-            //WebinarNotificationTimer();
-            //InitializeTimer();
+            HMNotificationTimer();
+            WebinarNotificationTimer();
+            InitializeTestTimer();
 
             //Initialize bot client
             bot = new TelegramBotClient(APIKeys.TestBotApi) { Timeout = TimeSpan.FromSeconds(10) };
@@ -290,8 +291,8 @@ namespace ExamBotPC
 
             //set new timer
             HMTimer = new Timer(new TimerCallback(HomeworkNotification));
-            DateTime temptime = webinar.date.AddHours(-10);
-            if (temptime > DateTime.Now)
+            DateTime temptime = webinar.time.AddHours(-10);
+            if (temptime.TimeOfDay > DateTime.Now.TimeOfDay)
             {
                 int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
                 HMTimer.Change(msUntilTime, Timeout.Infinite);
@@ -309,68 +310,66 @@ namespace ExamBotPC
 
             //set new timer
             WebinarTimer = new Timer(new TimerCallback(WebinarNotification));
-            DateTime temptime = webinar.date.AddHours(-2);
+            DateTime temptime = webinar.time.AddHours(-2);
 
-            if (temptime > DateTime.Now)
+            if (temptime.TimeOfDay > DateTime.Now.TimeOfDay)
             {
                 int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
                 WebinarTimer.Change(msUntilTime, Timeout.Infinite);
             }
         }
         
-        public static void InitializeTimer()
+        public static void InitializeTestTimer()
         {
             Webinar webinar = GetNextWebinar();
 
-            DateTime TestTime = webinar.date.AddHours(2);
+            DateTime TestTime = webinar.time.AddHours(2);
             if (useTimer)
             {
-                if (timer != null)
-                    timer.Dispose();
-                timer = new Timer(new TimerCallback(TestAll));
+                if (TestTimer != null)
+                    TestTimer.Dispose();
+                TestTimer = new Timer(new TimerCallback(TestAll));
 
                 // Figure how much time until seted time
                 DateTime now = DateTime.Now;
 
                 int msUntilTime = (int)((TestTime - now).TotalMilliseconds);
                 // Set the timer to elapse only once, at setted teme.
-                timer.Change(msUntilTime, Timeout.Infinite);
+                TestTimer.Change(msUntilTime, Timeout.Infinite);
             }
             else
             {
-                if (timer != null)
-                    timer.Dispose();
-                timer = null;
+                if (TestTimer != null)
+                    TestTimer.Dispose();
+                TestTimer = null;
             }
         }
         
-        public static void RestartTimer()
+        public static void InitializeStopTimer()
         {
-            //delete last timer
-            if (homeworktimer != null)
-                homeworktimer.Dispose();
-            homeworktimer = null;
-            //get next webinar datetime
-            List<Webinar> shedule = webinars;
-            for (int i = 0; i < shedule.Count; i++)
-            {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
-            }
-            shedule = shedule.OrderBy(x => x.date).ToList();
-            //set new timer
-            homeworktimer = new Timer(new TimerCallback(StopTest));
-            DateTime temptime = shedule[0].date;
+            Webinar webinar = GetNextWebinar();
+            DateTime TestTime = webinar.time;
 
-            int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
-            homeworktimer.Change(msUntilTime, Timeout.Infinite);
+            //delete last timer
+            if (StopTimer != null)
+                StopTimer.Dispose();
+            StopTimer = null;
+            //get next webinar datetime
+
+            //set new timer
+            StopTimer = new Timer(new TimerCallback(StopTest));
+
+            int msUntilTime = (int)((TestTime - DateTime.Now).TotalMilliseconds);
+            StopTimer.Change(msUntilTime, Timeout.Infinite);
         }
 
         private async static void HomeworkNotification(object state)
         {
             foreach (User u in users)
             {
-                if (u.nextwebinar > DateTime.Now.AddHours(-10))
+                if (u.group == 0)
+                    break;
+                if (groups[u.group - 1].Contains(currentwebinar.ToString() +";"))
                     await bot.SendTextMessageAsync(u.id, "Нагудую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
             }
             HMNotificationTimer();
@@ -380,7 +379,9 @@ namespace ExamBotPC
         {
             foreach (User u in users)
             {
-                if (u.nextwebinar > DateTime.Now.AddHours(-2))
+                if (u.group == 0)
+                    break;
+                if (groups[u.group - 1].Contains(currentwebinar.ToString() + ";"))
                     await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
             }
             HMNotificationTimer();
@@ -394,18 +395,21 @@ namespace ExamBotPC
                 if (w.date < DateTime.Now)
                     shedule.Remove(w);
             }
-            shedule = shedule.OrderBy(x => x.date).ToList();
+            shedule = shedule.OrderBy(x => x.day).ToList();
+
             //Find nearest webinar for current subject
             Webinar webinar = new Webinar();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].type == Type)
+                if (shedule[i].day >= ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.TimeOfDay > DateTime.Now.TimeOfDay)
                 {
+                    currentwebinar = shedule[i].id;
                     webinar = shedule[i];
                     return webinar;
                 }
             }
-            return null;
+            webinar = shedule[0];
+            return webinar;
         }
         
         //Tests part
@@ -444,9 +448,9 @@ namespace ExamBotPC
                         }
                     }
                     //Timer until next webinar
-                    RestartTimer();
+                    InitializeStopTimer();
 
-                    InitializeTimer();
+                    InitializeTestTimer();
                 }
                 else
                 {
@@ -465,7 +469,7 @@ namespace ExamBotPC
         {
             foreach (User u in Program.users)
             {
-                if (u.nextwebinar <= DateTime.Now && u.ontest)
+                if (groups[u.group + 1].Contains(currentwebinar.ToString() + ";") && u.ontest)
                 {
                     u.ontest = false;
                     u.currentquestion = 0;
@@ -482,8 +486,8 @@ namespace ExamBotPC
                         ExecuteMySql($"UPDATE users SET health = {u.health} WHERE id = {u.id}");
                     }
                 }
-                u.GetNextWebinar();
-                RestartTimer();
+                //u.GetNextWebinar();
+                InitializeStopTimer();
             }
         }
 
@@ -555,13 +559,19 @@ namespace ExamBotPC
                 reader.Close();
 
                 //Load shedules
-                command = "SELECT * FROM webinars";
+                command = "SELECT * FROM webinars WHERE Type = " + Type;
                 cmd = new MySqlCommand(command, con);
 
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetInt32("Day"), reader.GetDateTime("Time"), reader.GetDateTime("EndDate"), reader.GetInt32("Type")));
+                    webinars.Add(new Webinar(
+                        reader.GetInt32("id"), 
+                        reader.GetString("Name"), 
+                        reader.GetInt32("Day"),
+                        DateTime.ParseExact(reader.GetString("Time"), "HH:mm:ss", CultureInfo.InvariantCulture), 
+                        reader.GetDateTime("EndDate"), 
+                        reader.GetInt32("Type")));
                 }
                 reader.Close();
 
@@ -792,7 +802,7 @@ namespace ExamBotPC
         {
             MySqlConnection con = new MySqlConnection(connectionString);
             con.Open();
-            string command = "SELECT * FROM webinars";
+            string command = "SELECT * FROM webinars WHERE Type = " + Type;
             MySqlCommand cmd = new MySqlCommand(command, con);
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -804,6 +814,8 @@ namespace ExamBotPC
             reader.Close();
 
             con.Close();
+            HMNotificationTimer();
+            WebinarNotificationTimer();
         }
 
         public static void UpdateGroups()

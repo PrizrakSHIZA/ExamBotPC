@@ -13,7 +13,7 @@ namespace ExamBotPC.Commands
 
         public override void Execute(MessageEventArgs e)
         {
-            Program.RestartTimer();
+            Program.InitializeStopTimer();
         }
     }
 }

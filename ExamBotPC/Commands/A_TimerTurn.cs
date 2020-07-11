@@ -27,11 +27,11 @@ namespace ExamBotPC.Commands
                 {
                     case "on": 
                         Program.useTimer = true;
-                        Program.InitializeTimer();
+                        Program.InitializeTestTimer();
                         await Program.bot.SendTextMessageAsync(user.id, "Таймер було включено!"); break;
                     case "off":
                         Program.useTimer = false;
-                        Program.InitializeTimer();
+                        Program.InitializeTestTimer();
                         await Program.bot.SendTextMessageAsync(user.id, "Таймер було вимкнено!"); break;
                     default: break;
                 }

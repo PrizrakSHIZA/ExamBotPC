@@ -19,7 +19,6 @@ namespace ExamBotPC
         public string subjects;
         public List<Test> completedtests = new List<Test>();
         public bool[][] mistakes = new bool[Program.alltests.Count][];
-        public DateTime nextwebinar;
 
         public static int currenttest = 0;
         public int currentTest_serializable { get { return currenttest; } set { currenttest = value; } }
@@ -51,9 +50,9 @@ namespace ExamBotPC
             this.group = group;
             this.curator = curator;
             this.subjects = subjects;
-            GetNextWebinar();
+            //GetNextWebinar();
         }
-
+        /*
         public void GetNextWebinar()
         {
             List<Webinar> shedule = new List<Webinar>();
@@ -76,6 +75,6 @@ namespace ExamBotPC
                 shedule = shedule.OrderBy(x => x.date).ToList();
                 nextwebinar = shedule[0].date;
             }
-        }
+        }*/
     }
 }
