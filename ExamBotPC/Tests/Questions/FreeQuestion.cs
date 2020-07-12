@@ -26,7 +26,6 @@ namespace ExamBotPC.Tests.Questions
                 await Program.bot.SendTextMessageAsync(user.id, text + rule);
             else
             {
-                Console.WriteLine(image);
                 InputOnlineFile imageFile = new InputOnlineFile(new MemoryStream(Convert.FromBase64String(image.Split(",")[1])));
                 await Program.bot.SendPhotoAsync(user.id, imageFile);
                 await Program.bot.SendTextMessageAsync(user.id, text + rule);

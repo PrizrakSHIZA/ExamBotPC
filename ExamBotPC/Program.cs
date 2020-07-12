@@ -333,7 +333,8 @@ namespace ExamBotPC
                 // Figure how much time until seted time
                 DateTime now = DateTime.Now;
 
-                int msUntilTime = (int)((TestTime - now).TotalMilliseconds);
+                int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
+                int msUntilTime = (int)((TestTime.AddDays(days) - now).TotalMilliseconds);
                 // Set the timer to elapse only once, at setted teme.
                 TestTimer.Change(msUntilTime, Timeout.Infinite);
             }
@@ -358,8 +359,8 @@ namespace ExamBotPC
 
             //set new timer
             StopTimer = new Timer(new TimerCallback(StopTest));
-
-            int msUntilTime = (int)((TestTime - DateTime.Now).TotalMilliseconds);
+            int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
+            int msUntilTime = (int)((TestTime.AddDays(days) - DateTime.Now).TotalMilliseconds);
             StopTimer.Change(msUntilTime, Timeout.Infinite);
         }
 
@@ -549,7 +550,6 @@ namespace ExamBotPC
                 if (reader.GetInt32("Type") == Program.Type)
                 {
                     string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
-                    Console.WriteLine($"{ids.Length} || {questions.Count}");
                     List<Question> q = new List<Question>();
                     for (int i = 0; i < ids.Length; i++)
                     {
