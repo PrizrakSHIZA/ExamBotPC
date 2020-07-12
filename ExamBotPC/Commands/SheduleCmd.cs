@@ -32,7 +32,7 @@ namespace ExamBotPC.Commands
             {
                 shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
             }
-            shedule = shedule.OrderBy(x => x.date).ToList();
+            shedule = shedule.OrderBy(x => x.day).ToList();
             for (int i = 0; i < shedule.Count; i++)
             {
                 if (shedule[i].date <= DateTime.Now)
@@ -42,11 +42,22 @@ namespace ExamBotPC.Commands
             string text = "";
             foreach (Webinar w in shedule)
             {
-                text += $"{w.name} - {w.date}\n";
+                text += $"{DayOfWeek[w.day]}: {w.time.TimeOfDay} - {w.name}\n";
             }
             await Program.bot.SendTextMessageAsync(user.id, text);
 
             con.Close();
         }
+
+        public Dictionary<int, string> DayOfWeek = new Dictionary<int, string> 
+        {
+            { 1, "Понеділок" },
+            { 2, "Вівторок" },
+            { 3, "Середа" },
+            { 4, "Четвер" },
+            { 5, "П'ятниця" },
+            { 6, "Субота" },
+            { 7, "Неділя" },
+        };
     }
 }

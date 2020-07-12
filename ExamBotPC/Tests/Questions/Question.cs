@@ -11,6 +11,7 @@ namespace ExamBotPC.Tests.Questions
     {
         public abstract int id { get; set; }
         public abstract string text { get; set; }
+        public abstract string image { get; set; }
         public abstract int points { get; set; }
         public abstract string[] variants { get; set; }
         public abstract dynamic answer { get; set; }

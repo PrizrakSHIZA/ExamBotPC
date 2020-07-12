@@ -15,10 +15,10 @@ namespace ExamBotPC
         public bool subscriber, admin, ontest = false;
         public int currentquestion = 0, coins = 0, health = 5, group = 0;
         public long curator;
-        public int[] points = new int[Program.alltests.Count];
+        public int[] points = new int[1000];
         public string subjects;
-        public List<Test> completedtests = new List<Test>();
-        public bool[][] mistakes = new bool[Program.alltests.Count][];
+        public string completedtests;
+        public bool[][] mistakes = new bool[1000][];
 
         public static int currenttest = 0;
         public int currentTest_serializable { get { return currenttest; } set { currenttest = value; } }
@@ -37,12 +37,9 @@ namespace ExamBotPC
             this.admin = admin;
             if (points != "" || tests != "" || mistakes != "")
             {
-                this.points = JsonSerializer.Deserialize<int[]>(points); //points.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
-                int[] temp = tests.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
-                for (int i = 0; i < temp.Length; i++)
-                {
-                    completedtests.Add(Program.alltests[temp[i] - 1]);
-                }
+                this.points = JsonSerializer.Deserialize<int[]>(points);
+                //int[] temp = tests.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
+                completedtests = tests;
                 this.mistakes = JsonSerializer.Deserialize<bool[][]>(mistakes);
             }
             this.coins = coins;
@@ -50,31 +47,6 @@ namespace ExamBotPC
             this.group = group;
             this.curator = curator;
             this.subjects = subjects;
-            //GetNextWebinar();
         }
-        /*
-        public void GetNextWebinar()
-        {
-            List<Webinar> shedule = new List<Webinar>();
-            if (group == 0)
-            {
-                nextwebinar = new DateTime(1,1,1,1,1,1);
-            }
-            else 
-            {
-                string[] webinarsIds = Program.groups[this.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
-                foreach (string s in webinarsIds)
-                {
-                    shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
-                }
-                for (int i = 0; i < shedule.Count; i++)
-                {
-                    if (shedule[i].date <= DateTime.Now)
-                        shedule.RemoveAt(i);
-                }
-                shedule = shedule.OrderBy(x => x.date).ToList();
-                nextwebinar = shedule[0].date;
-            }
-        }*/
     }
 }
