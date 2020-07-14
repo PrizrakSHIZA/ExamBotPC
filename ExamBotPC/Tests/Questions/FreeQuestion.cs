@@ -34,6 +34,7 @@ namespace ExamBotPC.Tests.Questions
 
         public FreeQuestion(int id, string text, int points, string answer, string image)
         {
+            this.id = id;
             this.text = text;
             this.points = points;
             this.answer = answer;

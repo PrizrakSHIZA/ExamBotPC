@@ -38,6 +38,7 @@ namespace ExamBotPC.Tests.Questions
 
         public TestQuestion(int id, string text, int points, string[] variants, int columns, string answer, string image)
         {
+            this.id = id;
             this.text = text;
             this.points = points;
             this.variants = variants;
