@@ -9,7 +9,10 @@ namespace ExamBotPC
     {
         public static readonly string password = "";
         public static readonly string TestBotApi = "";
-        public static readonly string TrainBotApi = "";
+        public static readonly string DBLocalServer = "";
+        public static readonly string DBLocalName = "";
+        public static readonly string DBLocalUser = "";
+        public static readonly string DBLocalPassword = "";
         public static readonly string DBServer = "";
         public static readonly string DBName = "";
         public static readonly string DBUser = "";

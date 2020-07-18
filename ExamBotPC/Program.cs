@@ -36,13 +36,54 @@ namespace ExamBotPC
         public static string password = APIKeys.password;
         public static bool useTimer = true;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
-        public static int Type = (int)SubjectType.Ukrainian;
+        public static int Type;
 
         static int currentwebinar;
         static DateTime users_update, tests_update, webinars_update, groups_update; 
         static Timer TestTimer, StopTimer, HMTimer, WebinarTimer;
 
         static void Main(string[] args)
+        {
+            Console.WriteLine("Enter command:");
+            while (true)
+            {
+                Console.Write("=>");
+                string cmd = Console.ReadLine();
+                switch (cmd)
+                {
+                    case "help": Console.WriteLine("list - show all types of bot\nstart - start bot\nquit - close bot");  break;
+                    case "list": Console.WriteLine("0 - localhost\n1 - Ukrainian");  break;
+                    case "start":
+                        Console.WriteLine("Enter type number of bot:");
+                        string x = Console.ReadLine();
+                        switch (x)
+                        {
+                            case "0":
+                                Type = (int)SubjectType.Ukrainian;
+                                connectionString = new MySqlConnectionStringBuilder()
+                                {
+                                    Server = APIKeys.DBLocalServer,
+                                    Database = APIKeys.DBLocalName,
+                                    UserID = APIKeys.DBLocalUser,
+                                    Password = APIKeys.DBLocalPassword,
+                                    ConvertZeroDateTime = true
+                                }.ConnectionString;
+                                StartBot(APIKeys.TestBotApi);
+                                break;
+                            case "1":
+                                Type = (int)SubjectType.Ukrainian;
+                                StartBot(APIKeys.TestBotApi);
+                                break;
+                            default: Console.WriteLine("Wrong number!"); break;
+                        }
+                        break;
+                    case "quit": Environment.Exit(0); break;
+                    default: Console.WriteLine("No such command found");  break;
+                }
+            }
+        }
+
+        private static void StartBot(string Api)
         {
             //Loading data
             LoadFromDB();
@@ -58,7 +99,7 @@ namespace ExamBotPC
             InitializeTestTimer();
 
             //Initialize bot client
-            bot = new TelegramBotClient(APIKeys.TestBotApi) { Timeout = TimeSpan.FromSeconds(10) };
+            bot = new TelegramBotClient(Api) { Timeout = TimeSpan.FromSeconds(10) };
 
             //Starting message
             var me = bot.GetMeAsync().Result;
@@ -67,10 +108,7 @@ namespace ExamBotPC
             bot.StartReceiving();
             bot.OnMessage += Bot_OnMessage;
             bot.OnCallbackQuery += Bot_OnCallbackQuery;
-
-            Console.ReadKey();
         }
-
         private async static void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
             User user = GetCurrentUser(e);
@@ -294,7 +332,8 @@ namespace ExamBotPC
             DateTime temptime = webinar.time.AddHours(-10);
             if (temptime.TimeOfDay > DateTime.Now.TimeOfDay)
             {
-                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+                int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
+                int msUntilTime = (int)((temptime.AddDays(days) - DateTime.Now).TotalMilliseconds);
                 HMTimer.Change(msUntilTime, Timeout.Infinite);
             }
         }
@@ -314,7 +353,8 @@ namespace ExamBotPC
 
             if (temptime.TimeOfDay > DateTime.Now.TimeOfDay)
             {
-                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+                int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
+                int msUntilTime = (int)((temptime.AddDays(days) - DateTime.Now).TotalMilliseconds);
                 WebinarTimer.Change(msUntilTime, Timeout.Infinite);
             }
         }
@@ -410,6 +450,7 @@ namespace ExamBotPC
                 }
             }
             webinar = shedule[0];
+            Console.WriteLine(webinar.day + " " + webinar.time);
             return webinar;
         }
         
@@ -494,8 +535,8 @@ namespace ExamBotPC
         // Database part
         public static void LoadFromDB()
         {
-            //try
-            //{
+            try
+            {
                 MySqlConnection con = new MySqlConnection(connectionString);
 
                 con.Open();
@@ -534,6 +575,14 @@ namespace ExamBotPC
                                 reader.GetInt32("points"),
                                 reader.GetString("answer"),
                                 reader.GetString("image")
+                                )); break;
+                        case 4:
+                            questions.Add(new MultipleQuestion(
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetString("iamge"),
+                                reader.GetInt32("points"),
+                                reader.GetString("answer")
                                 )); break;
                         default: break;
                     }
@@ -614,12 +663,13 @@ namespace ExamBotPC
                 reader.Close();
 
                 con.Close();
-            //}
-            //catch (Exception exception)
-            //{
-            //    Console.WriteLine(exception.Message);
-            //    Console.WriteLine("Потрібен перезапуск");
-            //}
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.WriteLine("Потрібен перезапуск");
+                Environment.Exit(0);
+            }
 }
 
         public static void CheckForUpdates(Object source, System.Timers.ElapsedEventArgs e)
@@ -762,6 +812,14 @@ namespace ExamBotPC
                                 reader.GetInt32("points"),
                                 reader.GetString("answer"),
                                 reader.GetString("image")
+                                )); break;
+                        case 4:
+                            questions.Add(new MultipleQuestion(
+                                reader.GetInt32("id"),
+                                reader.GetString("text"),
+                                reader.GetString("iamge"),
+                                reader.GetInt32("points"),
+                                reader.GetString("answer")
                                 )); break;
                         default: break;
                     }
