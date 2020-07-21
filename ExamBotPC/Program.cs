@@ -132,7 +132,7 @@ namespace ExamBotPC
                 //Check if its last question in test
                 if (user.currentquestion >= testlist[User.currenttest].questions.Count)
                 {
-                    if (ExecuteMySql($"UPDATE Users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}, Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
+                    if (ExecuteMySql($"UPDATE users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}, Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
                     {
                         user.ontest = false;
                         user.currentquestion = 0;
@@ -166,7 +166,7 @@ namespace ExamBotPC
             }
             else
             {
-                if (ExecuteMySql($"INSERT INTO Users(ID, Name, Soname, Date, Subjects) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};')"))
+                if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Date, Subjects) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};')"))
                     users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, false, false, "", "", "", 0, 0, 0, 0, $"{Type};"));
                 return;
             }
@@ -199,6 +199,23 @@ namespace ExamBotPC
                         user.currentquestion++;
                     }
                 }
+                else if(testlist[User.currenttest].questions[user.currentquestion] is MultipleQuestion)
+                {
+                    MultipleQuestion q = (MultipleQuestion)testlist[User.currenttest].questions[user.currentquestion];
+                    //Delete spaces
+                    if (q.IsRight(answer))
+                    {
+                        await bot.SendTextMessageAsync(user.id, "Правильно!");
+                        user.currentquestion++;
+                        user.points[testlist[User.currenttest].id - 1] += question.points;
+                    }
+                    else
+                    {
+                        await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
+                        user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
+                        user.currentquestion++;
+                    }
+                }
                 //Check other type
                 else if (answer.ToLower() == question.answer.ToLower())
                 {
@@ -215,7 +232,7 @@ namespace ExamBotPC
                 //Check if its last question in test
                 if (user.currentquestion >= testlist[User.currenttest].questions.Count)
                 {
-                    if (ExecuteMySql($"UPDATE Users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}', Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
+                    if (ExecuteMySql($"UPDATE users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}', Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
                     {
                         user.ontest = false;
                         user.currentquestion = 0;
@@ -361,9 +378,10 @@ namespace ExamBotPC
         
         public static void InitializeTestTimer()
         {
-            Webinar webinar = GetNextWebinar();
+            int hour = 2;
+            Webinar webinar = GetNextWebinar(hour);
 
-            DateTime TestTime = webinar.time.AddHours(2);
+            DateTime TestTime = webinar.time.AddHours(hour);
             if (useTimer)
             {
                 if (TestTimer != null)
@@ -436,7 +454,7 @@ namespace ExamBotPC
                 if (w.date < DateTime.Now)
                     shedule.Remove(w);
             }
-            shedule = shedule.OrderBy(x => x.day).ToList();
+            shedule = shedule.OrderBy(x => x.day).ThenBy(x => x.time.TimeOfDay).ToList();
 
             //Find nearest webinar for current subject
             Webinar webinar = new Webinar();
@@ -450,10 +468,33 @@ namespace ExamBotPC
                 }
             }
             webinar = shedule[0];
-            Console.WriteLine(webinar.day + " " + webinar.time);
             return webinar;
         }
-        
+        private static Webinar GetNextWebinar(int hour)
+        {
+            List<Webinar> shedule = new List<Webinar>(webinars);
+            foreach (Webinar w in webinars)
+            {
+                if (w.date < DateTime.Now)
+                    shedule.Remove(w);
+            }
+            shedule = shedule.OrderBy(x => x.day).ThenBy(x => x.time.TimeOfDay).ToList();
+
+            //Find nearest webinar for current subject
+            Webinar webinar = new Webinar();
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].day >= ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.AddHours(hour).TimeOfDay > DateTime.Now.TimeOfDay)
+                {
+                    currentwebinar = shedule[i].id;
+                    webinar = shedule[i];
+                    return webinar;
+                }
+            }
+            webinar = shedule[0];
+            return webinar;
+        }
+
         //Tests part
         public async static void TestAll(object state)
         {
@@ -476,7 +517,7 @@ namespace ExamBotPC
                 {
                     foreach (User u in Program.users)
                     {
-                        if (u.subscriber && u.subjects.Contains(Type.ToString()) && u.health > 0)
+                        if (u.subscriber && u.subjects.Contains(Type.ToString() + ";") && u.health > 0)
                         {
                             bool[] tempbool = Enumerable.Repeat(false, testlist[User.currenttest].questions.Count).ToArray();
                             u.mistakes[testlist[User.currenttest].id - 1] = tempbool;
@@ -510,7 +551,9 @@ namespace ExamBotPC
         {
             foreach (User u in Program.users)
             {
-                if (groups[u.group + 1].Contains(currentwebinar.ToString() + ";") && u.ontest)
+                if (u.group == 0)
+                    break;
+                if (groups[u.group - 1].Contains(currentwebinar.ToString() + ";") && u.ontest)
                 {
                     u.ontest = false;
                     u.currentquestion = 0;
@@ -626,7 +669,6 @@ namespace ExamBotPC
                         reader.GetInt32("Type")));
                 }
                 reader.Close();
-
                 //Load groups
                 command = $"SELECT * FROM groups";
                 cmd = new MySqlCommand(command, con);
@@ -868,11 +910,19 @@ namespace ExamBotPC
             webinars.Clear();
             while (reader.Read())
             {
-                webinars.Add(new Webinar(reader.GetInt32("id"), reader.GetString("Name"), reader.GetInt32("Day"), reader.GetDateTime("Time"), reader.GetDateTime("EndDate"), reader.GetInt32("Type")));
+                webinars.Add(new Webinar(
+                    reader.GetInt32("id"),
+                    reader.GetString("Name"),
+                    reader.GetInt32("Day"),
+                    DateTime.ParseExact(reader.GetString("Time"), "HH:mm:ss", CultureInfo.InvariantCulture),
+                    reader.GetDateTime("EndDate"),
+                    reader.GetInt32("Type")));
             }
             reader.Close();
 
             con.Close();
+            InitializeTestTimer();
+            InitializeStopTimer();
             HMNotificationTimer();
             WebinarNotificationTimer();
         }
