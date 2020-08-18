@@ -10,7 +10,7 @@ namespace ExamBotPC.Commands
     {
         public override string Name => "/help";
 
-        public override bool forAdmin => false;
+        public override bool forAdmin => true;
 
         public override async void Execute(MessageEventArgs e)
         {

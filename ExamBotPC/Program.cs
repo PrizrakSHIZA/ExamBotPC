@@ -12,13 +12,14 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using ExamBotPC.UserSystem;
 using System.Globalization;
-using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ExamBotPC
 {
     class Program
     {
         public static TelegramBotClient bot;
+        public static ReplyKeyboardMarkup menu = new ReplyKeyboardMarkup();
         public static List<Command> commands = new List<Command>();
         public static List<User> users = new List<User>();
         public static List<Test> testlist = new List<Test>();
@@ -31,6 +32,7 @@ namespace ExamBotPC
             Database = APIKeys.DBName,
             UserID = APIKeys.DBUser,
             Password = APIKeys.DBPassword,
+            CharacterSet = "utf8",
             ConvertZeroDateTime = true
         }.ConnectionString;
         public static string password = APIKeys.password;
@@ -91,7 +93,6 @@ namespace ExamBotPC
             users_update = tests_update = webinars_update = groups_update = DateTime.Now;
             //Add all commands
             AddAllCommands();
-
             //Initialize timers
             UpdateDBTimer();
             HMNotificationTimer();
@@ -108,7 +109,28 @@ namespace ExamBotPC
             bot.StartReceiving();
             bot.OnMessage += Bot_OnMessage;
             bot.OnCallbackQuery += Bot_OnCallbackQuery;
+            CreateMenu();
         }
+
+        private static void CreateMenu()
+        {
+            menu.Keyboard = new KeyboardButton[][]
+            {
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("💰Баланс💰"),
+                    new KeyboardButton("📅Розклад📅")
+                },
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("📞Мій куратор📞"),
+                    new KeyboardButton("📼Записи вебінарів📼")
+                },
+            };
+            menu.ResizeKeyboard = true;
+            menu.OneTimeKeyboard = false;
+        }
+
         private async static void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
             User user = GetCurrentUser(e);
@@ -161,13 +183,19 @@ namespace ExamBotPC
                 if (!user.subjects.Contains($"{Type};"))
                 {
                     if (ExecuteMySql($"UPDATE users SET subjects = CONCAT(subjects, '{Type};') WHERE id = {user.id}"))
+                    {
                         user.subjects += $"{Type};";
+                        await bot.SendTextMessageAsync(user.id, "Вітаю! Ви підписалися на цього бота!", replyMarkup: menu);
+                    }
                 }
             }
             else
             {
                 if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Date, Subjects) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};')"))
+                {
                     users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, false, false, "", "", "", 0, 0, 0, 0, $"{Type};"));
+                    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Вітаю! Ви підписалися на цього бота!", replyMarkup: menu);
+                }
                 return;
             }
 
@@ -185,18 +213,25 @@ namespace ExamBotPC
                 if (testlist[User.currenttest].questions[user.currentquestion] is ConformityQuestion)
                 {
                     ConformityQuestion q = (ConformityQuestion)testlist[User.currenttest].questions[user.currentquestion];
-                    //Delete spaces
-                    if (q.IsRight(answer))
+                    if(Regex.IsMatch(answer, "[a-z]", RegexOptions.IgnoreCase))
                     {
-                        await bot.SendTextMessageAsync(user.id, "Правильно!");
-                        user.currentquestion++;
-                        user.points[testlist[User.currenttest].id - 1] += question.points;
+                        await bot.SendTextMessageAsync(user.id, "У вашій відповіді була помічена латиниця. Будь ласка, використовуйте лише кирилицю! Повторіть вашу відповідь кирилицею.");
                     }
                     else
                     {
-                        await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                        user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
-                        user.currentquestion++;
+                        //Delete spaces
+                        if (q.IsRight(answer))
+                        {
+                            await bot.SendTextMessageAsync(user.id, "Правильно!");
+                            user.currentquestion++;
+                            user.points[testlist[User.currenttest].id - 1] += question.points;
+                        }
+                        else
+                        {
+                            await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
+                            user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
+                            user.currentquestion++;
+                        }
                     }
                 }
                 else if(testlist[User.currenttest].questions[user.currentquestion] is MultipleQuestion)
@@ -317,7 +352,7 @@ namespace ExamBotPC
                     keyboardButtons[i] = new InlineKeyboardButton
                     {
                         Text = array[(y * column) + i],
-                        CallbackData = array[(y * column) + i],
+                        CallbackData = ((y * column) + i + 1).ToString(),
                     };
                 }
                 keyboardInline[y] = keyboardButtons;
@@ -446,7 +481,7 @@ namespace ExamBotPC
             HMNotificationTimer();
         }
 
-        private static Webinar GetNextWebinar()
+        public static Webinar GetNextWebinar()
         {
             List<Webinar> shedule = new List<Webinar>(webinars);
             foreach (Webinar w in webinars)
@@ -460,12 +495,13 @@ namespace ExamBotPC
             Webinar webinar = new Webinar();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].day >= ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.TimeOfDay > DateTime.Now.TimeOfDay)
+                if (shedule[i].day == ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.TimeOfDay > DateTime.Now.TimeOfDay || shedule[i].day > ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek))
                 {
                     currentwebinar = shedule[i].id;
                     webinar = shedule[i];
                     return webinar;
                 }
+                
             }
             webinar = shedule[0];
             return webinar;
@@ -479,12 +515,11 @@ namespace ExamBotPC
                     shedule.Remove(w);
             }
             shedule = shedule.OrderBy(x => x.day).ThenBy(x => x.time.TimeOfDay).ToList();
-
             //Find nearest webinar for current subject
             Webinar webinar = new Webinar();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].day >= ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.AddHours(hour).TimeOfDay > DateTime.Now.TimeOfDay)
+                if (shedule[i].day == ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.AddHours(hour).TimeOfDay > DateTime.Now.TimeOfDay || shedule[i].day > ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek))
                 {
                     currentwebinar = shedule[i].id;
                     webinar = shedule[i];
@@ -578,8 +613,8 @@ namespace ExamBotPC
         // Database part
         public static void LoadFromDB()
         {
-            try
-            {
+            //try
+            //{
                 MySqlConnection con = new MySqlConnection(connectionString);
 
                 con.Open();
@@ -598,7 +633,7 @@ namespace ExamBotPC
                                 reader.GetInt32("id"),
                                 reader.GetString("text"),
                                 reader.GetInt32("points"),
-                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries),
+                                reader.GetString("variants").Split(";", StringSplitOptions.RemoveEmptyEntries),
                                 reader.GetInt32("columns"),
                                 reader.GetString("answer"),
                                 reader.GetString("image")
@@ -623,7 +658,7 @@ namespace ExamBotPC
                             questions.Add(new MultipleQuestion(
                                 reader.GetInt32("id"),
                                 reader.GetString("text"),
-                                reader.GetString("iamge"),
+                                reader.GetString("image"),
                                 reader.GetInt32("points"),
                                 reader.GetString("answer")
                                 )); break;
@@ -645,7 +680,7 @@ namespace ExamBotPC
                     List<Question> q = new List<Question>();
                     for (int i = 0; i < ids.Length; i++)
                     {
-                        q.Add(questions[Int32.Parse(ids[i]) - 1]);
+                        q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
                     }
 
                     testlist.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
@@ -705,13 +740,13 @@ namespace ExamBotPC
                 reader.Close();
 
                 con.Close();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                Console.WriteLine("Потрібен перезапуск");
-                Environment.Exit(0);
-            }
+            //}
+            //catch (Exception exception)
+            //{
+            //    Console.WriteLine(exception.Message);
+            //    Console.WriteLine("Потрібен перезапуск");
+            //    Environment.Exit(0);
+            //}
 }
 
         public static void CheckForUpdates(Object source, System.Timers.ElapsedEventArgs e)
@@ -834,7 +869,7 @@ namespace ExamBotPC
                                 reader.GetInt32("id"),
                                 reader.GetString("text"),
                                 reader.GetInt32("points"),
-                                reader.GetString("variants").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries),
+                                reader.GetString("variants").Split(";", StringSplitOptions.RemoveEmptyEntries),
                                 reader.GetInt32("columns"),
                                 reader.GetString("answer"),
                                 reader.GetString("image")

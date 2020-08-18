@@ -7,7 +7,7 @@ namespace ExamBotPC.Commands
 {
     class BalanceCmd : Command
     {
-        public override string Name => "/balance";
+        public override string Name => "💰Баланс💰";
 
         public override bool forAdmin => false;
 

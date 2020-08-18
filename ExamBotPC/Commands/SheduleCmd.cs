@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types.Enums;
 
 namespace ExamBotPC.Commands
 {
     class SheduleCmd : Command
     {
-        public override string Name => "/shedule";
+        public override string Name => "📅Розклад📅";
 
         public override bool forAdmin => false;
 
@@ -30,7 +31,7 @@ namespace ExamBotPC.Commands
             string[] webinarsIds = Program.groups[user.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in webinarsIds)
             {
-                shedule.Add(Program.webinars[Convert.ToInt32(s) - 1]);
+                shedule.Add(Program.webinars.Find(x => x.id == Convert.ToInt32(s)));
             }
             shedule = shedule.OrderBy(x => x.day).ToList();
             for (int i = 0; i < shedule.Count; i++)
@@ -42,9 +43,16 @@ namespace ExamBotPC.Commands
             string text = "";
             foreach (Webinar w in shedule)
             {
-                text += $"{DayOfWeek[w.day]}: {w.time.TimeOfDay} - {w.name}\n";
+                if(Program.GetNextWebinar().day == w.day && Program.GetNextWebinar().time.TimeOfDay == w.time.TimeOfDay)
+                {
+                    text += $"<b>{DayOfWeek[w.day]}: {w.time.TimeOfDay} - {w.name}</b>\n";
+                }
+                else 
+                {
+                    text += $"{DayOfWeek[w.day]}: {w.time.TimeOfDay} - {w.name}\n";
+                }
             }
-            await Program.bot.SendTextMessageAsync(user.id, text);
+            await Program.bot.SendTextMessageAsync(user.id, text, parseMode: ParseMode.Html);
 
             con.Close();
         }

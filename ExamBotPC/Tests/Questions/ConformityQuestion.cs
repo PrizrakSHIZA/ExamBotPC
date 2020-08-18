@@ -49,11 +49,12 @@ namespace ExamBotPC.Tests.Questions
 
         public bool IsRight(string answer)
         {
-            answer = answer.Replace("-", "").ToLower();
+            answer = answer.Replace("-", "").Replace(" ", "").ToLower();
             List<string> answerarr = answer.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries).ToList();
-            string[] rightnaswer = this.answer.Replace("-", "").ToLower().Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
+            string[] rightnaswer = this.answer.Replace("-", "").Replace(" ", "").ToLower().Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
             if (rightnaswer.Length != answerarr.Count)
                 return false;
+
             for (int i = 0; i < rightnaswer.Length; i++)
             {
                 for (int y = 0; y < answerarr.Count; y++)
