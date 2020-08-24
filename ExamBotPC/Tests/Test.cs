@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Telegram.Bot.Requests;
 
 namespace ExamBotPC.Tests
 {
@@ -12,19 +13,16 @@ namespace ExamBotPC.Tests
         /// 1 - test
         /// 2 - homework
         /// </summary>
-        public int id;
         public string Text;
         public List<Question> questions;
 
-        public Test(int id, string text, List<Question> q)
+        public Test(string text, List<Question> q)
         {
-            this.id = id;
             Text = text;
             questions = q;
         }
         public Test(Test test)
         {
-            id = test.id;
             Text = test.Text;
             questions = test.questions;
         }

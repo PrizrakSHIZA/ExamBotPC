@@ -9,6 +9,9 @@ namespace ExamBotPC
     {
         public static readonly string password = "";
         public static readonly string TestBotApi = "";
+        public static readonly string MathBotApi = "";
+        public static readonly string BioBotApi = "";
+        public static readonly string UkrBotApi = "";
         public static readonly string DBLocalServer = "";
         public static readonly string DBLocalName = "";
         public static readonly string DBLocalUser = "";

@@ -7,46 +7,48 @@ using System.Text.Json;
 
 namespace ExamBotPC
 {
-    [Serializable]
     public class User
     {
         public long id;
         public string name;
-        public bool subscriber, admin, ontest = false;
-        public int currentquestion = 0, coins = 0, health = 5, group = 0;
-        public long curator;
-        public int[] points = new int[1000];
+        public bool ontest = false;
+        public string[] subscriber = { "0", "0", "0", "0", "0", "0", "0", "0" }, health = { "5", "5", "5", "5", "5", "5", "5", "5" };
+        public int currentquestion = 0, coins = 0, group = 0;
+        public string curator;
+        public int points = 0;
+        public int mistakes = 0;
         public string subjects;
-        public string completedtests;
-        public bool[][] mistakes = new bool[1000][];
-
-        public static int currenttest = 0;
-        public int currentTest_serializable { get { return currenttest; } set { currenttest = value; } }
+        public string statistic;
+        public Lesson currentlesson = new Lesson();
+        public string[] state;
 
         public User(long id, string name)
         {
             this.id = id;
             this.name = name;
-            this.subscriber = false;
         }
-        public User(long id, string name, bool subscriber, bool admin, string points, string tests, string mistakes, int coins, int health, int group, long curator, string subjects)
+        public User(long id, string name, string subscriber, string health, int coins,  int group, string curator, string subjects, string statistic, string statestr)
         {
             this.id = id;
             this.name = name;
-            this.subscriber = subscriber;
-            this.admin = admin;
-            if (points != "" || tests != "" || mistakes != "")
-            {
-                this.points = JsonSerializer.Deserialize<int[]>(points);
-                //int[] temp = tests.Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
-                completedtests = tests;
-                this.mistakes = JsonSerializer.Deserialize<bool[][]>(mistakes);
-            }
+            this.subscriber = subscriber.Split(";", StringSplitOptions.RemoveEmptyEntries);
             this.coins = coins;
-            this.health = health;
+            this.health = health.Split(";", StringSplitOptions.RemoveEmptyEntries);
             this.group = group;
             this.curator = curator;
             this.subjects = subjects;
+            this.statistic = statistic;
+            // string like "ontest;lessonid;questionnumber;points;mistakes"
+            this.state = statestr.Split("|", StringSplitOptions.RemoveEmptyEntries);
+            string[] tmpstate = state[Program.Type - 1].Substring(1).Split(";");
+            if (tmpstate[0] == "1")
+            {
+                ontest = true;
+                currentlesson = Program.lessons.Find(x => x.id == Int32.Parse(tmpstate[1]));
+                currentquestion = Int32.Parse(tmpstate[2]);
+                points = Int32.Parse(tmpstate[3]);
+                mistakes = Int32.Parse(tmpstate[4]); 
+            }
         }
     }
 }

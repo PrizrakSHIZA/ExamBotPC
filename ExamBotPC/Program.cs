@@ -11,21 +11,24 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using ExamBotPC.UserSystem;
-using System.Globalization;
 using System.Text.RegularExpressions;
+using Telegram.Bot.Types.Enums;
+using System.Linq.Expressions;
+using System.Configuration;
+using Renci.SshNet.Security;
 
 namespace ExamBotPC
 {
     class Program
     {
         public static TelegramBotClient bot;
-        public static ReplyKeyboardMarkup menu = new ReplyKeyboardMarkup();
+        public static ReplyKeyboardMarkup menu = new ReplyKeyboardMarkup(), menu2 = new ReplyKeyboardMarkup();
         public static List<Command> commands = new List<Command>();
         public static List<User> users = new List<User>();
-        public static List<Test> testlist = new List<Test>();
         public static List<Question> questions = new List<Question>();
-        public static List<Webinar> webinars = new List<Webinar>();
-        public static List<string> groups = new List<string>();
+        public static List<Lesson> lessons = new List<Lesson>();
+        public static List<Group> groups = new List<Group>();
+        public static Lesson currentlesson = new Lesson();
         public static string connectionString = new MySqlConnectionStringBuilder()
         {
             Server = APIKeys.DBServer,
@@ -40,9 +43,8 @@ namespace ExamBotPC
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
         public static int Type;
 
-        static int currentwebinar;
-        static DateTime users_update, tests_update, webinars_update, groups_update; 
-        static Timer TestTimer, StopTimer, HMTimer, WebinarTimer;
+        static DateTime users_update, lessons_update, groups_update; 
+        static Timer TestTimer, StopTimer, HMTimer, WebinarTimer, LinkTimer;
 
         static void Main(string[] args)
         {
@@ -54,7 +56,7 @@ namespace ExamBotPC
                 switch (cmd)
                 {
                     case "help": Console.WriteLine("list - show all types of bot\nstart - start bot\nquit - close bot");  break;
-                    case "list": Console.WriteLine("0 - localhost\n1 - Ukrainian");  break;
+                    case "list": Console.WriteLine("0 - localhost\n1 - Ukrainian\n2 - Math\n3 - Biology");  break;
                     case "start":
                         Console.WriteLine("Enter type number of bot:");
                         string x = Console.ReadLine();
@@ -74,12 +76,98 @@ namespace ExamBotPC
                                 break;
                             case "1":
                                 Type = (int)SubjectType.Ukrainian;
-                                StartBot(APIKeys.TestBotApi);
+                                StartBot(APIKeys.UkrBotApi);
                                 break;
+                            case "2":
+                                Type = (int)SubjectType.Math;
+                                StartBot(APIKeys.MathBotApi);
+                                break;
+                            case "3":
+                                Type = (int)SubjectType.Boilogy;
+                                StartBot(APIKeys.BioBotApi);
+                                break;
+
                             default: Console.WriteLine("Wrong number!"); break;
                         }
                         break;
-                    case "quit": Environment.Exit(0); break;
+                    case "msg":
+                        {
+                            foreach (User u in users)
+                            {
+                                if (u.subjects.Contains(Type + ";"))
+                                {
+                                    bot.SendTextMessageAsync(u.id, "Ку! У нас тут технічні роботи 👀\n" +
+                                                                    "Вони потрібні для того, щоб бот гарно працював та не глючив.\n\n"+
+                                                                    "Наш технічний супер - майстер вже скоро завершить оновлення. Будь ласка, поки що нічого сюди не пиши, бо повідомлення може бути загублено.\n\n"+
+                                                                    "Ми дамо знати як тільки бот запрацює знову.\n"+
+                                                                    "Дякуємо за розуміння! 🥰");
+                                }
+                            }
+                            break;
+                        }
+                    case "quit":
+                        {
+                            foreach (User u in users)
+                            {
+                                if (u.subscriber[Type - 1] == "1")
+                                {
+                                    string prefix = "";
+                                    switch (Type)
+                                    {
+                                        case 0:
+                                            {
+                                                prefix = "A";
+                                                break;
+                                            }
+                                        case 1:
+                                            {
+                                                prefix = "A";
+                                                break;
+                                            }
+                                        case 2:
+                                            {
+                                                prefix = "B";
+                                                break;
+                                            }
+                                        case 3:
+                                            {
+                                                prefix = "C";
+                                                break;
+                                            }
+                                        case 4:
+                                            {
+                                                prefix = "D";
+                                                break;
+                                            }
+                                        case 5:
+                                            {
+                                                prefix = "E";
+                                                break;
+                                            }
+                                        case 6:
+                                            {
+                                                prefix = "F";
+                                                break;
+                                            }
+                                        case 7:
+                                            {
+                                                prefix = "G";
+                                                break;
+                                            }
+                                        case 8:
+                                            {
+                                                prefix = "K";
+                                                break;
+                                            }
+                                        default: break;
+                                    }
+                                    string state = $"{prefix}{(u.ontest ? 1 : 0)};{u.currentlesson.id};{u.currentquestion};{u.points};{u.mistakes}";
+                                    ExecuteMySql($"UPDATE users SET State = REPLACE(State, '{u.state[Type - 1]}', '{state}') WHERE id = {u.id}");
+                                }
+                            }
+                            Environment.Exit(0);
+                            break;
+                        }
                     default: Console.WriteLine("No such command found");  break;
                 }
             }
@@ -90,7 +178,7 @@ namespace ExamBotPC
             //Loading data
             LoadFromDB();
 
-            users_update = tests_update = webinars_update = groups_update = DateTime.Now;
+            users_update = lessons_update = groups_update = DateTime.Now;
             //Add all commands
             AddAllCommands();
             //Initialize timers
@@ -98,6 +186,7 @@ namespace ExamBotPC
             HMNotificationTimer();
             WebinarNotificationTimer();
             InitializeTestTimer();
+            LinkSenderTimer();
 
             //Initialize bot client
             bot = new TelegramBotClient(Api) { Timeout = TimeSpan.FromSeconds(10) };
@@ -110,6 +199,23 @@ namespace ExamBotPC
             bot.OnMessage += Bot_OnMessage;
             bot.OnCallbackQuery += Bot_OnCallbackQuery;
             CreateMenu();
+            foreach (User u in users)
+            {
+                try 
+                { 
+                    if (u.subjects.Contains(Program.Type + ";"))
+                    {
+                        if (u.ontest)
+                            bot.SendTextMessageAsync(u.id, "Повтори конспект поки чекаєш на наступний урок 😉", replyMarkup: menu2);
+                        else
+                            bot.SendTextMessageAsync(u.id, "Повтори конспект поки чекаєш на наступний урок 😉", replyMarkup: menu);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                }
+            }
         }
 
         private static void CreateMenu()
@@ -118,17 +224,37 @@ namespace ExamBotPC
             {
                 new KeyboardButton[]
                 {
-                    new KeyboardButton("💰Баланс💰"),
-                    new KeyboardButton("📅Розклад📅")
+                    new KeyboardButton("Записи уроків ▶"),
+                    new KeyboardButton("Допомога 💬")
                 },
                 new KeyboardButton[]
                 {
-                    new KeyboardButton("📞Мій куратор📞"),
-                    new KeyboardButton("📼Записи вебінарів📼")
+                    new KeyboardButton("Розклад 📅"),
+                    new KeyboardButton("Моя статистика 📊")
                 },
             };
             menu.ResizeKeyboard = true;
             menu.OneTimeKeyboard = false;
+
+            menu2.Keyboard = new KeyboardButton[][]
+            {
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Записи уроків ▶"),
+                    new KeyboardButton("Допомога 💬")
+                },
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Розклад 📅"),
+                    new KeyboardButton("Моя статистика 📊")
+                },
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Повторити запитання з тесту 🔄"),
+                },
+            };
+            menu2.ResizeKeyboard = true;
+            menu2.OneTimeKeyboard = false;
         }
 
         private async static void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
@@ -137,28 +263,31 @@ namespace ExamBotPC
             //if user is on test
             if (user.ontest)
             {
-                Question question = testlist[User.currenttest].questions[user.currentquestion];
+                Question question = user.currentlesson.test.questions[user.currentquestion];
                 //Check answer is right or wrong
                 if (e.CallbackQuery.Data == question.answer)
                 {
                     await bot.SendTextMessageAsync(user.id, "Правильно!");
                     user.currentquestion++;
-                    user.points[testlist[User.currenttest].id - 1] += question.points;
+                    user.points += question.points;
                 }
                 else
                 {
-                    await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                    user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
+                    await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.variants[Int32.Parse(question.answer) - 1]}");
+                    user.mistakes++;
                     user.currentquestion++;
                 }
                 //Check if its last question in test
-                if (user.currentquestion >= testlist[User.currenttest].questions.Count)
+                if (user.currentquestion >= user.currentlesson.test.questions.Count)
                 {
-                    if (ExecuteMySql($"UPDATE users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}, Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
+                    if (ExecuteMySql($"UPDATE users SET Stats = CONCAT(Stats, '{user.currentlesson.id}:{user.mistakes}/{user.currentlesson.test.questions.Count}:{user.points};') WHERE ID = {user.id}"))
                     {
+                        user.statistic += $"{user.currentlesson.id}:{user.mistakes}/{user.currentlesson.test.questions.Count}:{user.points};";
                         user.ontest = false;
                         user.currentquestion = 0;
-                        await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points[testlist[User.currenttest].id - 1]} балів!");
+                        await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points} балів!", replyMarkup: menu);
+                        user.points = 0;
+                        user.mistakes = 0;
                     }
                     else
                     {
@@ -167,7 +296,7 @@ namespace ExamBotPC
                 }
                 else
                 {
-                    testlist[User.currenttest].questions[user.currentquestion].Ask(user.id);
+                    user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
                 }
             }
         }
@@ -185,16 +314,34 @@ namespace ExamBotPC
                     if (ExecuteMySql($"UPDATE users SET subjects = CONCAT(subjects, '{Type};') WHERE id = {user.id}"))
                     {
                         user.subjects += $"{Type};";
-                        await bot.SendTextMessageAsync(user.id, "Вітаю! Ви підписалися на цього бота!", replyMarkup: menu);
+                        await bot.SendTextMessageAsync(e.Message.Chat.Id, "Привіт!\n\n" +
+                                                "💪 <b>Вітаю в POWER - групі!</b> 💪\n\n" +
+                                                "Це бот, який буде повідомляти про:\n\n" +
+                                                "- Трансляції\n" +
+                                                "- Новини щодо груп та розкладу\n" +
+                                                "- Домашки\n" +
+                                                "- Просто круті штуки: 😽\n\n" +
+                                                "<b>Скоро куратор приєднає тебе до групки та сюди почнуть приходити твої уроки.</b> Посилання на урок приходить за 5 хвилин до початку.\n\n" +
+                                                "Не забувай робити домашні завдання, адже у тебе усього 5 життів на місяць 🤓\n" +
+                                                "Побачимося на трансляціях! 👋🥰🚀", replyMarkup: menu, parseMode: ParseMode.Html);
                     }
                 }
             }
             else
             {
-                if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Date, Subjects) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};')"))
+                if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Date, Subjects, Subscriber, Health, Curator, State) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};', '0;0;0;0;0;0;0;0', '5;5;5;5;5;5;5;5', '0', 'A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0')"))
                 {
-                    users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, false, false, "", "", "", 0, 0, 0, 0, $"{Type};"));
-                    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Вітаю! Ви підписалися на цього бота!", replyMarkup: menu);
+                    users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, "0;0;0;0;0;0;0;0", "5;5;5;5;5;5;5;5", 0, 0, "0", $"{Type};", "", "A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0"));
+                    await bot.SendTextMessageAsync(e.Message.Chat.Id, "Привіт!\n\n"+
+                                            "💪 <b>Вітаю в POWER - групі!</b> 💪\n\n" +
+                                            "Це бот, який буде повідомляти про:\n\n"+
+                                            "- Трансляції\n"+
+                                            "- Новини щодо груп та розкладу\n"+
+                                            "- Домашки\n"+
+                                            "- Просто круті штуки: 😽\n\n" +
+                                            "<b>Скоро куратор приєднає тебе до групки та сюди почнуть приходити твої уроки.</b> Посилання на урок приходить за 5 хвилин до початку.\n\n" +
+                                            "Не забувай робити домашні завдання, адже у тебе усього 5 життів на місяць 🤓\n"+
+                                            "Побачимося на трансляціях! 👋🥰🚀", replyMarkup: menu, parseMode: ParseMode.Html);
                 }
                 return;
             }
@@ -204,16 +351,29 @@ namespace ExamBotPC
 
             var text = e?.Message?.Text;
             if (text == null) return;
+            //Check commands
+            else if(commands.Find(c => c.Name == text) != null)
+            {
+                Command cmd = commands.Find(c => c.Name == text);
+                if (!cmd.forAdmin)
+                {
+                    cmd.Execute(e);
+                }
+                else
+                {
+                    await bot.SendTextMessageAsync(user.id, "У вас немає доступу до цієї команди");
+                }
+            }
             //If user completing test
             else if (user.ontest)
             {
                 string answer = e.Message.Text;
-                Question question = testlist[User.currenttest].questions[user.currentquestion];
+                Question question = user.currentlesson.test.questions[user.currentquestion];
                 //Check conformity question
-                if (testlist[User.currenttest].questions[user.currentquestion] is ConformityQuestion)
+                if (user.currentlesson.test.questions[user.currentquestion] is ConformityQuestion)
                 {
-                    ConformityQuestion q = (ConformityQuestion)testlist[User.currenttest].questions[user.currentquestion];
-                    if(Regex.IsMatch(answer, "[a-z]", RegexOptions.IgnoreCase))
+                    ConformityQuestion q = (ConformityQuestion)user.currentlesson.test.questions[user.currentquestion];
+                    if (Regex.IsMatch(answer, "[a-z]", RegexOptions.IgnoreCase))
                     {
                         await bot.SendTextMessageAsync(user.id, "У вашій відповіді була помічена латиниця. Будь ласка, використовуйте лише кирилицю! Повторіть вашу відповідь кирилицею.");
                     }
@@ -224,54 +384,72 @@ namespace ExamBotPC
                         {
                             await bot.SendTextMessageAsync(user.id, "Правильно!");
                             user.currentquestion++;
-                            user.points[testlist[User.currenttest].id - 1] += question.points;
+                            user.points += question.points;
                         }
                         else
                         {
                             await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                            user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
+                            user.mistakes++;
                             user.currentquestion++;
                         }
                     }
                 }
-                else if(testlist[User.currenttest].questions[user.currentquestion] is MultipleQuestion)
+                else if (user.currentlesson.test.questions[user.currentquestion] is MultipleQuestion)
                 {
-                    MultipleQuestion q = (MultipleQuestion)testlist[User.currenttest].questions[user.currentquestion];
+                    MultipleQuestion q = (MultipleQuestion)user.currentlesson.test.questions[user.currentquestion];
                     //Delete spaces
                     if (q.IsRight(answer))
                     {
                         await bot.SendTextMessageAsync(user.id, "Правильно!");
                         user.currentquestion++;
-                        user.points[testlist[User.currenttest].id - 1] += question.points;
+                        user.points += question.points;
                     }
                     else
                     {
                         await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                        user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
+                        user.mistakes++;
                         user.currentquestion++;
                     }
                 }
                 //Check other type
+                else if (user.currentlesson.test.questions[user.currentquestion] is TestQuestion)
+                {
+                    if (answer.ToLower() == question.variants[Int32.Parse(question.answer) - 1])
+                    {
+                        await bot.SendTextMessageAsync(user.id, "Правильно!");
+                        user.currentquestion++;
+                        user.points += question.points;
+                    }
+                    else
+                    {
+                        await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.variants[Int32.Parse(question.answer) - 1]}");
+                        user.mistakes++;
+                        user.currentquestion++;
+                    }
+                }
                 else if (answer.ToLower() == question.answer.ToLower())
                 {
                     await bot.SendTextMessageAsync(user.id, "Правильно!");
                     user.currentquestion++;
-                    user.points[testlist[User.currenttest].id - 1] += question.points;
+                    user.points += question.points;
                 }
                 else
                 {
                     await bot.SendTextMessageAsync(user.id, $"Неправильно! Правильна відповідь: {question.answer}");
-                    user.mistakes[testlist[User.currenttest].id - 1][user.currentquestion] = true;
+                    user.mistakes++;
                     user.currentquestion++;
                 }
                 //Check if its last question in test
-                if (user.currentquestion >= testlist[User.currenttest].questions.Count)
+                if (user.currentquestion >= user.currentlesson.test.questions.Count)
                 {
-                    if (ExecuteMySql($"UPDATE users SET CompletedTests = CONCAT(CompletedTests, '{testlist[User.currenttest].id};') ,Points = '{JsonSerializer.Serialize(user.points)}', Mistakes = '{JsonSerializer.Serialize(user.mistakes)}' WHERE ID = {user.id}"))
+                    if (ExecuteMySql($"UPDATE users SET Stats = CONCAT(Stats, '{user.currentlesson.id}:{user.mistakes}/{user.currentlesson.test.questions.Count}:{user.points};') WHERE ID = {user.id}"))
                     {
+                        user.statistic += $"{user.currentlesson.id}:{user.mistakes}/{user.currentlesson.test.questions.Count}:{user.points};";
                         user.ontest = false;
                         user.currentquestion = 0;
-                        await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points[testlist[User.currenttest].id - 1]} балів!");
+                        await bot.SendTextMessageAsync(user.id, $"Вітаю! Ви закінчили тест. Ви набрали {user.points} балів!", replyMarkup: menu);
+                        user.points = 0;
+                        user.mistakes = 0;
                     }
                     else
                     {
@@ -280,31 +458,7 @@ namespace ExamBotPC
                 }
                 else
                 {
-                    testlist[User.currenttest].questions[user.currentquestion].Ask(user.id);
-                }
-            }
-            else
-            {
-                //Check commands
-                text += " ";
-                int index = text.IndexOf(" ");
-                text = text.Substring(0, index);
-
-                if (commands.Find(c => c.Name == text) != null)
-                {
-                    Command cmd = commands.Find(c => c.Name == text);
-                    if (!cmd.forAdmin || (cmd.forAdmin && user.admin))
-                    {
-                        cmd.Execute(e);
-                    }
-                    else
-                    {
-                        await bot.SendTextMessageAsync(user.id, "У вас немає доступу до цієї команди");
-                    }
-                }
-                else
-                {
-                    await bot.SendTextMessageAsync(user.id, "Такої команди не уснує. Для списку усіх команд введіть: '/help'");
+                    user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
                 }
             }
         }
@@ -313,15 +467,22 @@ namespace ExamBotPC
         {
             commands.Add(new A_RestartTimer());
             //commands.Add(new A_Send());
-            commands.Add(new A_TestAll());
-            commands.Add(new A_TestId());
-            commands.Add(new A_TestList());
-            commands.Add(new A_TimerTurn());
             //commands.Add(new AskCmd());
-            commands.Add(new BalanceCmd());
-            commands.Add(new HelpCommand());
+            //commands.Add(new HelpCommand());
+
+            //commands.Add(new BalanceCmd());
+            commands.Add(new RecordsCmd());
+            commands.Add(new CuratorCmd());
+            commands.Add(new StatsMenuCmd());
             commands.Add(new SheduleCmd());
             commands.Add(new StopCmd());
+            commands.Add(new MainManuCmd());
+            commands.Add(new AskAgainCmd());
+            //My menu part
+            commands.Add(new MyHpCmd());
+            commands.Add(new MyMistakesCmd());
+            commands.Add(new MyRateCmd());
+            //End of My menu
             commands.Sort((x, y) => string.Compare(x.Name, y.Name));
         }
 
@@ -342,18 +503,26 @@ namespace ExamBotPC
 
         public static InlineKeyboardMarkup GetInlineKeyboard(string[] array, int column)
         {
-            int steps = (int)Math.Round((double)array.Length / column);
+            int steps = (int)Math.Round((double)array.Length / column, MidpointRounding.AwayFromZero);
             var keyboardInline = new InlineKeyboardButton[steps][];
+            int count = 0;
+            int dif = steps * column - array.Length;
+
             for (int y = 0; y < steps; y++)
             {
                 var keyboardButtons = new InlineKeyboardButton[column];
+                if (y == steps - 1)
+                    keyboardButtons = new InlineKeyboardButton[column - dif];
                 for (int i = 0; i < column; i++)
                 {
+                    if (count >= array.Length)
+                        break;
                     keyboardButtons[i] = new InlineKeyboardButton
                     {
                         Text = array[(y * column) + i],
                         CallbackData = ((y * column) + i + 1).ToString(),
                     };
+                    count++;
                 }
                 keyboardInline[y] = keyboardButtons;
             }
@@ -364,7 +533,7 @@ namespace ExamBotPC
         //Timers part
         public static void UpdateDBTimer()
         {
-            System.Timers.Timer DBChecker = new System.Timers.Timer(TimeSpan.FromMinutes(2).TotalMilliseconds);
+            System.Timers.Timer DBChecker = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
             DBChecker.AutoReset = true;
             DBChecker.Elapsed += CheckForUpdates;
             DBChecker.Enabled = true;
@@ -377,15 +546,15 @@ namespace ExamBotPC
                 HMTimer.Dispose();
             HMTimer = null;
 
-            Webinar webinar = GetNextWebinar();
+            Lesson lesson = GetNextLesson();
+            if (lesson == null) return;
 
             //set new timer
             HMTimer = new Timer(new TimerCallback(HomeworkNotification));
-            DateTime temptime = webinar.time.AddHours(-10);
-            if (temptime.TimeOfDay > DateTime.Now.TimeOfDay)
+            DateTime temptime = lesson.datetime.AddHours(-10);
+            if (temptime > DateTime.Now)
             {
-                int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
-                int msUntilTime = (int)((temptime.AddDays(days) - DateTime.Now).TotalMilliseconds);
+                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
                 HMTimer.Change(msUntilTime, Timeout.Infinite);
             }
         }
@@ -397,26 +566,49 @@ namespace ExamBotPC
                 WebinarTimer.Dispose();
             WebinarTimer = null;
 
-            Webinar webinar = GetNextWebinar();
+            Lesson lesson = GetNextLesson();
+            if (lesson == null) return;
 
             //set new timer
             WebinarTimer = new Timer(new TimerCallback(WebinarNotification));
-            DateTime temptime = webinar.time.AddHours(-2);
+            DateTime temptime = lesson.datetime.AddHours(-2);
 
-            if (temptime.TimeOfDay > DateTime.Now.TimeOfDay)
+            if (temptime > DateTime.Now)
             {
-                int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
-                int msUntilTime = (int)((temptime.AddDays(days) - DateTime.Now).TotalMilliseconds);
+                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
                 WebinarTimer.Change(msUntilTime, Timeout.Infinite);
             }
         }
-        
+
+        public static void LinkSenderTimer()
+        {
+            //delete last timer
+            if (LinkTimer != null)
+                LinkTimer.Dispose();
+            LinkTimer = null;
+
+            Lesson lesson = GetNextLesson();
+            if (lesson == null) return;
+
+            //set new timer
+            LinkTimer = new Timer(new TimerCallback(SendWebinarLinks));
+            DateTime temptime = lesson.datetime.AddMinutes(-5);
+            if (temptime > DateTime.Now)
+            {
+                int msUntilTime = (int)((temptime - DateTime.Now).TotalMilliseconds);
+                LinkTimer.Change(msUntilTime, Timeout.Infinite);
+            }
+        }
+
         public static void InitializeTestTimer()
         {
             int hour = 2;
-            Webinar webinar = GetNextWebinar(hour);
+            Lesson lesson = GetNextLesson(hour);
+            if (lesson == null) return;
 
-            DateTime TestTime = webinar.time.AddHours(hour);
+            currentlesson = lesson;
+
+            DateTime TestTime = lesson.datetime.AddHours(hour);
             if (useTimer)
             {
                 if (TestTimer != null)
@@ -426,8 +618,7 @@ namespace ExamBotPC
                 // Figure how much time until seted time
                 DateTime now = DateTime.Now;
 
-                int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
-                int msUntilTime = (int)((TestTime.AddDays(days) - now).TotalMilliseconds);
+                int msUntilTime = (int)((TestTime - now).TotalMilliseconds);
                 // Set the timer to elapse only once, at setted teme.
                 TestTimer.Change(msUntilTime, Timeout.Infinite);
             }
@@ -441,8 +632,10 @@ namespace ExamBotPC
         
         public static void InitializeStopTimer()
         {
-            Webinar webinar = GetNextWebinar();
-            DateTime TestTime = webinar.time;
+            Lesson lesson = GetNextLesson(true, -1);
+            if (lesson == null) return;
+
+            DateTime TestTime = lesson.datetime;
 
             //delete last timer
             if (StopTimer != null)
@@ -452,8 +645,7 @@ namespace ExamBotPC
 
             //set new timer
             StopTimer = new Timer(new TimerCallback(StopTest));
-            int days = Math.Abs(webinar.day - ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek));
-            int msUntilTime = (int)((TestTime.AddDays(days) - DateTime.Now).TotalMilliseconds);
+            int msUntilTime = (int)((TestTime - DateTime.Now).TotalMilliseconds);
             StopTimer.Change(msUntilTime, Timeout.Infinite);
         }
 
@@ -461,10 +653,17 @@ namespace ExamBotPC
         {
             foreach (User u in users)
             {
-                if (u.group == 0)
-                    break;
-                if (groups[u.group - 1].Contains(currentwebinar.ToString() +";"))
-                    await bot.SendTextMessageAsync(u.id, "Нагудую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
+                try
+                {
+                    if (u.group == 0)
+                        break;
+                    if (currentlesson.group == u.group)
+                        await bot.SendTextMessageAsync(u.id, "Нагудую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                }
             }
             HMNotificationTimer();
         }
@@ -473,148 +672,198 @@ namespace ExamBotPC
         {
             foreach (User u in users)
             {
-                if (u.group == 0)
-                    break;
-                if (groups[u.group - 1].Contains(currentwebinar.ToString() + ";"))
-                    await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
+                try
+                {
+                    if (u.group == 0)
+                        break;
+                    if (currentlesson.group == u.group)
+                        await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                }
             }
             HMNotificationTimer();
         }
 
-        public static Webinar GetNextWebinar()
+        public async static void SendWebinarLinks(object state)
         {
-            List<Webinar> shedule = new List<Webinar>(webinars);
-            foreach (Webinar w in webinars)
+            if (currentlesson.tokens.Length == 0 || currentlesson.link.Length == 0)
+                return;
+            int i = 0;
+            foreach (User u in users)
             {
-                if (w.date < DateTime.Now)
+                
+                if (u.group == 0)
+                    break;
+                if (currentlesson.group == u.group && u.subscriber[Type - 1] == "1" && u.subjects.Contains(Type +";"))
+                {
+                    try
+                    {
+                        await bot.SendTextMessageAsync(u.id, "Привіт!\n\n" +
+                                $"👉 Посилання на сьогоднішнє заняття: {currentlesson.link + currentlesson.tokens[i]}\n" +
+                                "⏱ Чекаю тебе через 5 хвилин!");
+                        i++;
+                        if (i >= currentlesson.tokens.Length)
+                            return;
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                    }
+                }
+            }
+            LinkSenderTimer();
+        }
+
+        public static Lesson GetNextLesson()
+        {
+            List<Lesson> shedule = new List<Lesson>(lessons);
+            foreach (Lesson w in lessons)
+            {
+                if (w.datetime < DateTime.Now)
                     shedule.Remove(w);
             }
-            shedule = shedule.OrderBy(x => x.day).ThenBy(x => x.time.TimeOfDay).ToList();
+            shedule = shedule.OrderBy(x => x.datetime).ToList();
+            //Find nearest webinar for current subject
+            Lesson lesson = new Lesson();
+            for (int i = 0; i < shedule.Count; i++)
+            {
+                if (shedule[i].datetime > DateTime.Now)
+                {
+                    lesson = shedule[i];
+                    return lesson;
+                }
+            }
+            if (shedule.Count == 0)
+                lesson = null;
+            else
+                lesson = shedule[0];
+            return lesson;
+        }
+        private static Lesson GetNextLesson(int hour)
+        {
+            List<Lesson> shedule = new List<Lesson>(lessons);
+            foreach (Lesson w in lessons)
+            {
+                if (w.datetime.AddHours(hour) < DateTime.Now)
+                    shedule.Remove(w);
+            }
+            shedule = shedule.OrderBy(x => x.datetime).ToList();
 
             //Find nearest webinar for current subject
-            Webinar webinar = new Webinar();
+            Lesson lesson = new Lesson();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].day == ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.TimeOfDay > DateTime.Now.TimeOfDay || shedule[i].day > ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek))
+                if (shedule[i].datetime.AddHours(hour) > DateTime.Now)
                 {
-                    currentwebinar = shedule[i].id;
-                    webinar = shedule[i];
-                    return webinar;
+                    lesson = shedule[i];
+                    return lesson;
                 }
-                
             }
-            webinar = shedule[0];
-            return webinar;
+            if (shedule.Count == 0)
+                lesson = null;
+            else
+                lesson = shedule[0];
+            return lesson;
         }
-        private static Webinar GetNextWebinar(int hour)
+        private static Lesson GetNextLesson(bool minutes, int hour)
         {
-            List<Webinar> shedule = new List<Webinar>(webinars);
-            foreach (Webinar w in webinars)
+            List<Lesson> shedule = new List<Lesson>(lessons);
+            foreach (Lesson w in lessons)
             {
-                if (w.date < DateTime.Now)
+                if (w.datetime.AddMinutes(hour) < DateTime.Now)
                     shedule.Remove(w);
             }
-            shedule = shedule.OrderBy(x => x.day).ThenBy(x => x.time.TimeOfDay).ToList();
+            shedule = shedule.OrderBy(x => x.datetime).ToList();
+
             //Find nearest webinar for current subject
-            Webinar webinar = new Webinar();
+            Lesson lesson = new Lesson();
             for (int i = 0; i < shedule.Count; i++)
             {
-                if (shedule[i].day == ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek) && shedule[i].time.AddHours(hour).TimeOfDay > DateTime.Now.TimeOfDay || shedule[i].day > ((int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek))
+                if (shedule[i].datetime.AddMinutes(hour) > DateTime.Now)
                 {
-                    currentwebinar = shedule[i].id;
-                    webinar = shedule[i];
-                    return webinar;
+                    lesson = shedule[i];
+                    return lesson;
                 }
             }
-            webinar = shedule[0];
-            return webinar;
+            if (shedule.Count == 0)
+                lesson = null;
+            else
+                lesson = shedule[0];
+            return lesson;
         }
 
         //Tests part
         public async static void TestAll(object state)
         {
-            //Check if program have test to send
-            if (User.currenttest + 1 > testlist.Count)
+            //add test to DB
+            foreach (User u in Program.users)
             {
-                //Send msg to admins if no
-                foreach (User u in Program.users)
+                try
                 {
-                    if (u.admin)
+                    if (u.subscriber[Type - 1] == "1" && u.subjects.Contains(Type.ToString() + ";") && Int32.Parse(u.health[Type - 1]) > 0)
                     {
-                        await bot.SendTextMessageAsync(u.id, $"Неможливо відправити тести користувачам оскільки немає тесту за індексом {User.currenttest}!");
+                        u.currentlesson = currentlesson;
+                        u.mistakes = 0;
+                        u.points = 0;
+                        u.ontest = true;
+                        u.currentquestion = 0;
+                        await Program.bot.SendTextMessageAsync(u.id, Program.currentlesson.test.Text, replyMarkup: menu2);
+                        Program.currentlesson.test.questions[0].Ask(u.id);
                     }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
                 }
             }
-            else
-            {
-                //add test to DB
-                if (true)
-                {
-                    foreach (User u in Program.users)
-                    {
-                        if (u.subscriber && u.subjects.Contains(Type.ToString() + ";") && u.health > 0)
-                        {
-                            bool[] tempbool = Enumerable.Repeat(false, testlist[User.currenttest].questions.Count).ToArray();
-                            u.mistakes[testlist[User.currenttest].id - 1] = tempbool;
-
-                            u.points[testlist[User.currenttest].id - 1] = 0;
-                            u.completedtests += $"{Program.testlist[User.currenttest].id};";
-                            u.ontest = true;
-                            u.currentquestion = 0;
-                            await Program.bot.SendTextMessageAsync(u.id, Program.testlist[User.currenttest].Text);
-                            Program.testlist[User.currenttest].questions[0].Ask(u.id);
-                        }
-                    }
-                    //Timer until next webinar
-                    InitializeStopTimer();
-                    InitializeTestTimer();
-                }
-                else
-                {
-                    foreach (User u in Program.users)
-                    {
-                        if (u.admin)
-                        {
-                            await bot.SendTextMessageAsync(u.id, "Виникла помилка у роботі з базою даних при відправленні тестів. Будь ласка зверніться до техніячного адміністратора!");
-                        }
-                    }
-                }
-            }
+            //Timer until next webinar
+            InitializeStopTimer();
+            InitializeTestTimer();
         }
 
         public async static void StopTest(object state)
         {
             foreach (User u in Program.users)
             {
-                if (u.group == 0)
-                    break;
-                if (groups[u.group - 1].Contains(currentwebinar.ToString() + ";") && u.ontest)
+                try
                 {
-                    u.ontest = false;
-                    u.currentquestion = 0;
-                    u.health -= 1;
-                    if (u.health <= 0)
+                    if (u.group == 0)
+                        break;
+                    if (currentlesson.group == u.group && u.ontest)
                     {
-                        await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.");
-                        u.subscriber = false;
-                        ExecuteMySql($"UPDATE users SET (health) VALUES (0) WHERE id = {u.id}");
-                    }
-                    else
-                    {
-                        await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Теперь у вас {u.health} життів.");
-                        ExecuteMySql($"UPDATE users SET health = {u.health} WHERE id = {u.id}");
+                        u.ontest = false;
+                        u.currentquestion = 0;
+                        u.health[Type - 1] = (Int32.Parse(u.health[Type - 1]) - 1).ToString();
+                        if (Int32.Parse(u.health[Type - 1]) <= 0)
+                        {
+                            await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.");
+                            u.subscriber[Type - 1] = "0";
+                            ExecuteMySql($"UPDATE users SET health = '{String.Join(";", u.health)}', Subscriber = '{String.Join(";", u.subscriber)}' WHERE id = {u.id}");
+                        }
+                        else
+                        {
+                            await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Тепер у вас {u.health[Type - 1]} життів.");
+                            ExecuteMySql($"UPDATE users SET health = '{String.Join(";", u.health)}' WHERE id = {u.id}");
+                        }
                     }
                 }
-                //u.GetNextWebinar();
-                InitializeStopTimer();
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                }
             }
+            //u.GetNextWebinar();
+            InitializeStopTimer();
         }
 
         // Database part
         public static void LoadFromDB()
         {
-            //try
-            //{
+            try
+            {
                 MySqlConnection con = new MySqlConnection(connectionString);
 
                 con.Open();
@@ -667,51 +916,40 @@ namespace ExamBotPC
                 }
                 reader.Close();
 
-                //Load Tests
-                command = "SELECT * FROM tests";
+                //Load Lessons
+                command = "SELECT * FROM lessons";
                 cmd = new MySqlCommand(command, con);
 
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                if (reader.GetInt32("Type") == Program.Type)
-                {
-                    string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
-                    List<Question> q = new List<Question>();
-                    for (int i = 0; i < ids.Length; i++)
+                    if (reader.GetInt32("Type") == Program.Type)
                     {
-                        q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
+                        string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
+                        List<Question> q = new List<Question>();
+                        for (int i = 0; i < ids.Length; i++)
+                        {
+                            q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
+                        }
+
+                        Lesson lesson = new Lesson(reader.GetInt32("id"), reader.GetString("Name"), DateTime.Parse(reader.GetString("DateTime")), reader.GetInt32("Group"), new Test(reader.GetString("rule"), q), reader.GetInt32("Type"), reader.GetString("Link"), reader.GetString("Tokens"));
+                        lessons.Add(lesson);
                     }
-
-                    testlist.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
-                }
                 }
                 reader.Close();
 
-                //Load shedules
-                command = "SELECT * FROM webinars WHERE Type = " + Type;
-                cmd = new MySqlCommand(command, con);
-
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    webinars.Add(new Webinar(
-                        reader.GetInt32("id"), 
-                        reader.GetString("Name"), 
-                        reader.GetInt32("Day"),
-                        DateTime.ParseExact(reader.GetString("Time"), "HH:mm:ss", CultureInfo.InvariantCulture), 
-                        reader.GetDateTime("EndDate"), 
-                        reader.GetInt32("Type")));
-                }
-                reader.Close();
                 //Load groups
                 command = $"SELECT * FROM groups";
                 cmd = new MySqlCommand(command, con);
 
                 reader = cmd.ExecuteReader();
+                string curator = "";
+
                 while (reader.Read())
                 {
-                    groups.Add(reader.GetString("webinars"));
+                    if (reader.GetString("Curator") != null)
+                        curator = reader.GetString("Curator");
+                    groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), curator, reader.GetString("Link")));
                 }
                 reader.Close();
 
@@ -725,29 +963,27 @@ namespace ExamBotPC
                     users.Add(new User(
                         reader.GetInt32("ID"),
                         reader.GetString("Name") + " " + reader.GetString("Soname"),
-                        Convert.ToBoolean(reader.GetUInt32("Subscriber")),
-                        Convert.ToBoolean(reader.GetUInt32("Admin")),
-                        reader.GetString("Points"),
-                        reader.GetString("CompletedTests"),
-                        reader.GetString("Mistakes"),
+                        reader.GetString("Subscriber"),
+                        reader.GetString("Health"),
                         reader.GetInt32("Coins"),
-                        reader.GetInt32("Health"),
                         reader.GetInt32("Group"),
-                        reader.GetInt32("Curator"),
-                        reader.GetString("Subjects")
+                        reader.GetString("Curator"),
+                        reader.GetString("Subjects"),
+                        reader.GetString("Stats"),
+                        reader.GetString("State")
                         ));
                 }
                 reader.Close();
 
                 con.Close();
-            //}
-            //catch (Exception exception)
-            //{
-            //    Console.WriteLine(exception.Message);
-            //    Console.WriteLine("Потрібен перезапуск");
-            //    Environment.Exit(0);
-            //}
-}
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Виникла помилка при завантажені бази даних");
+                Console.WriteLine(exception.Message);
+                LoadFromDB();
+            }
+        }
 
         public static void CheckForUpdates(Object source, System.Timers.ElapsedEventArgs e)
         {
@@ -767,18 +1003,11 @@ namespace ExamBotPC
                             UpdateUsers();
                         }
                         break;
-                    case "tests":
-                        if (tests_update < reader.GetDateTime("LastUpdate"))
+                    case "lessons":
+                        if (lessons_update < reader.GetDateTime("LastUpdate"))
                         {
-                            tests_update = reader.GetDateTime("LastUpdate");
-                            UpdateTests();
-                        }
-                        break;
-                    case "webinars":
-                        if (webinars_update < reader.GetDateTime("LastUpdate"))
-                        {
-                            webinars_update = reader.GetDateTime("LastUpdate");
-                            UpdateWebinars();
+                            lessons_update = reader.GetDateTime("LastUpdate");
+                            UpdateLessons();
                         }
                         break;
                     case "groups":
@@ -796,58 +1025,66 @@ namespace ExamBotPC
 
         public static void UpdateUsers()
         {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            con.Open();
-            //Load Users
-            string command = "SELECT * FROM users";
-            MySqlCommand cmd = new MySqlCommand(command, con);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                long id = reader.GetInt32("id");
-                if (users.Find(x => x.id == id) != default(User))
+                MySqlConnection con = new MySqlConnection(connectionString);
+                con.Open();
+                //Load Users
+                string command = "SELECT * FROM users";
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                List<long> ids = new List<long>();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    User user = users.Find(x => x.id == id);
-                    user.subscriber = Convert.ToBoolean(reader.GetUInt32("Subscriber"));
-                    user.admin = Convert.ToBoolean(reader.GetUInt32("Admin"));
-                    if(reader.GetString("Points") != "")
-                        user.points = JsonSerializer.Deserialize<int[]>(reader.GetString("Points"));
-                    user.completedtests = "";
-                    //int[] temp = reader.GetString("CompletedTests").Replace(" ", "").Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();                
-                    user.completedtests = reader.GetString("CompletedTests");
-                    if (reader.GetString("Mistakes") != "")
-                        user.mistakes = JsonSerializer.Deserialize<bool[][]>(reader.GetString("Mistakes"));
-                    user.coins = reader.GetInt32("Coins");
-                    user.health = reader.GetInt32("Health");
-                    user.group = reader.GetInt32("Group");
-                    user.curator = reader.GetInt32("Curator");
+                    ids.Add(reader.GetInt32("id"));
+                    long id = reader.GetInt32("id");
+                    if (users.Find(x => x.id == id) != default(User))
+                    {
+                        User user = users.Find(x => x.id == id);
+                        user.subscriber = reader.GetString("Subscriber").Split(";", StringSplitOptions.RemoveEmptyEntries);
+                        user.health = reader.GetString("Health").Split(";", StringSplitOptions.RemoveEmptyEntries);
+                        user.coins = reader.GetInt32("Coins");
+                        user.group = reader.GetInt32("Group");
+                        user.curator = reader.GetString("Curator");
+                        user.subjects = reader.GetString("Subjects");
+                        user.statistic = reader.GetString("Stats");
+                    }
+                    else
+                    {
+                        users.Add(new User(
+                            reader.GetInt32("ID"),
+                            reader.GetString("Name") + " " + reader.GetString("Soname"),
+                            reader.GetString("Subscriber"),
+                            reader.GetString("Health"),
+                            reader.GetInt32("Coins"),
+                            reader.GetInt32("Group"),
+                            reader.GetString("Curator"),
+                            reader.GetString("Subjects"),
+                            reader.GetString("Stats"),
+                            reader.GetString("State")
+                        ));
+                    }
                 }
-                else
+                reader.Close();
+                
+                con.Close();
+                for(int i = 0; i < users.Count; i++)
                 {
-                    users.Add(new User(
-                        reader.GetInt32("ID"),
-                        reader.GetString("Name") + " " + reader.GetString("Soname"),
-                        Convert.ToBoolean(reader.GetUInt32("Subscriber")),
-                        Convert.ToBoolean(reader.GetUInt32("Admin")),
-                        reader.GetString("Points"),
-                        reader.GetString("CompletedTests"),
-                        reader.GetString("Mistakes"),
-                        reader.GetInt32("Coins"),
-                        reader.GetInt32("Health"),
-                        reader.GetInt32("Group"),
-                        reader.GetInt32("Curator"),
-                        reader.GetString("Subjects")
-                    ));
+                    if (!ids.Exists(x => x == users[i].id))
+                    {
+                        users.RemoveAt(i);
+                    }
                 }
             }
-            reader.Close();
-
-            con.Close();
-
+            catch (Exception exception)
+            {
+                Console.WriteLine("Виникла помилка при оновлені користувачів");
+                Console.WriteLine(exception.Message);
+                UpdateUsers();
+            }
         }
 
-        public static void UpdateTests()
+        public static void UpdateLessons()
         {
             try
             {
@@ -894,7 +1131,7 @@ namespace ExamBotPC
                             questions.Add(new MultipleQuestion(
                                 reader.GetInt32("id"),
                                 reader.GetString("text"),
-                                reader.GetString("iamge"),
+                                reader.GetString("image"),
                                 reader.GetInt32("points"),
                                 reader.GetString("answer")
                                 )); break;
@@ -904,12 +1141,11 @@ namespace ExamBotPC
                 }
                 reader.Close();
 
-                //Load Tests
-                command = "SELECT * FROM tests";
+                //Load Lessons
+                command = "SELECT * FROM lessons";
                 cmd = new MySqlCommand(command, con);
-
+                lessons.Clear();
                 reader = cmd.ExecuteReader();
-                testlist.Clear();
                 while (reader.Read())
                 {
                     if (reader.GetInt32("Type") == Program.Type)
@@ -918,10 +1154,45 @@ namespace ExamBotPC
                         List<Question> q = new List<Question>();
                         for (int i = 0; i < ids.Length; i++)
                         {
-                            q.Add(questions[Int32.Parse(ids[i]) - 1]);
+                            q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
                         }
-                        testlist.Add(new Test(reader.GetInt32("id"), reader.GetString("rule"), q));
+
+                        Lesson lesson = new Lesson(reader.GetInt32("id"), reader.GetString("Name"), DateTime.Parse(reader.GetString("DateTime")), reader.GetInt32("Group"), new Test(reader.GetString("rule"), q), reader.GetInt32("Type"), reader.GetString("Link"), reader.GetString("Tokens"));
+                        lessons.Add(lesson);
                     }
+                }
+                reader.Close();
+
+                con.Close();
+                HMNotificationTimer();
+                WebinarNotificationTimer();
+                InitializeTestTimer();
+                InitializeStopTimer();
+                LinkSenderTimer();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Виникла помилка при оновлені уроків");
+                Console.WriteLine(exception.Message);
+                UpdateLessons();
+            }
+        }
+
+        public static void UpdateGroups()
+        {
+            try
+            {
+                MySqlConnection con = new MySqlConnection(connectionString);
+                con.Open();
+
+                string command = $"SELECT * FROM groups";
+                MySqlCommand cmd = new MySqlCommand(command, con);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                groups.Clear();
+                while (reader.Read())
+                {
+                    groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), reader.GetString("Curator"), reader.GetString("Link")));
                 }
                 reader.Close();
 
@@ -929,56 +1200,10 @@ namespace ExamBotPC
             }
             catch (Exception exception)
             {
+                Console.WriteLine("Виникла помилка при оновлені груп");
                 Console.WriteLine(exception.Message);
-                Console.WriteLine("Потрібен перезапуск");
+                UpdateLessons();
             }
-        }
-
-        public static void UpdateWebinars()
-        {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            con.Open();
-            string command = "SELECT * FROM webinars WHERE Type = " + Type;
-            MySqlCommand cmd = new MySqlCommand(command, con);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            webinars.Clear();
-            while (reader.Read())
-            {
-                webinars.Add(new Webinar(
-                    reader.GetInt32("id"),
-                    reader.GetString("Name"),
-                    reader.GetInt32("Day"),
-                    DateTime.ParseExact(reader.GetString("Time"), "HH:mm:ss", CultureInfo.InvariantCulture),
-                    reader.GetDateTime("EndDate"),
-                    reader.GetInt32("Type")));
-            }
-            reader.Close();
-
-            con.Close();
-            InitializeTestTimer();
-            InitializeStopTimer();
-            HMNotificationTimer();
-            WebinarNotificationTimer();
-        }
-
-        public static void UpdateGroups()
-        {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            con.Open();
-
-            string command = $"SELECT * FROM groups";
-            MySqlCommand cmd = new MySqlCommand(command, con);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            groups.Clear();
-            while (reader.Read())
-            {
-                groups.Add(reader.GetString("webinars"));
-            }
-            reader.Close();
-
-            con.Close();
         }
 
         public static bool ExecuteMySql(string command)
@@ -999,11 +1224,27 @@ namespace ExamBotPC
             }
         }
 
+        public struct Group
+        {
+            public int id;
+            public string name;
+            public string curator;
+            public string link;
+
+            public Group(int id, string name, string curator, string link)
+            {
+                this.id = id;
+                this.name = name;
+                this.curator = curator;
+                this.link = link;
+            }
+        }
         public enum SubjectType : int
         {
             Nothing = 0,
             Ukrainian = 1,
-            TrainUkrainian = 2,
+            Math = 2,
+            Boilogy = 3
         }
     }
 }

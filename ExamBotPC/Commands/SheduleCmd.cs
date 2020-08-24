@@ -2,70 +2,45 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InputFiles;
 
 namespace ExamBotPC.Commands
 {
     class SheduleCmd : Command
     {
-        public override string Name => "📅Розклад📅";
+        public override string Name => "Розклад 📅";
 
         public override bool forAdmin => false;
 
         public async override void Execute(MessageEventArgs e)
         {
-            List<Webinar> shedule = new List<Webinar>();
             User user = Program.GetCurrentUser(e);
             if (user.group == 0)
             {
-                await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групу! Зверніться до куратора або адміністрації.");
+                await Program.bot.SendTextMessageAsync(user.id, "Вибачте але вам ще не назначили групу. Зверніться до адміністрації.");
                 return;
             }
-            MySqlConnection con = new MySqlConnection(Program.connectionString);
-            con.Open();
+            try
+            {
+                MySqlConnection con = new MySqlConnection(Program.connectionString);
+                con.Open();
 
-            //Get only needed webinars
-            string[] webinarsIds = Program.groups[user.group - 1].Split(';', StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in webinarsIds)
-            {
-                shedule.Add(Program.webinars.Find(x => x.id == Convert.ToInt32(s)));
+                string command = $"SELECT * FROM shedules where shedules.Group = {user.group}";
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                InputOnlineFile imageFile = new InputOnlineFile(new MemoryStream(Convert.FromBase64String(reader.GetString("Image").Split(",")[1])));
+                await Program.bot.SendPhotoAsync(user.id, imageFile);
             }
-            shedule = shedule.OrderBy(x => x.day).ToList();
-            for (int i = 0; i < shedule.Count; i++)
+            catch (Exception exception)
             {
-                if (shedule[i].date <= DateTime.Now)
-                    shedule.RemoveAt(i);
+                await Program.bot.SendTextMessageAsync(user.id, "Вибачте, але для вашої групи ще не підготували розклад.");
             }
-            //Create shedules string
-            string text = "";
-            foreach (Webinar w in shedule)
-            {
-                if(Program.GetNextWebinar().day == w.day && Program.GetNextWebinar().time.TimeOfDay == w.time.TimeOfDay)
-                {
-                    text += $"<b>{DayOfWeek[w.day]}: {w.time.TimeOfDay} - {w.name}</b>\n";
-                }
-                else 
-                {
-                    text += $"{DayOfWeek[w.day]}: {w.time.TimeOfDay} - {w.name}\n";
-                }
-            }
-            await Program.bot.SendTextMessageAsync(user.id, text, parseMode: ParseMode.Html);
-
-            con.Close();
         }
-
-        public Dictionary<int, string> DayOfWeek = new Dictionary<int, string> 
-        {
-            { 1, "Понеділок" },
-            { 2, "Вівторок" },
-            { 3, "Середа" },
-            { 4, "Четвер" },
-            { 5, "П'ятниця" },
-            { 6, "Субота" },
-            { 7, "Неділя" },
-        };
     }
 }
