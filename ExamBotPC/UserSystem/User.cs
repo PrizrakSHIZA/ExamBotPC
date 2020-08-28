@@ -11,6 +11,7 @@ namespace ExamBotPC
     {
         public long id;
         public string name;
+        public string username;
         public bool ontest = false;
         public string[] subscriber = { "0", "0", "0", "0", "0", "0", "0", "0" }, health = { "5", "5", "5", "5", "5", "5", "5", "5" };
         public int currentquestion = 0, coins = 0, group = 0;
@@ -27,10 +28,11 @@ namespace ExamBotPC
             this.id = id;
             this.name = name;
         }
-        public User(long id, string name, string subscriber, string health, int coins,  int group, string curator, string subjects, string statistic, string statestr)
+        public User(long id, string name, string username, string subscriber, string health, int coins,  int group, string curator, string subjects, string statistic, string statestr)
         {
             this.id = id;
             this.name = name;
+            this.username = username;
             this.subscriber = subscriber.Split(";", StringSplitOptions.RemoveEmptyEntries);
             this.coins = coins;
             this.health = health.Split(";", StringSplitOptions.RemoveEmptyEntries);

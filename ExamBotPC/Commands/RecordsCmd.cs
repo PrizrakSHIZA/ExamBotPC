@@ -20,7 +20,7 @@ namespace ExamBotPC.Commands
             else if (Program.groups.Find(x => x.id == user.group).link.Length == 0)
                 await Program.bot.SendTextMessageAsync(user.id, "Посилання ще не було додано до вашої групи. Спробуйте пізніше.");
             else
-                await Program.bot.SendTextMessageAsync(user.id, $"Посилання на плейлист вашої групи: {Program.groups[user.group].link}");
+                await Program.bot.SendTextMessageAsync(user.id, $"Посилання на плейлист вашої групи: {Program.groups.Find(x => x.id == user.group).link}");
         }
     }
 }
