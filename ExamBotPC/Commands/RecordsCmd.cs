@@ -15,12 +15,19 @@ namespace ExamBotPC.Commands
         public async override void Execute(MessageEventArgs e)
         {
             User user = Program.GetCurrentUser(e);
-            if(user.group == 0)
-                await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групу");
-            else if (Program.groups.Find(x => x.id == user.group).link.Length == 0)
-                await Program.bot.SendTextMessageAsync(user.id, "Посилання ще не було додано до вашої групи. Спробуйте пізніше.");
-            else
-                await Program.bot.SendTextMessageAsync(user.id, $"Посилання на плейлист вашої групи: {Program.groups.Find(x => x.id == user.group).link}");
+            try
+            {
+                if (user.groups.Count == 0)
+                    await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групу");
+                else if (Program.groups.Find(x => x.type == Program.Type).link.Length == 0)
+                    await Program.bot.SendTextMessageAsync(user.id, "Посилання ще не було додано до вашої групи. Спробуйте пізніше.");
+                else
+                    await Program.bot.SendTextMessageAsync(user.id, $"Посилання на плейлист вашої групи: {Program.groups.Find(x => x.type == Program.Type).link}");
+            }
+            catch (Exception excpetion)
+            {
+                await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групи за цим предметом");
+            }
         }
     }
 }

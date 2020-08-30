@@ -14,17 +14,24 @@ namespace ExamBotPC.Commands
         public async override void Execute(MessageEventArgs e)
         {
             User user = Program.GetCurrentUser(e);
-            if (user.group == 0)
+            if (user.groups.Count == 0)
             {
                 await Program.bot.SendTextMessageAsync(user.id, "Вибачте але вам ще не назначили групу. Зверніться до адміністрації.");
                 return;
             }
             if (user.curator == "0")
             {
-                if (Program.groups.Find(x => x.id == user.group).curator != "")
-                    await Program.bot.SendTextMessageAsync(user.id, $"{Program.groups.Find(x => x.id == user.group).curator}");
-                else
-                    await Program.bot.SendTextMessageAsync(user.id, "Вашій групі ще не назначили куратора");
+                try
+                {
+                    if (Program.groups.Find(x => x.type == Program.Type).curator != "")
+                        await Program.bot.SendTextMessageAsync(user.id, $"{Program.groups.Find(x => x.type == Program.Type).curator}");
+                    else
+                        await Program.bot.SendTextMessageAsync(user.id, "Вашій групі ще не назначили куратора");
+                }
+                catch (Exception exception)
+                {
+                    await Program.bot.SendTextMessageAsync(user.id, "Вам ще не назначили групи за цим предметом");
+                }
             }
             else
                 await Program.bot.SendTextMessageAsync(user.id, $"{user.curator}");

@@ -1,9 +1,8 @@
-﻿using ExamBotPC.Tests;
-using ExamBotPC.UserSystem;
+﻿using ExamBotPC.UserSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using static ExamBotPC.Program;
 
 namespace ExamBotPC
 {
@@ -13,8 +12,9 @@ namespace ExamBotPC
         public string name;
         public string username;
         public bool ontest = false;
-        public string[] subscriber = { "0", "0", "0", "0", "0", "0", "0", "0" }, health = { "5", "5", "5", "5", "5", "5", "5", "5" };
-        public int currentquestion = 0, coins = 0, group = 0;
+        public int[] health = { 5, 5, 5, 5, 5, 5, 5, 5 };
+        public int currentquestion = 0, coins = 0;
+        public List<int> groups = new List<int>();
         public string curator;
         public int points = 0;
         public int mistakes = 0;
@@ -22,21 +22,43 @@ namespace ExamBotPC
         public string statistic;
         public Lesson currentlesson = new Lesson();
         public string[] state;
+        public int[] subscriber = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         public User(long id, string name)
         {
             this.id = id;
             this.name = name;
         }
-        public User(long id, string name, string username, string subscriber, string health, int coins,  int group, string curator, string subjects, string statistic, string statestr)
+        public User(long id, string name, string username, string health, int coins, string group, string curator, string subjects, string statistic, string statestr)
         {
             this.id = id;
             this.name = name;
             this.username = username;
-            this.subscriber = subscriber.Split(";", StringSplitOptions.RemoveEmptyEntries);
             this.coins = coins;
-            this.health = health.Split(";", StringSplitOptions.RemoveEmptyEntries);
-            this.group = group;
+            this.health = health.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
+            this.groups = group.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+            foreach (int a in groups)
+            {
+                switch ((SubjectType)Program.groups.Find(x => x.id == a).type)
+                {
+                    case SubjectType.Ukrainian:
+                        {
+                            subscriber[0] = 1;
+                            break;
+                        }
+                    case SubjectType.Math:
+                        {
+                            subscriber[1] = 1;
+                            break;
+                        }
+                    case SubjectType.Boilogy:
+                        {
+                            subscriber[2] = 1;
+                            break;
+                        }
+                    default: break;
+                }
+            }
             this.curator = curator;
             this.subjects = subjects;
             this.statistic = statistic;

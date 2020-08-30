@@ -37,7 +37,8 @@ namespace ExamBotPC
             UserID = APIKeys.DBUser,
             Password = APIKeys.DBPassword,
             CharacterSet = "utf8",
-            ConvertZeroDateTime = true
+            ConvertZeroDateTime = true,
+            Pooling = false
         }.ConnectionString;
         public static string password = APIKeys.password;
         public static bool useTimer = true;
@@ -207,7 +208,7 @@ namespace ExamBotPC
         {
             foreach (User u in users)
             {
-                if (u.subscriber[Type - 1] == "1")
+                if (u.subscriber[Type - 1] == 1)
                 {
                     string prefix = "";
                     switch (Type)
@@ -332,6 +333,7 @@ namespace ExamBotPC
                     {
                         user.username = e.Message.Chat.Username;
                         user.name = e.Message.Chat.FirstName + " " + e.Message.Chat.LastName;
+                        return;
                     }
                 }
                 //add subscribe to bot
@@ -350,6 +352,7 @@ namespace ExamBotPC
                                                 "<b>Скоро куратор приєднає тебе до групки та сюди почнуть приходити твої уроки.</b> Посилання на урок приходить за 5 хвилин до початку.\n\n" +
                                                 "Не забувай робити домашні завдання, адже у тебе усього 5 життів на місяць 🤓\n" +
                                                 "Побачимося на трансляціях! 👋🥰🚀", replyMarkup: menu, parseMode: ParseMode.Html);
+                        return;
                     }
                 }
             }
@@ -357,9 +360,9 @@ namespace ExamBotPC
             {
                 UpdateUsers();
                 if (users.Find(x => x.id == e.Message.Chat.Id) == default(User))
-                    if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Username, Date, Subjects, Subscriber, Health, Curator, State) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{e.Message.Chat.Username}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};', '0;0;0;0;0;0;0;0', '5;5;5;5;5;5;5;5', '0', 'A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0')"))
+                    if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Username, Date, Subjects, Health, Curator, State) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{e.Message.Chat.Username}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};', '5;5;5;5;5;5;5;5', '0', 'A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0')"))
                     {
-                        users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, e.Message.Chat.Username, "0;0;0;0;0;0;0;0", "5;5;5;5;5;5;5;5", 0, 0, "0", $"{Type};", "", "A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0"));
+                        users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, e.Message.Chat.Username, "5;5;5;5;5;5;5;5", 0, "", "0", $"{Type};", "", "A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0"));
                         await bot.SendTextMessageAsync(e.Message.Chat.Id, "Привіт!\n\n"+
                                                 "💪 <b>Вітаю в POWER - групі!</b> 💪\n\n" +
                                                 "Це бот, який буде повідомляти про:\n\n"+
@@ -486,6 +489,7 @@ namespace ExamBotPC
                 }
                 else
                 {
+                    //if(currentlesson.test.questions[user.currentquestion].variants.Length < 0 )
                     user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
                 }
                 SaveState();
@@ -688,9 +692,9 @@ namespace ExamBotPC
             {
                 try
                 {
-                    if (u.group == 0)
-                        break;
-                    if (currentlesson.group == u.group)
+                    if (u.groups.Count == 0)
+                        continue;
+                    if (u.groups.Contains(currentlesson.group))
                         await bot.SendTextMessageAsync(u.id, "Нагудую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
                 }
                 catch (Exception exception)
@@ -707,9 +711,9 @@ namespace ExamBotPC
             {
                 try
                 {
-                    if (u.group == 0)
-                        break;
-                    if (currentlesson.group == u.group)
+                    if (u.groups.Count == 0)
+                        continue;
+                    if (u.groups.Contains(currentlesson.group))
                         await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
                 }
                 catch (Exception exception)
@@ -727,10 +731,9 @@ namespace ExamBotPC
             int i = 0;
             foreach (User u in users)
             {
-                
-                if (u.group == 0)
-                    break;
-                if (currentlesson.group == u.group && u.subscriber[Type - 1] == "1" && u.subjects.Contains(Type +";"))
+                if (u.groups.Count == 0)
+                    continue;
+                if (u.groups.Contains(currentlesson.group) && u.health[Type-1] > 0 && u.subjects.Contains(Type +";"))
                 {
                     try
                     {
@@ -836,7 +839,7 @@ namespace ExamBotPC
             {
                 try
                 {
-                    if (u.subscriber[Type - 1] == "1" && u.subjects.Contains(Type.ToString() + ";") && Int32.Parse(u.health[Type - 1]) > 0)
+                    if (u.subscriber[Type - 1] == 1 && u.subjects.Contains(Type.ToString() + ";") && u.health[Type - 1] > 0)
                     {
                         u.currentlesson = currentlesson;
                         u.mistakes = 0;
@@ -864,22 +867,22 @@ namespace ExamBotPC
             {
                 try
                 {
-                    if (u.group == 0)
-                        break;
-                    if (currentlesson.group == u.group && u.ontest)
+                    if (u.groups.Count == 0)
+                        continue;
+                    if (u.groups.Contains(currentlesson.group) && u.ontest)
                     {
                         u.ontest = false;
                         u.currentquestion = 0;
-                        u.health[Type - 1] = (Int32.Parse(u.health[Type - 1]) - 1).ToString();
-                        if (Int32.Parse(u.health[Type - 1]) <= 0)
+                        u.health[Type - 1]--;
+                        if (u.health[Type - 1] <= 0)
                         {
-                            await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.");
-                            u.subscriber[Type - 1] = "0";
-                            ExecuteMySql($"UPDATE users SET health = '{String.Join(";", u.health)}', Subscriber = '{String.Join(";", u.subscriber)}' WHERE id = {u.id}");
+                            await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.", replyMarkup: menu);
+                            //u.subscriber[Type - 1] = 0;
+                            ExecuteMySql($"UPDATE users SET health = '{String.Join(";", u.health)}' WHERE id = {u.id}");
                         }
                         else
                         {
-                            await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Тепер у вас {u.health[Type - 1]} життів.");
+                            await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя. Тепер у вас {u.health[Type - 1]} життів.", replyMarkup: menu);
                             ExecuteMySql($"UPDATE users SET health = '{String.Join(";", u.health)}' WHERE id = {u.id}");
                         }
                     }
@@ -985,7 +988,7 @@ namespace ExamBotPC
                     {
                         if (reader.GetString("Curator") != null)
                             curator = reader.GetString("Curator");
-                        groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), curator, reader.GetString("Link")));
+                        groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), curator, reader.GetString("Link"), reader.GetInt32("Type")));
                     }
                     reader.Close();
 
@@ -1000,10 +1003,9 @@ namespace ExamBotPC
                             reader.GetInt32("ID"),
                             reader.GetString("Name") + " " + reader.GetString("Soname"),
                             reader.GetString("Username"),
-                            reader.GetString("Subscriber"),
                             reader.GetString("Health"),
                             reader.GetInt32("Coins"),
-                            reader.GetInt32("Group"),
+                            reader.GetString("Group"),
                             reader.GetString("Curator"),
                             reader.GetString("Subjects"),
                             reader.GetString("Stats"),
@@ -1014,14 +1016,14 @@ namespace ExamBotPC
 
                     con.Close();
                     break;
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Виникла помилка при завантажені бази даних");
-                    Console.WriteLine(exception.Message);
-                    con.Close();
-                }
             }
+                catch (Exception exception)
+            {
+                Console.WriteLine("Виникла помилка при завантажені бази даних");
+                Console.WriteLine(exception.Message);
+                con.Close();
+            }
+        }
         }
 
         public static void CheckForUpdates(Object source, System.Timers.ElapsedEventArgs e)
@@ -1093,14 +1095,27 @@ namespace ExamBotPC
                         long id = reader.GetInt32("id");
                         if (users.Find(x => x.id == id) != default(User))
                         {
-                            User user = users.Find(x => x.id == id);
-                            user.subscriber = reader.GetString("Subscriber").Split(";", StringSplitOptions.RemoveEmptyEntries);
+                            int index = users.FindIndex(x => x.id == id);
+                            users[index] = new User(
+                                reader.GetInt32("ID"),
+                                reader.GetString("Name") + " " + reader.GetString("Soname"),
+                                reader.GetString("Username"),
+                                reader.GetString("Health"),
+                                reader.GetInt32("Coins"),
+                                reader.GetString("Group"),
+                                reader.GetString("Curator"),
+                                reader.GetString("Subjects"),
+                                reader.GetString("Stats"),
+                                reader.GetString("State")
+                                );
+                            /*
                             user.health = reader.GetString("Health").Split(";", StringSplitOptions.RemoveEmptyEntries);
                             user.coins = reader.GetInt32("Coins");
-                            user.group = reader.GetInt32("Group");
+                            user.groups = reader.GetString("Group");
                             user.curator = reader.GetString("Curator");
                             user.subjects = reader.GetString("Subjects");
-                            user.statistic = reader.GetString("Stats");
+                            user.statistic = reader.GetString("Stats");1
+                            */
                         }
                         else
                         {
@@ -1108,10 +1123,9 @@ namespace ExamBotPC
                                 reader.GetInt32("ID"),
                                 reader.GetString("Name") + " " + reader.GetString("Soname"),
                                 reader.GetString("Username"),
-                                reader.GetString("Subscriber"),
                                 reader.GetString("Health"),
                                 reader.GetInt32("Coins"),
-                                reader.GetInt32("Group"),
+                                reader.GetString("Group"),
                                 reader.GetString("Curator"),
                                 reader.GetString("Subjects"),
                                 reader.GetString("Stats"),
@@ -1255,7 +1269,7 @@ namespace ExamBotPC
                     groups.Clear();
                     while (reader.Read())
                     {
-                        groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), reader.GetString("Curator"), reader.GetString("Link")));
+                        groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), reader.GetString("Curator"), reader.GetString("Link"), reader.GetInt32("Type")));
                     }
                     reader.Close();
 
@@ -1295,13 +1309,15 @@ namespace ExamBotPC
             public string name;
             public string curator;
             public string link;
+            public int type;
 
-            public Group(int id, string name, string curator, string link)
+            public Group(int id, string name, string curator, string link, int type)
             {
                 this.id = id;
                 this.name = name;
                 this.curator = curator;
                 this.link = link;
+                this.type = type;
             }
         }
         public enum SubjectType : int

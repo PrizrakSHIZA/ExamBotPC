@@ -20,7 +20,7 @@ namespace ExamBotPC.Commands
         public async override void Execute(MessageEventArgs e)
         {
             User user = Program.GetCurrentUser(e);
-            if (user.group == 0)
+            if (user.groups.Count ==  0)
             {
                 await Program.bot.SendTextMessageAsync(user.id, "Вибачте але вам ще не назначили групу. Зверніться до адміністрації.");
                 return;
@@ -30,7 +30,7 @@ namespace ExamBotPC.Commands
                 MySqlConnection con = new MySqlConnection(Program.connectionString);
                 con.Open();
 
-                string command = $"SELECT * FROM shedules where shedules.Group = {user.group}";
+                string command = $"SELECT * FROM shedules where shedules.Group = {user.groups}";
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
