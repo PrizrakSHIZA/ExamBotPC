@@ -21,10 +21,16 @@ namespace ExamBotPC.Commands
             }
             if (user.curator == "0")
             {
+                Program.Group group = new Program.Group(-1, "", "", "", 0);
+                foreach (int g in user.groups)
+                {
+                    if (Program.groups.Find(x => x.id == g).type == Program.Type)
+                        group = Program.groups.Find(x => x.id == g);
+                }
                 try
                 {
-                    if (Program.groups.Find(x => x.type == Program.Type).curator != "")
-                        await Program.bot.SendTextMessageAsync(user.id, $"{Program.groups.Find(x => x.type == Program.Type).curator}");
+                    if (!String.IsNullOrEmpty(group.curator))
+                        await Program.bot.SendTextMessageAsync(user.id, $"Твій куратор {group.curator} відповість на всі твої запитання!\nПиши, не соромся 💌");
                     else
                         await Program.bot.SendTextMessageAsync(user.id, "Вашій групі ще не назначили куратора");
                 }
@@ -34,7 +40,7 @@ namespace ExamBotPC.Commands
                 }
             }
             else
-                await Program.bot.SendTextMessageAsync(user.id, $"{user.curator}");
+                await Program.bot.SendTextMessageAsync(user.id, $"Твій куратор {user.curator} відповість на всі твої запитання!\nПиши, не соромся 💌");
         }
     }
 }

@@ -7,11 +7,13 @@ namespace ExamBotPC
 {
     public static partial class APIKeys
     {
-        public static readonly string password = "";
         public static readonly string TestBotApi = "";
         public static readonly string MathBotApi = "";
         public static readonly string BioBotApi = "";
         public static readonly string UkrBotApi = "";
+        public static readonly string HisBotApi = "";
+        public static readonly string GeoBotApi = "";
+        public static readonly string EngBotApi = "";
         public static readonly string DBLocalServer = "";
         public static readonly string DBLocalName = "";
         public static readonly string DBLocalUser = "";

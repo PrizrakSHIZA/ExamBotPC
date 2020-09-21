@@ -6,7 +6,7 @@ using static ExamBotPC.Program;
 
 namespace ExamBotPC
 {
-    public class User
+    class User
     {
         public long id;
         public string name;
@@ -22,7 +22,7 @@ namespace ExamBotPC
         public string statistic;
         public Lesson currentlesson = new Lesson();
         public string[] state;
-        public int[] subscriber = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        public int lastmsg;
 
         public User(long id, string name)
         {
@@ -36,29 +36,7 @@ namespace ExamBotPC
             this.username = username;
             this.coins = coins;
             this.health = health.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
-            this.groups = group.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
-            foreach (int a in groups)
-            {
-                switch ((SubjectType)Program.groups.Find(x => x.id == a).type)
-                {
-                    case SubjectType.Ukrainian:
-                        {
-                            subscriber[0] = 1;
-                            break;
-                        }
-                    case SubjectType.Math:
-                        {
-                            subscriber[1] = 1;
-                            break;
-                        }
-                    case SubjectType.Boilogy:
-                        {
-                            subscriber[2] = 1;
-                            break;
-                        }
-                    default: break;
-                }
-            }
+            this.groups = group.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
             this.curator = curator;
             this.subjects = subjects;
             this.statistic = statistic;
@@ -73,6 +51,31 @@ namespace ExamBotPC
                 points = Int32.Parse(tmpstate[3]);
                 mistakes = Int32.Parse(tmpstate[4]); 
             }
+            lastmsg = 0;
+        }
+        public User(long id, string name, string username, string health, int coins, string group, string curator, string subjects, string statistic, string statestr, int lastmsg)
+        {
+            this.id = id;
+            this.name = name;
+            this.username = username;
+            this.coins = coins;
+            this.health = health.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToArray();
+            this.groups = group.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+            this.curator = curator;
+            this.subjects = subjects;
+            this.statistic = statistic;
+            // string like "ontest;lessonid;questionnumber;points;mistakes"
+            this.state = statestr.Split("|", StringSplitOptions.RemoveEmptyEntries);
+            string[] tmpstate = state[Program.Type - 1].Substring(1).Split(";");
+            if (tmpstate[0] == "1")
+            {
+                ontest = true;
+                currentlesson = Program.lessons.Find(x => x.id == Int32.Parse(tmpstate[1]));
+                currentquestion = Int32.Parse(tmpstate[2]);
+                points = Int32.Parse(tmpstate[3]);
+                mistakes = Int32.Parse(tmpstate[4]);
+            }
+            this.lastmsg = lastmsg;
         }
     }
 }

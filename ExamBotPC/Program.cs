@@ -40,7 +40,6 @@ namespace ExamBotPC
             ConvertZeroDateTime = true,
             Pooling = false
         }.ConnectionString;
-        public static string password = APIKeys.password;
         public static bool useTimer = true;
         public static char[] delimiterChars = { ',', '.', '\t', '\n', ';' };
         public static int Type;
@@ -58,7 +57,7 @@ namespace ExamBotPC
                 switch (cmd)
                 {
                     case "help": Console.WriteLine("list - show all types of bot\nstart - start bot\nquit - close bot");  break;
-                    case "list": Console.WriteLine("0 - localhost\n1 - Ukrainian\n2 - Math\n3 - Biology");  break;
+                    case "list": Console.WriteLine("0 - localhost\n1 - Ukrainian\n2 - Math\n3 - Biology\n4 - History\n5 - Geography\n6 - English");  break;
                     case "start":
                         Console.WriteLine("Enter type number of bot:");
                         string x = Console.ReadLine();
@@ -88,7 +87,18 @@ namespace ExamBotPC
                                 Type = (int)SubjectType.Boilogy;
                                 StartBot(APIKeys.BioBotApi);
                                 break;
-
+                            case "4":
+                                Type = (int)SubjectType.History;
+                                StartBot(APIKeys.HisBotApi);
+                                break;
+                            case "5":
+                                Type = (int)SubjectType.Geography;
+                                StartBot(APIKeys.GeoBotApi);
+                                break;
+                            case "6":
+                                Type = (int)SubjectType.English;
+                                StartBot(APIKeys.EngBotApi);
+                                break;
                             default: Console.WriteLine("Wrong number!"); break;
                         }
                         break;
@@ -206,9 +216,9 @@ namespace ExamBotPC
 
         public static void SaveState()
         {
-            foreach (User u in users)
+            for(int i = 0; i < users.Count; i++)
             {
-                if (u.subscriber[Type - 1] == 1)
+                if (users[i].groups.Contains(currentlesson.group.id) && currentlesson.group.type == Type)
                 {
                     string prefix = "";
                     switch (Type)
@@ -260,23 +270,85 @@ namespace ExamBotPC
                             }
                         default: break;
                     }
-                    string state = $"{prefix}{(u.ontest ? 1 : 0)};{u.currentlesson.id};{u.currentquestion};{u.points};{u.mistakes}";
-                    ExecuteMySql($"UPDATE users SET State = REPLACE(State, '{u.state[Type - 1]}', '{state}') WHERE id = {u.id}");
-                    u.state[Type - 1] = state;
+                    string state = $"{prefix}{(users[i].ontest ? 1 : 0)};{users[i].currentlesson.id};{users[i].currentquestion};{users[i].points};{users[i].mistakes}";
+                    ExecuteMySql($"UPDATE users SET State = REPLACE(State, '{users[i].state[Type - 1]}', '{state}') WHERE id = {users[i].id}");
+                    users[i].state[Type - 1] = state;
                 }
             }
+        }
+
+        public static void SaveState(User u)
+        {
+            string prefix = "";
+            switch (Type)
+            {
+                case 0:
+                    {
+                        prefix = "A";
+                        break;
+                    }
+                case 1:
+                    {
+                        prefix = "A";
+                        break;
+                    }
+                case 2:
+                    {
+                        prefix = "B";
+                        break;
+                    }
+                case 3:
+                    {
+                        prefix = "C";
+                        break;
+                    }
+                case 4:
+                    {
+                        prefix = "D";
+                        break;
+                    }
+                case 5:
+                    {
+                        prefix = "E";
+                        break;
+                    }
+                case 6:
+                    {
+                        prefix = "F";
+                        break;
+                    }
+                case 7:
+                    {
+                        prefix = "G";
+                        break;
+                    }
+                case 8:
+                    {
+                        prefix = "K";
+                        break;
+                    }
+                default: break;
+            }
+            string state = $"{prefix}{(u.ontest ? 1 : 0)};{u.currentlesson.id};{u.currentquestion};{u.points};{u.mistakes}";
+            ExecuteMySql($"UPDATE users SET State = REPLACE(State, '{u.state[Type - 1]}', '{state}') WHERE id = {u.id}");
+            u.state[Type - 1] = state;
         }
 
         private async static void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
             if (e.CallbackQuery.Message.Date.AddHours(3) < startdate)
                 return;
-
             User user = GetCurrentUser(e);
+            if (e.CallbackQuery.Message.MessageId != user.lastmsg)
+                return;
+            user.lastmsg = 0;
+
             //if user is on test
             if (user.ontest)
             {
                 Question question = user.currentlesson.test.questions[user.currentquestion];
+                if (!(user.currentlesson.test.questions[user.currentquestion] is TestQuestion))
+                    return;
                 //Check answer is right or wrong
                 if (e.CallbackQuery.Data == question.answer)
                 {
@@ -312,7 +384,7 @@ namespace ExamBotPC
                     user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
                 }
             }
-            SaveState();
+            SaveState(user);
         }
 
         private async static void Bot_OnMessage(object sender, MessageEventArgs e)
@@ -333,7 +405,6 @@ namespace ExamBotPC
                     {
                         user.username = e.Message.Chat.Username;
                         user.name = e.Message.Chat.FirstName + " " + e.Message.Chat.LastName;
-                        return;
                     }
                 }
                 //add subscribe to bot
@@ -445,7 +516,7 @@ namespace ExamBotPC
                 //Check other type
                 else if (user.currentlesson.test.questions[user.currentquestion] is TestQuestion)
                 {
-                    if (answer.ToLower() == question.variants[Int32.Parse(question.answer) - 1])
+                    if (answer.ToLower() == question.variants[Int32.Parse(question.answer) - 1].ToLower())
                     {
                         await bot.SendTextMessageAsync(user.id, "Правильно!");
                         user.currentquestion++;
@@ -484,7 +555,7 @@ namespace ExamBotPC
                     }
                     else
                     {
-                        Console.WriteLine("Error!");
+                        Console.WriteLine("Error в конце теста!");
                     }
                 }
                 else
@@ -492,7 +563,7 @@ namespace ExamBotPC
                     //if(currentlesson.test.questions[user.currentquestion].variants.Length < 0 )
                     user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
                 }
-                SaveState();
+                SaveState(user);
             }
             else if (commands.Find(c => c.Name == text) == null)
             {
@@ -515,6 +586,7 @@ namespace ExamBotPC
             commands.Add(new StopCmd());
             commands.Add(new MainManuCmd());
             commands.Add(new AskAgainCmd());
+            commands.Add(new MenuCmd());
             //My menu part
             commands.Add(new MyHpCmd());
             commands.Add(new MyMistakesCmd());
@@ -694,8 +766,8 @@ namespace ExamBotPC
                 {
                     if (u.groups.Count == 0)
                         continue;
-                    if (u.groups.Contains(currentlesson.group))
-                        await bot.SendTextMessageAsync(u.id, "Нагудую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
+                    if (u.groups.Contains(currentlesson.group.id) && u.ontest)
+                        await bot.SendTextMessageAsync(u.id, "Нагадую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
                 }
                 catch (Exception exception)
                 {
@@ -713,8 +785,8 @@ namespace ExamBotPC
                 {
                     if (u.groups.Count == 0)
                         continue;
-                    if (u.groups.Contains(currentlesson.group))
-                        await bot.SendTextMessageAsync(u.id, "Нагудую, що через 2 години вебінар!");
+                    if (u.groups.Contains(currentlesson.group.id))
+                        await bot.SendTextMessageAsync(u.id, "Нагадую, що через 2 години вебінар!");
                 }
                 catch (Exception exception)
                 {
@@ -733,7 +805,7 @@ namespace ExamBotPC
             {
                 if (u.groups.Count == 0)
                     continue;
-                if (u.groups.Contains(currentlesson.group) && u.health[Type-1] > 0 && u.subjects.Contains(Type +";"))
+                if (u.groups.Contains(currentlesson.group.id) && u.health[Type - 1] > 0 && u.subjects.Contains(Type + ";"))
                 {
                     try
                     {
@@ -835,11 +907,12 @@ namespace ExamBotPC
         public async static void TestAll(object state)
         {
             //add test to DB
-            foreach (User u in Program.users)
+            for(int i = 0; i < users.Count; i++)
             {
+                User u = users[i];
                 try
                 {
-                    if (u.subscriber[Type - 1] == 1 && u.subjects.Contains(Type.ToString() + ";") && u.health[Type - 1] > 0)
+                    if (u.groups.Exists(x => x == currentlesson.group.id) && u.subjects.Contains(Type.ToString() + ";") && u.health[Type - 1] > 0)
                     {
                         u.currentlesson = currentlesson;
                         u.mistakes = 0;
@@ -848,14 +921,15 @@ namespace ExamBotPC
                         u.currentquestion = 0;
                         await Program.bot.SendTextMessageAsync(u.id, Program.currentlesson.test.Text, replyMarkup: menu2);
                         Program.currentlesson.test.questions[0].Ask(u.id);
+                        SaveState(u);
                     }
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                    Console.WriteLine($"There was exception in TestAll for {u.id} with msg: {exception.Message}");
                 }
             }
-            SaveState();
+            //SaveState();
             //Timer until next webinar
             InitializeStopTimer();
             InitializeTestTimer();
@@ -863,17 +937,19 @@ namespace ExamBotPC
 
         public async static void StopTest(object state)
         {
-            foreach (User u in Program.users)
+            for (int i = 0; i < users.Count; i++)
             {
+                User u = users[i];
                 try
                 {
                     if (u.groups.Count == 0)
                         continue;
-                    if (u.groups.Contains(currentlesson.group) && u.ontest)
+                    if (u.groups.Exists(x => x == currentlesson.group.id) && u.ontest)
                     {
                         u.ontest = false;
                         u.currentquestion = 0;
                         u.health[Type - 1]--;
+                        SaveState(u);
                         if (u.health[Type - 1] <= 0)
                         {
                             await Program.bot.SendTextMessageAsync(u.id, $"Ви не виконали домашнє завдання! На жаль, ви втрачаєте життя.\nНа жаль у вас закінчились усі життя і ви вилітаєте з нашої програми.", replyMarkup: menu);
@@ -889,10 +965,9 @@ namespace ExamBotPC
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                    Console.WriteLine($"There was exception in Stoptest for {u.id} with msg: {exception.Message}");
                 }
             }
-            SaveState();
             //u.GetNextWebinar();
             InitializeStopTimer();
         }
@@ -954,28 +1029,7 @@ namespace ExamBotPC
                         }
                     }
                     reader.Close();
-
-                    //Load Lessons
-                    command = "SELECT * FROM lessons";
-                    cmd = new MySqlCommand(command, con);
-
-                    reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        if (reader.GetInt32("Type") == Program.Type)
-                        {
-                            string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
-                            List<Question> q = new List<Question>();
-                            for (int i = 0; i < ids.Length; i++)
-                            {
-                                q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
-                            }
-
-                            Lesson lesson = new Lesson(reader.GetInt32("id"), reader.GetString("Name"), DateTime.Parse(reader.GetString("DateTime")), reader.GetInt32("Group"), new Test(reader.GetString("rule"), q), reader.GetInt32("Type"), reader.GetString("Link"), reader.GetString("Tokens"));
-                            lessons.Add(lesson);
-                        }
-                    }
-                    reader.Close();
+                    //Question end--
 
                     //Load groups
                     command = $"SELECT * FROM groups";
@@ -991,6 +1045,30 @@ namespace ExamBotPC
                         groups.Add(new Group(reader.GetInt32("id"), reader.GetString("Name"), curator, reader.GetString("Link"), reader.GetInt32("Type")));
                     }
                     reader.Close();
+                    //group end --
+
+                    //Load Lessons
+                    command = "SELECT * FROM lessons";
+                    cmd = new MySqlCommand(command, con);
+
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (groups.Find(x => x.id == reader.GetInt32("Group")).type == Program.Type)
+                        {
+                            string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
+                            List<Question> q = new List<Question>();
+                            for (int i = 0; i < ids.Length; i++)
+                            {
+                                q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
+                            }
+
+                            Lesson lesson = new Lesson(reader.GetInt32("id"), reader.GetString("Name"), DateTime.Parse(reader.GetString("DateTime")), reader.GetInt32("Group"), new Test(reader.GetString("rule"), q), reader.GetString("Link"), reader.GetString("Tokens"));
+                            lessons.Add(lesson);
+                        }
+                    }
+                    reader.Close();
+                    //Lessons end--
 
                     //Load Users
                     command = "SELECT * FROM users";
@@ -1013,17 +1091,19 @@ namespace ExamBotPC
                             ));
                     }
                     reader.Close();
+                    //users end--
 
                     con.Close();
                     break;
-            }
+                }
                 catch (Exception exception)
-            {
-                Console.WriteLine("Виникла помилка при завантажені бази даних");
-                Console.WriteLine(exception.Message);
-                con.Close();
+                {
+                    Console.WriteLine($"Виникла помилка при завантажені бази даних ");
+                    Console.WriteLine(exception.Message);
+                    con.Close();
+                    Thread.Sleep(30000);
+                }
             }
-        }
         }
 
         public static void CheckForUpdates(Object source, System.Timers.ElapsedEventArgs e)
@@ -1106,7 +1186,8 @@ namespace ExamBotPC
                                 reader.GetString("Curator"),
                                 reader.GetString("Subjects"),
                                 reader.GetString("Stats"),
-                                reader.GetString("State")
+                                reader.GetString("State"),
+                                users[index].lastmsg
                                 );
                             /*
                             user.health = reader.GetString("Health").Split(";", StringSplitOptions.RemoveEmptyEntries);
@@ -1150,6 +1231,7 @@ namespace ExamBotPC
                     Console.WriteLine("Виникла помилка при оновлені користувачів");
                     Console.WriteLine(exception.Message);
                     con.Close();
+                    Thread.Sleep(10000);
                 }
             }
         }
@@ -1220,7 +1302,7 @@ namespace ExamBotPC
                     reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        if (reader.GetInt32("Type") == Program.Type)
+                        if (groups.Find(x => x.id == reader.GetInt32("Group")).type == Program.Type)
                         {
                             string[] ids = reader.GetString("questions").Replace(" ", "").Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
                             List<Question> q = new List<Question>();
@@ -1229,7 +1311,7 @@ namespace ExamBotPC
                                 q.Add(questions.Find(x => x.id == Int32.Parse(ids[i])));
                             }
 
-                            Lesson lesson = new Lesson(reader.GetInt32("id"), reader.GetString("Name"), DateTime.Parse(reader.GetString("DateTime")), reader.GetInt32("Group"), new Test(reader.GetString("rule"), q), reader.GetInt32("Type"), reader.GetString("Link"), reader.GetString("Tokens"));
+                            Lesson lesson = new Lesson(reader.GetInt32("id"), reader.GetString("Name"), DateTime.Parse(reader.GetString("DateTime")), reader.GetInt32("Group"), new Test(reader.GetString("rule"), q), reader.GetString("Link"), reader.GetString("Tokens"));
                             lessons.Add(lesson);
                         }
                     }
@@ -1248,6 +1330,7 @@ namespace ExamBotPC
                     Console.WriteLine("Виникла помилка при оновлені уроків");
                     Console.WriteLine(exception.Message);
                     con.Close();
+                    Thread.Sleep(10000);
                 }
             }
 
@@ -1281,6 +1364,7 @@ namespace ExamBotPC
                     Console.WriteLine("Виникла помилка при оновлені груп");
                     Console.WriteLine(exception.Message);
                     con.Close();
+                    Thread.Sleep(10000);
                 }
             }
         }
@@ -1325,7 +1409,10 @@ namespace ExamBotPC
             Nothing = 0,
             Ukrainian = 1,
             Math = 2,
-            Boilogy = 3
+            Boilogy = 3,
+            History = 4,
+            Geography = 5,
+            English = 6
         }
     }
 }

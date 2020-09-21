@@ -26,13 +26,17 @@ namespace ExamBotPC.Tests.Questions
         {
             User user = Program.GetCurrentUser(id);
             InlineKeyboardMarkup keyboard = Program.GetInlineKeyboard(variants, columns);
-            if(image == "#")
-                await Program.bot.SendTextMessageAsync(user.id, text, replyMarkup: keyboard);
+            if (image == "#")
+            {
+                var message = await Program.bot.SendTextMessageAsync(user.id, text, replyMarkup: keyboard);
+                user.lastmsg = message.MessageId;
+            }
             else
             {
                 InputOnlineFile imageFile = new InputOnlineFile(new MemoryStream(Convert.FromBase64String(image.Split(",")[1])));
                 await Program.bot.SendPhotoAsync(user.id, imageFile);
-                await Program.bot.SendTextMessageAsync(user.id, text, replyMarkup: keyboard);
+                var message = await Program.bot.SendTextMessageAsync(user.id, text, replyMarkup: keyboard);
+                user.lastmsg = message.MessageId;
             }
         }
 

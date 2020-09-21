@@ -14,10 +14,17 @@ namespace ExamBotPC.Commands
         public async override void Execute(MessageEventArgs e)
         {
             User user = Program.GetCurrentUser(e);
-            if (user.ontest)
-                user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
-            else
-                await Program.bot.SendTextMessageAsync(user.id, "Наразі ви виконали усі ДЗ");
+            try
+            {
+                if (user.ontest)
+                    user.currentlesson.test.questions[user.currentquestion].Ask(user.id);
+                else
+                    await Program.bot.SendTextMessageAsync(user.id, "Наразі ви виконали усі ДЗ");
+            }
+            catch(Exception exception)
+            {
+                Console.WriteLine($"Ошибка при отправлке повторного вопроса у пользователя {user.id}\n Ошибка: {exception.Message}");
+            }
         }
     }
 }

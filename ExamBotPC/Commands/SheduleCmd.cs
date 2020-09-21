@@ -1,13 +1,10 @@
-﻿using ExamBotPC.UserSystem;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Telegram.Bot.Args;
-using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
+using static ExamBotPC.Program;
 
 namespace ExamBotPC.Commands
 {
@@ -27,10 +24,19 @@ namespace ExamBotPC.Commands
             }
             try
             {
+                int groupid = 0;
+                List<Group> thislist = Program.groups.FindAll(x => x.type == Program.Type);
+                foreach (Group g in thislist)
+                {
+                    if (user.groups.Contains(g.id))
+                    {
+                        groupid = g.id;
+                    }
+                }
                 MySqlConnection con = new MySqlConnection(Program.connectionString);
                 con.Open();
 
-                string command = $"SELECT * FROM shedules where shedules.Group = {user.groups}";
+                string command = $"SELECT * FROM shedules where shedules.Group = {groupid}";
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
@@ -40,6 +46,7 @@ namespace ExamBotPC.Commands
             catch (Exception exception)
             {
                 await Program.bot.SendTextMessageAsync(user.id, "Вибачте, але для вашої групи ще не підготували розклад.");
+                Console.WriteLine(exception.Message);
             }
         }
     }

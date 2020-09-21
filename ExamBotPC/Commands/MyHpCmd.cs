@@ -15,7 +15,7 @@ namespace ExamBotPC.Commands
         {
             User user = Program.GetCurrentUser(e);
 
-            string msg = "Ваше життя:\n\n";
+            string msg = "Ваші життя:\n\n";
             for (int i = 0; i < user.health[Program.Type - 1]; i++)
             {
                 msg += "♥";

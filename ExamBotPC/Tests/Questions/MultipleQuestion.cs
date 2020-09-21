@@ -44,9 +44,9 @@ namespace ExamBotPC.Tests.Questions
 
         public bool IsRight(string answer)
         {
-            answer = answer.Replace("-", "").ToLower();
+            answer = answer.Replace("-", "").Replace(" ", "").ToLower();
             List<string> answerarr = answer.Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries).ToList();
-            string[] rightnaswer = this.answer.ToLower().Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries);
+            string[] rightnaswer = this.answer.Replace(" ", "").ToLower().Split(Program.delimiterChars, StringSplitOptions.RemoveEmptyEntries);
             if (rightnaswer.Length != answerarr.Count)
                 return false;
             if (!Enumerable.SequenceEqual(answerarr.OrderBy(t => t), rightnaswer.OrderBy(t => t)))
