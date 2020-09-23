@@ -9,6 +9,7 @@ namespace ExamBotPC
     class User
     {
         public long id;
+        public string phone;
         public string name;
         public string username;
         public bool ontest = false;
@@ -29,9 +30,10 @@ namespace ExamBotPC
             this.id = id;
             this.name = name;
         }
-        public User(long id, string name, string username, string health, int coins, string group, string curator, string subjects, string statistic, string statestr)
+        public User(long id, string phone, string name, string username, string health, int coins, string group, string curator, string subjects, string statistic, string statestr)
         {
             this.id = id;
+            this.phone = phone;
             this.name = name;
             this.username = username;
             this.coins = coins;
@@ -53,9 +55,10 @@ namespace ExamBotPC
             }
             lastmsg = 0;
         }
-        public User(long id, string name, string username, string health, int coins, string group, string curator, string subjects, string statistic, string statestr, int lastmsg)
+        public User(long id, string phone, string name, string username, string health, int coins, string group, string curator, string subjects, string statistic, string statestr, int lastmsg)
         {
             this.id = id;
+            this.phone = phone;
             this.name = name;
             this.username = username;
             this.coins = coins;

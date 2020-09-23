@@ -22,7 +22,7 @@ namespace ExamBotPC
     class Program
     {
         public static TelegramBotClient bot;
-        public static ReplyKeyboardMarkup menu = new ReplyKeyboardMarkup(), menu2 = new ReplyKeyboardMarkup();
+        public static ReplyKeyboardMarkup menu = new ReplyKeyboardMarkup(), menutest = new ReplyKeyboardMarkup(), menuphone = new ReplyKeyboardMarkup();
         public static List<Command> commands = new List<Command>();
         public static List<User> users = new List<User>();
         public static List<Question> questions = new List<Question>();
@@ -177,6 +177,10 @@ namespace ExamBotPC
 
         private static void CreateMenu()
         {
+            KeyboardButton btn = KeyboardButton.WithRequestContact("Відкрити контакт");
+            menuphone = new ReplyKeyboardMarkup(btn);
+            menuphone.ResizeKeyboard = true;
+
             menu.Keyboard = new KeyboardButton[][]
             {
                 new KeyboardButton[]
@@ -193,7 +197,7 @@ namespace ExamBotPC
             menu.ResizeKeyboard = true;
             menu.OneTimeKeyboard = false;
 
-            menu2.Keyboard = new KeyboardButton[][]
+            menutest.Keyboard = new KeyboardButton[][]
             {
                 new KeyboardButton[]
                 {
@@ -210,8 +214,8 @@ namespace ExamBotPC
                     new KeyboardButton("Повторити запитання з тесту 🔄"),
                 },
             };
-            menu2.ResizeKeyboard = true;
-            menu2.OneTimeKeyboard = false;
+            menutest.ResizeKeyboard = true;
+            menutest.OneTimeKeyboard = false;
         }
 
         public static void SaveState()
@@ -343,6 +347,13 @@ namespace ExamBotPC
                 return;
             user.lastmsg = 0;
 
+            //check if we have phone number
+            if (String.IsNullOrEmpty(user.phone))
+            {
+                await bot.SendTextMessageAsync(user.id, "Відкрийте ваш контакт боту, будь ласка", replyMarkup: menuphone);
+                return;
+            }
+
             //if user is on test
             if (user.ontest)
             {
@@ -398,7 +409,7 @@ namespace ExamBotPC
             if (users.Find(x => x.id == e.Message.Chat.Id) != default(User))
             {
                 user = GetCurrentUser(e);
-                //checkifname or username changed
+                //check if name or username changed
                 if (e.Message.Chat.Username != user.username || e.Message.Chat.FirstName + " " + e.Message.Chat.LastName != user.name)
                 {
                     if (ExecuteMySql($"UPDATE users SET Name = '{e.Message.Chat.FirstName}', Soname = '{e.Message.Chat.LastName}', Username = '{e.Message.Chat.Username}' WHERE id = {user.id}"))
@@ -407,6 +418,35 @@ namespace ExamBotPC
                         user.name = e.Message.Chat.FirstName + " " + e.Message.Chat.LastName;
                     }
                 }
+
+                //check if we have phone nubmer
+                if (String.IsNullOrEmpty(user.phone))
+                {
+                    if (e.Message.Contact != null)
+                    {
+                        if (e.Message.Contact.FirstName +" "+ e.Message.Contact.LastName == user.name)
+                        {
+                            if (ExecuteMySql($"UPDATE users SET Phone = '{e.Message.Contact.PhoneNumber}' WHERE id = {user.id}"))
+                            {
+                                user.phone = e.Message.Contact.PhoneNumber;
+                                if(user.ontest)
+                                    await bot.SendTextMessageAsync(user.id, "Дякуємо за відкриття контактів!", replyMarkup: menutest);
+                                if(!user.ontest)
+                                    await bot.SendTextMessageAsync(user.id, "Дякуємо за відкриття контактів!", replyMarkup: menu);
+                            }
+                        }
+                        else
+                        {
+                            await bot.SendTextMessageAsync(user.id, "Цей контакт не співпадає з вашими даними. Будь ласка, натисніть на кнопку для відправки контакту боту.", replyMarkup: menuphone);
+                        }
+                    }
+                    else 
+                    {
+                        await bot.SendTextMessageAsync(user.id, "Відкрийте ваш контакт боту, будь ласка", replyMarkup: menuphone);
+                    }
+                    return;
+                }
+
                 //add subscribe to bot
                 if (!user.subjects.Contains($"{Type};"))
                 {
@@ -433,7 +473,7 @@ namespace ExamBotPC
                 if (users.Find(x => x.id == e.Message.Chat.Id) == default(User))
                     if (ExecuteMySql($"INSERT INTO users (ID, Name, Soname, Username, Date, Subjects, Health, Curator, State) VALUES ({e.Message.Chat.Id}, '{e.Message.Chat.FirstName}', '{e.Message.Chat.LastName}', '{e.Message.Chat.Username}', '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', '{Type};', '5;5;5;5;5;5;5;5', '0', 'A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0')"))
                     {
-                        users.Add(new User(e.Message.Chat.Id, e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, e.Message.Chat.Username, "5;5;5;5;5;5;5;5", 0, "", "0", $"{Type};", "", "A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0"));
+                        users.Add(new User(e.Message.Chat.Id,"", e.Message.Chat.FirstName + " " + e.Message.Chat.LastName, e.Message.Chat.Username, "5;5;5;5;5;5;5;5", 0, "", "0", $"{Type};", "", "A0;0|B0;0|C0;0|D0;0|E0;0|F0;0|G0;0|K0;0"));
                         await bot.SendTextMessageAsync(e.Message.Chat.Id, "Привіт!\n\n"+
                                                 "💪 <b>Вітаю в POWER - групі!</b> 💪\n\n" +
                                                 "Це бот, який буде повідомляти про:\n\n"+
@@ -443,7 +483,7 @@ namespace ExamBotPC
                                                 "- Просто круті штуки: 😽\n\n" +
                                                 "<b>Скоро куратор приєднає тебе до групки та сюди почнуть приходити твої уроки.</b> Посилання на урок приходить за 5 хвилин до початку.\n\n" +
                                                 "Не забувай робити домашні завдання, адже у тебе усього 5 життів на місяць 🤓\n"+
-                                                "Побачимося на трансляціях! 👋🥰🚀", replyMarkup: menu, parseMode: ParseMode.Html);
+                                                "Побачимося на трансляціях! 👋🥰🚀", replyMarkup: menuphone, parseMode: ParseMode.Html);
                     }
                 return;
             }
@@ -760,18 +800,18 @@ namespace ExamBotPC
 
         private async static void HomeworkNotification(object state)
         {
-            foreach (User u in users)
+            for(int i = 0; i < users.Count; i++)
             {
                 try
                 {
-                    if (u.groups.Count == 0)
+                    if (users[i].groups.Count == 0)
                         continue;
-                    if (u.groups.Contains(currentlesson.group.id) && u.ontest)
+                    if (users[i].groups.Contains(currentlesson.group.id) && users[i].ontest)
                         await bot.SendTextMessageAsync(u.id, "Нагадую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                    Console.WriteLine($"There was exception for {users[i].id} with msg: {exception.Message}");
                 }
             }
             HMNotificationTimer();
@@ -779,18 +819,18 @@ namespace ExamBotPC
 
         private async static void WebinarNotification(object state)
         {
-            foreach (User u in users)
+            for(int i = 0; i < users.Count; i++)
             {
                 try
                 {
-                    if (u.groups.Count == 0)
+                    if (users[i].groups.Count == 0)
                         continue;
-                    if (u.groups.Contains(currentlesson.group.id))
-                        await bot.SendTextMessageAsync(u.id, "Нагадую, що через 2 години вебінар!");
+                    if (users[i].groups.Contains(currentlesson.group.id))
+                        await bot.SendTextMessageAsync(users[i].id, "Нагадую, що через 2 години вебінар!");
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
+                    Console.WriteLine($"There was exception for {users[i].id} with msg: {exception.Message}");
                 }
             }
             HMNotificationTimer();
@@ -919,7 +959,7 @@ namespace ExamBotPC
                         u.points = 0;
                         u.ontest = true;
                         u.currentquestion = 0;
-                        await Program.bot.SendTextMessageAsync(u.id, Program.currentlesson.test.Text, replyMarkup: menu2);
+                        await Program.bot.SendTextMessageAsync(u.id, Program.currentlesson.test.Text, replyMarkup: menutest);
                         Program.currentlesson.test.questions[0].Ask(u.id);
                         SaveState(u);
                     }
@@ -1079,6 +1119,7 @@ namespace ExamBotPC
                     {
                         users.Add(new User(
                             reader.GetInt32("ID"),
+                            reader.GetString("Phone"),
                             reader.GetString("Name") + " " + reader.GetString("Soname"),
                             reader.GetString("Username"),
                             reader.GetString("Health"),
@@ -1178,6 +1219,7 @@ namespace ExamBotPC
                             int index = users.FindIndex(x => x.id == id);
                             users[index] = new User(
                                 reader.GetInt32("ID"),
+                                reader.GetString("Phone"),
                                 reader.GetString("Name") + " " + reader.GetString("Soname"),
                                 reader.GetString("Username"),
                                 reader.GetString("Health"),
@@ -1202,6 +1244,7 @@ namespace ExamBotPC
                         {
                             users.Add(new User(
                                 reader.GetInt32("ID"),
+                                reader.GetString("Phone"),
                                 reader.GetString("Name") + " " + reader.GetString("Soname"),
                                 reader.GetString("Username"),
                                 reader.GetString("Health"),

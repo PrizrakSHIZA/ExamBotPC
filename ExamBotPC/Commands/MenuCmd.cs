@@ -15,7 +15,7 @@ namespace ExamBotPC.Commands
         {
             User user = Program.GetCurrentUser(e);
             if(user.ontest)
-                Program.bot.SendTextMessageAsync(user.id, "Головне меню:", replyMarkup: Program.menu2);
+                Program.bot.SendTextMessageAsync(user.id, "Головне меню:", replyMarkup: Program.menutest);
             else
                 Program.bot.SendTextMessageAsync(user.id, "Головне меню:", replyMarkup: Program.menu);
         }

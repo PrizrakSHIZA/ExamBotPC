@@ -17,7 +17,7 @@ namespace ExamBotPC.Commands
             User user = Program.GetCurrentUser(e);
             string msg = "Повернення у головне меню";
             if(user.ontest)
-                await Program.bot.SendTextMessageAsync(user.id, msg, replyMarkup: Program.menu2);
+                await Program.bot.SendTextMessageAsync(user.id, msg, replyMarkup: Program.menutest);
             else
                 await Program.bot.SendTextMessageAsync(user.id, msg, replyMarkup: Program.menu);
         }
