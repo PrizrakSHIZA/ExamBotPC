@@ -177,7 +177,7 @@ namespace ExamBotPC
 
         private static void CreateMenu()
         {
-            KeyboardButton btn = KeyboardButton.WithRequestContact("Відкрити контакт");
+            KeyboardButton btn = KeyboardButton.WithRequestContact("Відправити контакт ☎");
             menuphone = new ReplyKeyboardMarkup(btn);
             menuphone.ResizeKeyboard = true;
 
@@ -350,7 +350,7 @@ namespace ExamBotPC
             //check if we have phone number
             if (String.IsNullOrEmpty(user.phone))
             {
-                await bot.SendTextMessageAsync(user.id, "Відкрийте ваш контакт боту, будь ласка", replyMarkup: menuphone);
+                await bot.SendTextMessageAsync(user.id, "Привіт! 👋\n\nДля успішної роботи з ботом потрібно відправити йому свій контакт.Це допоможе боту зв'язати тебе з твоєю анкетою 📝", replyMarkup: menuphone);
                 return;
             }
 
@@ -430,19 +430,19 @@ namespace ExamBotPC
                             {
                                 user.phone = e.Message.Contact.PhoneNumber;
                                 if(user.ontest)
-                                    await bot.SendTextMessageAsync(user.id, "Дякуємо за відкриття контактів!", replyMarkup: menutest);
+                                    await bot.SendTextMessageAsync(user.id, "Готово! 🎉", replyMarkup: menutest);
                                 if(!user.ontest)
-                                    await bot.SendTextMessageAsync(user.id, "Дякуємо за відкриття контактів!", replyMarkup: menu);
+                                    await bot.SendTextMessageAsync(user.id, "Готово! 🎉", replyMarkup: menu);
                             }
                         }
                         else
                         {
-                            await bot.SendTextMessageAsync(user.id, "Цей контакт не співпадає з вашими даними. Будь ласка, натисніть на кнопку для відправки контакту боту.", replyMarkup: menuphone);
+                            await bot.SendTextMessageAsync(user.id, "На жаль, без відправки контакту працювати з ботом не вийде 😿\n\nТисни на кнопку 👇", replyMarkup: menuphone);
                         }
                     }
                     else 
                     {
-                        await bot.SendTextMessageAsync(user.id, "Відкрийте ваш контакт боту, будь ласка", replyMarkup: menuphone);
+                        await bot.SendTextMessageAsync(user.id, "Привіт! 👋\n\nДля успішної роботи з ботом потрібно відправити йому свій контакт.Це допоможе боту зв'язати тебе з твоєю анкетою 📝", replyMarkup: menuphone);
                     }
                     return;
                 }
@@ -807,7 +807,7 @@ namespace ExamBotPC
                     if (users[i].groups.Count == 0)
                         continue;
                     if (users[i].groups.Contains(currentlesson.group.id) && users[i].ontest)
-                        await bot.SendTextMessageAsync(u.id, "Нагадую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
+                        await bot.SendTextMessageAsync(users[i].id, "Нагадую, що тобі необхідно виконати домашнє завдання! В тебе ще 10 годин!");
                 }
                 catch (Exception exception)
                 {
