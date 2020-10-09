@@ -36,3 +36,5 @@ C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\obj\Release\netcoreapp3.1\Exam
 C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\obj\Release\netcoreapp3.1\ExamBotPC.dll
 C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\obj\Release\netcoreapp3.1\ExamBotPC.pdb
 C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\obj\Release\netcoreapp3.1\ExamBotPC.genruntimeconfig.cache
+C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\log4net.config
+C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\log4net.dll

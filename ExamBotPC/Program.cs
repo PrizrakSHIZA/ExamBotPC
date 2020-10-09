@@ -1,21 +1,21 @@
 ﻿using ExamBotPC.Commands;
 using ExamBotPC.Tests;
 using ExamBotPC.Tests.Questions;
+using ExamBotPC.UserSystem;
+using log4net;
+using log4net.Config;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Text.Json;
 using Telegram.Bot;
 using Telegram.Bot.Args;
-using Telegram.Bot.Types.ReplyMarkups;
-using ExamBotPC.UserSystem;
-using System.Text.RegularExpressions;
 using Telegram.Bot.Types.Enums;
-using System.Linq.Expressions;
-using System.Configuration;
-using Renci.SshNet.Security;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ExamBotPC
 {
@@ -47,12 +47,21 @@ namespace ExamBotPC
         static DateTime users_update, lessons_update, groups_update; 
         static Timer TestTimer, StopTimer, HMTimer, WebinarTimer, LinkTimer;
 
+        [STAThread]
         static void Main(string[] args)
         {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            AppDomain currentDomain = default(AppDomain);
+            currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
+
             Console.WriteLine("Enter command:");
             while (true)
             {
                 Console.Write("=>");
+
                 string cmd = Console.ReadLine();
                 switch (cmd)
                 {
@@ -104,15 +113,11 @@ namespace ExamBotPC
                         break;
                     case "msg":
                         {
-                            foreach (User u in users)
+                            for(int i = 0; i < users.Count; i++)
                             {
-                                if (u.subjects.Contains(Type + ";"))
+                                if (users[i].subjects.Contains(Type.ToString() + ";"))
                                 {
-                                    bot.SendTextMessageAsync(u.id, "Ку! У нас тут технічні роботи 👀\n" +
-                                                                    "Вони потрібні для того, щоб бот гарно працював та не глючив.\n\n"+
-                                                                    "Наш технічний супер - майстер вже скоро завершить оновлення. Будь ласка, поки що нічого сюди не пиши, бо повідомлення може бути загублено.\n\n"+
-                                                                    "Ми дамо знати як тільки бот запрацює знову.\n"+
-                                                                    "Дякуємо за розуміння! 🥰");
+                                    bot.SendTextMessageAsync(users[i].id, "Ще раз оновили 🤓\nТепер натискай: 👇", replyMarkup: users[i].ontest ? menutest : menu);
                                 }
                             }
                             break;
@@ -126,6 +131,14 @@ namespace ExamBotPC
                     default: Console.WriteLine("No such command found");  break;
                 }
             }
+        }
+
+        private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = default(Exception);
+            ex = (Exception)e.ExceptionObject;
+            ILog log = LogManager.GetLogger(typeof(Program));
+            log.Error(ex.Message + "\n" + ex.StackTrace);
         }
 
         private static void StartBot(string Api)
@@ -155,24 +168,6 @@ namespace ExamBotPC
             bot.OnMessage += Bot_OnMessage;
             bot.OnCallbackQuery += Bot_OnCallbackQuery;
             CreateMenu();
-            /*
-            foreach (User u in users)
-            {
-                try 
-                { 
-                    if (u.subjects.Contains(Program.Type + ";"))
-                    {
-                        if (u.ontest)
-                            bot.SendTextMessageAsync(u.id, "Повтори конспект поки чекаєш на наступний урок 😉", replyMarkup: menu2);
-                        else
-                            bot.SendTextMessageAsync(u.id, "Повтори конспект поки чекаєш на наступний урок 😉", replyMarkup: menu);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine($"There was exception for {u.id} with msg: {exception.Message}");
-                }
-            }*/
         }
 
         private static void CreateMenu()
@@ -191,7 +186,7 @@ namespace ExamBotPC
                 new KeyboardButton[]
                 {
                     new KeyboardButton("Розклад 📅"),
-                    new KeyboardButton("Моя статистика 📊")
+                    new KeyboardButton("Мій акаунт 🧑🏼‍🎓")
                 },
             };
             menu.ResizeKeyboard = true;
@@ -207,7 +202,7 @@ namespace ExamBotPC
                 new KeyboardButton[]
                 {
                     new KeyboardButton("Розклад 📅"),
-                    new KeyboardButton("Моя статистика 📊")
+                    new KeyboardButton("Мій акаунт 🧑🏼‍🎓")
                 },
                 new KeyboardButton[]
                 {
@@ -350,7 +345,7 @@ namespace ExamBotPC
             //check if we have phone number
             if (String.IsNullOrEmpty(user.phone))
             {
-                await bot.SendTextMessageAsync(user.id, "Привіт! 👋\n\nДля успішної роботи з ботом потрібно відправити йому свій контакт.Це допоможе боту зв'язати тебе з твоєю анкетою 📝", replyMarkup: menuphone);
+                await bot.SendTextMessageAsync(user.id, "Привіт! 👋\n\nДля успішної роботи з ботом потрібно відправити йому свій контакт. Це допоможе боту зв'язати тебе з твоєю анкетою 📝", replyMarkup: menuphone);
                 return;
             }
 
@@ -442,7 +437,7 @@ namespace ExamBotPC
                     }
                     else 
                     {
-                        await bot.SendTextMessageAsync(user.id, "Привіт! 👋\n\nДля успішної роботи з ботом потрібно відправити йому свій контакт.Це допоможе боту зв'язати тебе з твоєю анкетою 📝", replyMarkup: menuphone);
+                        await bot.SendTextMessageAsync(user.id, "Привіт! 👋\n\nДля успішної роботи з ботом потрібно відправити йому свій контакт. Це допоможе боту зв'язати тебе з твоєю анкетою 📝", replyMarkup: menuphone);
                     }
                     return;
                 }
@@ -621,7 +616,7 @@ namespace ExamBotPC
             //commands.Add(new BalanceCmd());
             commands.Add(new RecordsCmd());
             commands.Add(new CuratorCmd());
-            commands.Add(new StatsMenuCmd());
+            commands.Add(new MyAccountCmd());
             commands.Add(new SheduleCmd());
             commands.Add(new StopCmd());
             commands.Add(new MainManuCmd());
@@ -631,6 +626,7 @@ namespace ExamBotPC
             commands.Add(new MyHpCmd());
             commands.Add(new MyMistakesCmd());
             commands.Add(new MyRateCmd());
+            commands.Add(new PaymentCmd());
             //End of My menu
             commands.Sort((x, y) => string.Compare(x.Name, y.Name));
         }
@@ -984,7 +980,7 @@ namespace ExamBotPC
                 {
                     if (u.groups.Count == 0)
                         continue;
-                    if (u.groups.Exists(x => x == currentlesson.group.id) && u.ontest)
+                    if (u.groups.Exists(x => x == currentlesson.group.id) && u.subjects.Contains(Type.ToString() + ";") && u.ontest)
                     {
                         u.ontest = false;
                         u.currentquestion = 0;
@@ -1018,8 +1014,8 @@ namespace ExamBotPC
             MySqlConnection con = new MySqlConnection(connectionString);
             while (true)
             {
-                try
-                {
+                //try
+                //{
                     con.Open();
 
                     //Load Questions
@@ -1136,14 +1132,14 @@ namespace ExamBotPC
 
                     con.Close();
                     break;
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine($"Виникла помилка при завантажені бази даних ");
-                    Console.WriteLine(exception.Message);
-                    con.Close();
-                    Thread.Sleep(30000);
-                }
+                //}
+                //catch (Exception exception)
+                //{
+                //    Console.WriteLine($"Виникла помилка при завантажені бази даних ");
+                //    Console.WriteLine(exception.Message);
+                //    con.Close();
+                //    Thread.Sleep(30000);
+                //}
             }
         }
 

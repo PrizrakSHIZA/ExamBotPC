@@ -217,3 +217,5 @@ C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\linu
 C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\linux-x64\libmscordaccore.so
 C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\linux-x64\libmscordbi.so
 C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\obj\Release\netcoreapp3.1\linux-x64\ExamBotPC.csprojAssemblyReference.cache
+C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\linux-x64\log4net.config
+C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\bin\Release\netcoreapp3.1\linux-x64\log4net.dll

@@ -1,0 +1,10 @@
+2020-10-08 23:19:32,899 [4] ERROR ExamBotPC.Program - Input string was not in a correct format.
+   at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
+   at System.Number.ParseInt32(ReadOnlySpan`1 value, NumberStyles styles, NumberFormatInfo info)
+   at CallSite.Target(Closure , CallSite , Type , Object )
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute2[T0,T1,TRet](CallSite site, T0 arg0, T1 arg1)
+   at ExamBotPC.Program.Bot_OnMessage(Object sender, MessageEventArgs e) in C:\Users\Prizrak\source\repos\ExamBotPC\ExamBotPC\Program.cs:line 554
+   at System.Threading.Tasks.Task.<>c.<ThrowAsync>b__139_1(Object state)
+   at System.Threading.QueueUserWorkItemCallbackDefaultContext.Execute()
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()

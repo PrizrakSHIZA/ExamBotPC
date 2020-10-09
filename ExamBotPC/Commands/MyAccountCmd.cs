@@ -6,9 +6,9 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ExamBotPC.Commands
 {
-    class StatsMenuCmd : Command
+    class MyAccountCmd : Command
     {
-        public override string Name => "Моя статистика 📊";
+        public override string Name => "Мій акаунт 🧑🏼‍🎓";
 
         public override bool forAdmin => false;
 
@@ -21,17 +21,21 @@ namespace ExamBotPC.Commands
                 new KeyboardButton[]
                 {
                     new KeyboardButton("Мої життя ♥"),
-                    new KeyboardButton("Статистика помилок ❗")
+                    new KeyboardButton("Оплата 💳"),
                 },
                 new KeyboardButton[]
                 {
                     new KeyboardButton("Мій рейтинг 📈"),
+                    new KeyboardButton("Статистика помилок ❗")
+                },
+                new KeyboardButton[]
+                {
                     new KeyboardButton("Головне меню ◀"),
                 },
             };
             menu.ResizeKeyboard = true;
             menu.OneTimeKeyboard = false;
-            await Program.bot.SendTextMessageAsync(user.id, "Моя статистика:", replyMarkup: menu);
+            await Program.bot.SendTextMessageAsync(user.id, "Мій акаунт:", replyMarkup: menu);
         }
     }
 }
