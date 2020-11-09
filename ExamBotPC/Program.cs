@@ -1154,7 +1154,7 @@ namespace ExamBotPC
             else
                 lesson = shedule[0];
 
-            log.Info($"Next lesson is {lesson.id}");
+            //log.Info($"Next lesson is {lesson.id}");
             log.Info("Get next lesson end");
             return lesson;
         }
