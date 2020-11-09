@@ -1,0 +1,29 @@
+2020-11-04 01:26:45,784 [1] INFO ukr - Starting bot...
+2020-11-04 01:26:46,202 [1] INFO ukr - Loading from database...
+2020-11-04 01:27:05,571 [1] INFO ukr - Loading from database completed
+2020-11-04 01:27:05,572 [1] INFO ukr - Loaded
+2020-11-04 01:27:05,573 [1] INFO ukr - Adding all commands...
+2020-11-04 01:27:05,577 [1] INFO ukr - Commands added
+2020-11-04 01:27:05,578 [1] INFO ukr - Update DB timer
+2020-11-04 01:27:05,600 [1] INFO ukr - Update DB timer end
+2020-11-04 01:27:05,601 [1] INFO ukr - In HMNotificationTimer
+2020-11-04 01:27:05,602 [1] INFO ukr - Get next lesson
+2020-11-04 01:27:05,640 [1] INFO ukr - Get next lesson end
+2020-11-04 01:27:05,641 [1] INFO ukr - No lesson found. HMNotification end
+2020-11-04 01:27:05,642 [1] INFO ukr - In WebinarNotificationTimer
+2020-11-04 01:27:05,643 [1] INFO ukr - Get next lesson
+2020-11-04 01:27:05,644 [1] INFO ukr - Get next lesson end
+2020-11-04 01:27:05,646 [1] INFO ukr - No lesson found. WebinarNotification end
+2020-11-04 01:27:05,647 [1] INFO ukr - In InitializeTestTimer
+2020-11-04 01:27:05,652 [1] INFO ukr - Get next lesson(hour)
+2020-11-04 01:27:05,653 [1] INFO ukr - Get next lesson(hour) end
+2020-11-04 01:27:05,653 [1] INFO ukr - No lesson found. InitializeTimer end
+2020-11-04 01:27:05,654 [1] INFO ukr - In LinkSenderTimer
+2020-11-04 01:27:05,655 [1] INFO ukr - Get next lesson
+2020-11-04 01:27:05,655 [1] INFO ukr - Get next lesson end
+2020-11-04 01:27:05,655 [1] INFO ukr - No lesson found. LinkSender end
+2020-11-04 01:27:08,185 [1] INFO ukr - Creating menu...
+2020-11-04 01:27:08,186 [1] INFO ukr - Menu created
+2020-11-04 01:27:08,186 [1] INFO ukr - Bot started
+2020-11-04 01:27:18,033 [1] INFO ukr - Saving state for all users...
+2020-11-04 01:27:18,035 [1] INFO ukr - States saved

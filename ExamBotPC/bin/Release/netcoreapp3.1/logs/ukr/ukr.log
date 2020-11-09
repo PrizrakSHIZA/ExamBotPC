@@ -1,0 +1,37 @@
+2020-10-30 12:58:20,000 [1] INFO Ukrainian - Starting bot...
+2020-10-30 12:58:20,181 [1] INFO Ukrainian - Loading from database...
+2020-10-30 12:58:33,732 [1] INFO Ukrainian - Loading from database completed
+2020-10-30 12:58:33,732 [1] INFO Ukrainian - Loaded
+2020-10-30 12:58:33,733 [1] INFO Ukrainian - Adding all commands...
+2020-10-30 12:58:33,734 [1] INFO Ukrainian - Commands added
+2020-10-30 12:58:33,735 [1] INFO Ukrainian - Update DB timer
+2020-10-30 12:58:33,735 [1] INFO Ukrainian - Update DB timer end
+2020-10-30 12:58:33,735 [1] INFO Ukrainian - In HMNotificationTimer
+2020-10-30 12:58:33,737 [1] INFO Ukrainian - Get next lesson
+2020-10-30 12:58:33,737 [1] INFO Ukrainian - Get next lesson end
+2020-10-30 12:58:33,738 [1] INFO Ukrainian - No lesson found. HMNotification end
+2020-10-30 12:58:33,754 [1] INFO Ukrainian - In WebinarNotificationTimer
+2020-10-30 12:58:33,754 [1] INFO Ukrainian - Get next lesson
+2020-10-30 12:58:33,754 [1] INFO Ukrainian - Get next lesson end
+2020-10-30 12:58:33,754 [1] INFO Ukrainian - No lesson found. WebinarNotification end
+2020-10-30 12:58:33,754 [1] INFO Ukrainian - In InitializeTestTimer
+2020-10-30 12:58:33,826 [1] INFO Ukrainian - Get next lesson(hour)
+2020-10-30 12:58:33,826 [1] INFO Ukrainian - Get next lesson(hour) end
+2020-10-30 12:58:33,826 [1] INFO Ukrainian - No lesson found. InitializeTimer end
+2020-10-30 12:58:33,827 [1] INFO Ukrainian - In LinkSenderTimer
+2020-10-30 12:58:33,827 [1] INFO Ukrainian - Get next lesson
+2020-10-30 12:58:33,827 [1] INFO Ukrainian - Get next lesson end
+2020-10-30 12:58:33,827 [1] INFO Ukrainian - No lesson found. LinkSender end
+2020-10-30 12:58:37,635 [1] INFO Ukrainian - Creating menu...
+2020-10-30 12:58:37,636 [1] INFO Ukrainian - Menu created
+2020-10-30 12:58:37,636 [1] INFO Ukrainian - Bot started
+2020-10-30 12:58:37,955 [8] INFO Ukrainian - On message recieved 'Повторити запитання з тесту 🔄' from 639932432
+2020-10-30 12:58:37,963 [8] INFO Ukrainian - Creating inline KB...
+2020-10-30 12:58:37,963 [8] INFO Ukrainian - KB created
+2020-10-30 12:58:37,994 [8] INFO Ukrainian - On message from 639932432 end
+2020-10-30 12:58:37,995 [8] INFO Ukrainian - On message recieved 'Оплата 💳' from 452349854
+2020-10-30 12:58:37,995 [8] INFO Ukrainian - In executing mysql
+2020-10-30 12:58:38,073 [8] INFO Ukrainian - Executing mysql end
+2020-10-30 12:58:38,075 [8] INFO Ukrainian - On message from 452349854 end
+2020-10-30 12:58:55,407 [1] INFO Ukrainian - Saving state for all users...
+2020-10-30 12:58:55,407 [1] INFO Ukrainian - States saved

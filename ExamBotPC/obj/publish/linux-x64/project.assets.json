@@ -65,7 +65,7 @@
           "lib/netstandard2.0/K4os.Hash.xxHash.dll": {}
         }
       },
-      "log4net/2.0.11": {
+      "log4net/2.0.12": {
         "type": "package",
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.5.0"
@@ -1837,7 +1837,7 @@
           "lib/netstandard2.0/K4os.Hash.xxHash.dll": {}
         }
       },
-      "log4net/2.0.11": {
+      "log4net/2.0.12": {
         "type": "package",
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.5.0"
@@ -3779,10 +3779,10 @@
         "lib/netstandard2.0/K4os.Hash.xxHash.xml"
       ]
     },
-    "log4net/2.0.11": {
-      "sha512": "4MEfp6dSN/Cl4XHRqBo8eOkhlH9AOt/ydmPRaj/FHuKHTNoPuKjbaT97aACmePpkW5QHQ+YudhYYvVStabOZmQ==",
+    "log4net/2.0.12": {
+      "sha512": "9P67BCftJ7KG+B7rNOM1A9KczUwyEDed6zbAddy5Cj/73xVkzi+rEAHeOgUnW5wDqy1JFlY8+oTP0m1PgJ03Tg==",
       "type": "package",
-      "path": "log4net/2.0.11",
+      "path": "log4net/2.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3802,7 +3802,7 @@
         "lib/netstandard1.3/log4net.xml",
         "lib/netstandard2.0/log4net.dll",
         "lib/netstandard2.0/log4net.xml",
-        "log4net.2.0.11.nupkg.sha512",
+        "log4net.2.0.12.nupkg.sha512",
         "log4net.nuspec",
         "package-icon.png"
       ]
@@ -8779,7 +8779,7 @@
     ".NETCoreApp,Version=v3.1": [
       "MySql.Data >= 8.0.20",
       "Telegram.Bot >= 15.7.1",
-      "log4net >= 2.0.11"
+      "log4net >= 2.0.12"
     ]
   },
   "packageFolders": {
@@ -8834,7 +8834,7 @@
           },
           "log4net": {
             "target": "Package",
-            "version": "[2.0.11, )"
+            "version": "[2.0.12, )"
           }
         },
         "imports": [

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aHK5tlY+9xGbC2NK570AbF/XJIacECkkGdvx6+LkD0y+n0MPV9iDHHglmhNI3SSycvHK2hFlSRWtCSxZbvg45w==",
+  "dgSpecHash": "4EC1SZ1/YZGN03PQrBm/9uF2T2qkQUo6KwZcp230Uq1TpMrFy1JIDGtm3iHPfsgfoWw4RkDX99DaDY6o0JI+9A==",
   "success": true,
   "projectFilePath": "C:\\Users\\Prizrak\\source\\repos\\ExamBotPC\\ExamBotPC\\ExamBotPC.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,7 @@
     "C:\\Users\\Prizrak\\.nuget\\packages\\k4os.compression.lz4\\1.1.11\\k4os.compression.lz4.1.1.11.nupkg.sha512",
     "C:\\Users\\Prizrak\\.nuget\\packages\\k4os.compression.lz4.streams\\1.1.11\\k4os.compression.lz4.streams.1.1.11.nupkg.sha512",
     "C:\\Users\\Prizrak\\.nuget\\packages\\k4os.hash.xxhash\\1.0.6\\k4os.hash.xxhash.1.0.6.nupkg.sha512",
-    "C:\\Users\\Prizrak\\.nuget\\packages\\log4net\\2.0.11\\log4net.2.0.11.nupkg.sha512",
+    "C:\\Users\\Prizrak\\.nuget\\packages\\log4net\\2.0.12\\log4net.2.0.12.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
     "C:\\Users\\Prizrak\\.nuget\\packages\\microsoft.netcore.platforms\\3.0.0\\microsoft.netcore.platforms.3.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",

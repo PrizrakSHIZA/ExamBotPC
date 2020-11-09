@@ -23,6 +23,7 @@ namespace ExamBotPC.Commands
             }
             catch(Exception exception)
             {
+                Program.log.Error(exception.Message +"\n"+exception.StackTrace);
                 Console.WriteLine($"Ошибка при отправлке повторного вопроса у пользователя {user.id}\n Ошибка: {exception.Message}");
             }
         }

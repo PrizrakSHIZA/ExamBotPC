@@ -1,0 +1,192 @@
+2020-11-03 16:36:47,443 [1] INFO test - Starting bot...
+2020-11-03 16:36:48,093 [1] INFO test - Loading from database...
+2020-11-03 16:36:51,800 [1] INFO test - Loading from database completed
+2020-11-03 16:36:51,800 [1] INFO test - Loaded
+2020-11-03 16:36:51,802 [1] INFO test - Adding all commands...
+2020-11-03 16:36:51,806 [1] INFO test - Commands added
+2020-11-03 16:36:51,808 [1] INFO test - Update DB timer
+2020-11-03 16:36:51,856 [1] INFO test - Update DB timer end
+2020-11-03 16:36:51,857 [1] INFO test - In HMNotificationTimer
+2020-11-03 16:36:51,858 [1] INFO test - Get next lesson
+2020-11-03 16:36:51,888 [1] INFO test - Get next lesson end
+2020-11-03 16:36:51,888 [1] INFO test - No lesson found. HMNotification end
+2020-11-03 16:36:51,889 [1] INFO test - In WebinarNotificationTimer
+2020-11-03 16:36:51,889 [1] INFO test - Get next lesson
+2020-11-03 16:36:51,889 [1] INFO test - Get next lesson end
+2020-11-03 16:36:51,889 [1] INFO test - No lesson found. WebinarNotification end
+2020-11-03 16:36:51,890 [1] INFO test - In InitializeTestTimer
+2020-11-03 16:36:51,891 [1] INFO test - Get next lesson(hour)
+2020-11-03 16:36:51,900 [1] INFO test - Timer setted up. InitializeTestTimer end
+2020-11-03 16:36:51,901 [1] INFO test - In LinkSenderTimer
+2020-11-03 16:36:51,901 [1] INFO test - Get next lesson
+2020-11-03 16:36:51,901 [1] INFO test - Get next lesson end
+2020-11-03 16:36:51,901 [1] INFO test - No lesson found. LinkSender end
+2020-11-03 16:36:56,382 [1] INFO test - Creating menu...
+2020-11-03 16:36:56,385 [1] INFO test - Menu created
+2020-11-03 16:36:56,385 [1] INFO test - Bot started
+2020-11-03 16:37:51,890 [12] INFO test - Checking for updates...
+2020-11-03 16:37:51,894 [12] INFO test - Updates checked
+2020-11-03 16:38:51,861 [7] INFO test - Checking for updates...
+2020-11-03 16:38:51,874 [7] INFO test - Updates checked
+2020-11-03 16:39:51,869 [13] INFO test - Checking for updates...
+2020-11-03 16:39:51,873 [13] INFO test - Updates checked
+2020-11-03 16:40:00,042 [13] INFO test - Testing all...
+2020-11-03 16:40:00,873 [17] INFO test - Creating inline KB...
+2020-11-03 16:40:00,874 [17] INFO test - KB created
+2020-11-03 16:40:00,891 [17] INFO test - Saving state for 285466529
+2020-11-03 16:40:00,891 [17] INFO test - In executing mysql
+2020-11-03 16:40:01,042 [17] INFO test - Executing mysql end
+2020-11-03 16:40:01,042 [17] INFO test - State saved
+2020-11-03 16:40:01,161 [10] INFO test - Creating inline KB...
+2020-11-03 16:40:01,161 [10] INFO test - KB created
+2020-11-03 16:40:01,165 [10] INFO test - Saving state for 341582758
+2020-11-03 16:40:01,166 [10] INFO test - In executing mysql
+2020-11-03 16:40:01,237 [10] INFO test - Executing mysql end
+2020-11-03 16:40:01,238 [10] INFO test - State saved
+2020-11-03 16:40:01,495 [10] INFO test - Creating inline KB...
+2020-11-03 16:40:01,498 [10] INFO test - KB created
+2020-11-03 16:40:01,501 [10] INFO test - Saving state for 1027138714
+2020-11-03 16:40:01,502 [10] INFO test - In executing mysql
+2020-11-03 16:40:01,542 [10] INFO test - Executing mysql end
+2020-11-03 16:40:01,542 [10] INFO test - State saved
+2020-11-03 16:40:01,635 [17] INFO test - Creating inline KB...
+2020-11-03 16:40:01,635 [17] INFO test - KB created
+2020-11-03 16:40:01,636 [17] INFO test - Saving state for 1218900641
+2020-11-03 16:40:01,637 [17] INFO test - In executing mysql
+2020-11-03 16:40:01,638 [17] INFO test - Executing mysql end
+2020-11-03 16:40:01,638 [17] INFO test - State saved
+2020-11-03 16:40:01,639 [17] INFO test - In InitializeStopTimer
+2020-11-03 16:40:01,639 [17] INFO test - Get next lesson(min,hour)
+2020-11-03 16:40:01,640 [17] INFO test - Get next lesson(min,hour) end
+2020-11-03 16:40:01,640 [17] INFO test - No lesson found. StopTimer end
+2020-11-03 16:40:01,640 [17] INFO test - In InitializeTestTimer
+2020-11-03 16:40:01,640 [17] INFO test - Get next lesson(hour)
+2020-11-03 16:40:01,640 [17] INFO test - Get next lesson(hour) end
+2020-11-03 16:40:01,641 [17] INFO test - No lesson found. InitializeTimer end
+2020-11-03 16:40:01,641 [17] INFO test - All tests sended
+2020-11-03 16:40:51,860 [7] INFO test - Checking for updates...
+2020-11-03 16:40:51,865 [7] INFO test - Updating users...
+2020-11-03 16:40:51,947 [7] INFO test - Users updated
+2020-11-03 16:40:51,947 [7] INFO test - Updates checked
+2020-11-03 16:41:10,484 [17] INFO test - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 1027138714
+2020-11-03 16:41:10,492 [17] INFO test - On message from 1027138714 end
+2020-11-03 16:41:11,817 [5] INFO test - On message recieved 'Мої життя ♥' from 1027138714
+2020-11-03 16:41:11,821 [5] INFO test - On message from 1027138714 end
+2020-11-03 16:41:16,366 [17] INFO test - On message recieved 'Головне меню ◀' from 1027138714
+2020-11-03 16:41:16,370 [17] INFO test - On message from 1027138714 end
+2020-11-03 16:41:36,743 [17] INFO test - On callback querry '2' from 285466529
+2020-11-03 16:41:51,868 [7] INFO test - Checking for updates...
+2020-11-03 16:41:51,876 [7] INFO test - Updating lessons...
+2020-11-03 16:41:51,883 [7] INFO test - In HMNotificationTimer
+2020-11-03 16:41:51,884 [7] INFO test - Get next lesson
+2020-11-03 16:41:51,884 [7] INFO test - Tiemr setted up. HMNotificationTimer end
+2020-11-03 16:41:51,884 [7] INFO test - In WebinarNotificationTimer
+2020-11-03 16:41:51,884 [7] INFO test - Get next lesson
+2020-11-03 16:41:51,884 [7] INFO test - Timer setted up. WebinarNotificationTimer end
+2020-11-03 16:41:51,885 [7] INFO test - In InitializeTestTimer
+2020-11-03 16:41:51,885 [7] INFO test - Get next lesson(hour)
+2020-11-03 16:41:51,885 [7] INFO test - Timer setted up. InitializeTestTimer end
+2020-11-03 16:41:51,885 [7] INFO test - In InitializeStopTimer
+2020-11-03 16:41:51,885 [7] INFO test - Get next lesson(min,hour)
+2020-11-03 16:41:51,886 [7] INFO test - Timer setted up. InitializeStopTimer end
+2020-11-03 16:41:51,886 [7] INFO test - In LinkSenderTimer
+2020-11-03 16:41:51,886 [7] INFO test - Get next lesson
+2020-11-03 16:41:51,886 [7] INFO test - Timer setted up. LinkSenderTimer end
+2020-11-03 16:41:51,886 [7] INFO test - Lessons updated
+2020-11-03 16:41:51,890 [7] INFO test - Updates checked
+2020-11-03 16:42:39,852 [12] INFO test - On message recieved '' from 285466529
+2020-11-03 16:42:39,853 [12] INFO test - In executing mysql
+2020-11-03 16:42:39,941 [12] INFO test - Executing mysql end
+2020-11-03 16:42:48,794 [12] INFO test - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 285466529
+2020-11-03 16:42:48,805 [12] INFO test - On message from 285466529 end
+2020-11-03 16:42:51,894 [4] INFO test - Checking for updates...
+2020-11-03 16:42:51,903 [4] INFO test - Updating users...
+2020-11-03 16:42:51,907 [4] INFO test - Users updated
+2020-11-03 16:42:51,907 [4] INFO test - Updates checked
+2020-11-03 16:42:53,693 [12] INFO test - On message recieved 'Мої життя ♥' from 285466529
+2020-11-03 16:42:53,696 [12] INFO test - On message from 285466529 end
+2020-11-03 16:43:51,861 [15] INFO test - Checking for updates...
+2020-11-03 16:43:51,869 [15] INFO test - Updates checked
+2020-11-03 16:44:51,891 [5] INFO test - Checking for updates...
+2020-11-03 16:44:51,893 [5] INFO test - Updates checked
+2020-11-03 16:45:00,023 [9] INFO test - Stopping tests
+2020-11-03 16:45:00,024 [9] INFO test - Saving state for 285466529
+2020-11-03 16:45:00,024 [9] INFO test - In executing mysql
+2020-11-03 16:45:00,174 [9] INFO test - Executing mysql end
+2020-11-03 16:45:00,174 [9] INFO test - State saved
+2020-11-03 16:45:00,257 [12] INFO test - Saving state for 341582758
+2020-11-03 16:45:00,258 [12] INFO test - In executing mysql
+2020-11-03 16:45:00,334 [12] INFO test - Executing mysql end
+2020-11-03 16:45:00,335 [12] INFO test - State saved
+2020-11-03 16:45:00,480 [12] INFO test - In executing mysql
+2020-11-03 16:45:00,555 [12] INFO test - Executing mysql end
+2020-11-03 16:45:00,556 [12] INFO test - Saving state for 1027138714
+2020-11-03 16:45:00,556 [12] INFO test - In executing mysql
+2020-11-03 16:45:00,637 [12] INFO test - Executing mysql end
+2020-11-03 16:45:00,638 [12] INFO test - State saved
+2020-11-03 16:45:00,739 [18] INFO test - Saving state for 1218900641
+2020-11-03 16:45:00,739 [18] INFO test - In executing mysql
+2020-11-03 16:45:00,771 [18] INFO test - Executing mysql end
+2020-11-03 16:45:00,772 [18] INFO test - State saved
+2020-11-03 16:45:00,949 [18] INFO test - In executing mysql
+2020-11-03 16:45:01,055 [18] INFO test - Executing mysql end
+2020-11-03 16:45:01,056 [18] INFO test - In InitializeStopTimer
+2020-11-03 16:45:01,056 [18] INFO test - Get next lesson(min,hour)
+2020-11-03 16:45:01,056 [18] INFO test - Get next lesson(min,hour) end
+2020-11-03 16:45:01,057 [18] INFO test - No lesson found. StopTimer end
+2020-11-03 16:45:01,057 [18] INFO test - Tests stopped
+2020-11-03 16:45:28,418 [18] INFO test - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 1027138714
+2020-11-03 16:45:28,421 [18] INFO test - On message from 1027138714 end
+2020-11-03 16:45:30,520 [18] INFO test - On message recieved 'Мої життя ♥' from 1027138714
+2020-11-03 16:45:30,522 [18] INFO test - On message from 1027138714 end
+2020-11-03 16:45:52,193 [19] INFO test - Checking for updates...
+2020-11-03 16:45:52,290 [19] INFO test - Updating users...
+2020-11-03 16:45:52,331 [19] INFO test - Users updated
+2020-11-03 16:45:52,335 [19] INFO test - Updates checked
+2020-11-03 16:46:16,699 [22] INFO test - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 285466529
+2020-11-03 16:46:16,704 [22] INFO test - On message from 285466529 end
+2020-11-03 16:46:17,832 [22] INFO test - On message recieved 'Мої життя ♥' from 285466529
+2020-11-03 16:46:17,838 [22] INFO test - On message from 285466529 end
+2020-11-03 16:46:47,258 [1] INFO test - Saving state for all users...
+2020-11-03 16:46:47,261 [1] INFO test - In executing mysql
+2020-11-03 16:46:47,369 [1] INFO test - Executing mysql end
+2020-11-03 16:46:47,369 [1] INFO test - In executing mysql
+2020-11-03 16:46:47,457 [1] INFO test - Executing mysql end
+2020-11-03 16:46:47,458 [1] INFO test - In executing mysql
+2020-11-03 16:46:47,535 [1] INFO test - Executing mysql end
+2020-11-03 16:46:47,535 [1] INFO test - In executing mysql
+2020-11-03 16:46:47,574 [1] INFO test - Executing mysql end
+2020-11-03 16:46:47,574 [1] INFO test - States saved
+2020-11-03 22:19:06,999 [1] INFO test - Starting bot...
+2020-11-03 22:19:07,946 [1] INFO test - Loading from database...
+2020-11-03 22:19:18,305 [1] INFO test - Loading from database completed
+2020-11-03 22:19:18,306 [1] INFO test - Loaded
+2020-11-03 22:19:18,307 [1] INFO test - Adding all commands...
+2020-11-03 22:19:18,327 [1] INFO test - Commands added
+2020-11-03 22:19:18,328 [1] INFO test - Update DB timer
+2020-11-03 22:19:18,474 [1] INFO test - Update DB timer end
+2020-11-03 22:19:18,474 [1] INFO test - In HMNotificationTimer
+2020-11-03 22:19:18,475 [1] INFO test - Get next lesson
+2020-11-03 22:19:18,546 [1] INFO test - Get next lesson end
+2020-11-03 22:19:18,547 [1] INFO test - No lesson found. HMNotification end
+2020-11-03 22:19:18,547 [1] INFO test - In WebinarNotificationTimer
+2020-11-03 22:19:18,548 [1] INFO test - Get next lesson
+2020-11-03 22:19:18,548 [1] INFO test - Get next lesson end
+2020-11-03 22:19:18,548 [1] INFO test - No lesson found. WebinarNotification end
+2020-11-03 22:19:18,549 [1] INFO test - In InitializeTestTimer
+2020-11-03 22:19:18,549 [1] INFO test - Get next lesson(hour)
+2020-11-03 22:19:18,549 [1] INFO test - Get next lesson(hour) end
+2020-11-03 22:19:18,550 [1] INFO test - No lesson found. InitializeTimer end
+2020-11-03 22:19:18,550 [1] INFO test - In LinkSenderTimer
+2020-11-03 22:19:18,550 [1] INFO test - Get next lesson
+2020-11-03 22:19:18,551 [1] INFO test - Get next lesson end
+2020-11-03 22:19:18,551 [1] INFO test - No lesson found. LinkSender end
+2020-11-03 22:19:27,597 [1] INFO test - Creating menu...
+2020-11-03 22:19:27,600 [1] INFO test - Menu created
+2020-11-03 22:19:27,601 [1] INFO test - Bot started
+2020-11-03 22:19:33,588 [9] INFO test - On message recieved 'Головне меню ◀' from 1027138714
+2020-11-03 22:19:33,968 [9] INFO test - On message from 1027138714 end
+2020-11-03 22:19:36,665 [9] INFO test - On message recieved 'Мій куратор 💬' from 1027138714
+2020-11-03 22:19:36,673 [9] INFO test - On message from 1027138714 end
+2020-11-03 22:20:18,483 [7] INFO test - Checking for updates...
+2020-11-03 22:20:18,584 [7] INFO test - Updates checked

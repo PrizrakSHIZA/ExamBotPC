@@ -1,0 +1,72 @@
+2020-10-31 17:21:33,411 [1] INFO INFOropert{BotName} - Starting bot...
+2020-10-31 17:21:33,626 [1] INFO INFOropert{BotName} - Loading from database...
+2020-10-31 17:21:50,573 [1] INFO INFOropert{BotName} - Loading from database completed
+2020-10-31 17:21:50,573 [1] INFO INFOropert{BotName} - Loaded
+2020-10-31 17:21:50,574 [1] INFO INFOropert{BotName} - Adding all commands...
+2020-10-31 17:21:50,588 [1] INFO INFOropert{BotName} - Commands added
+2020-10-31 17:21:50,588 [1] INFO INFOropert{BotName} - Update DB timer
+2020-10-31 17:21:50,623 [1] INFO INFOropert{BotName} - Update DB timer end
+2020-10-31 17:21:50,624 [1] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-31 17:21:50,624 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:21:50,678 [1] INFO INFOropert{BotName} - Tiemr setted up. HMNotificationTimer end
+2020-10-31 17:21:50,679 [1] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-31 17:21:50,679 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:21:50,679 [1] INFO INFOropert{BotName} - Timer setted up. WebinarNotificationTimer end
+2020-10-31 17:21:50,679 [1] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-31 17:21:50,680 [1] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-31 17:21:50,688 [1] INFO INFOropert{BotName} - Timer setted up. InitializeTestTimer end
+2020-10-31 17:21:50,689 [1] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-31 17:21:50,689 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:21:50,689 [1] INFO INFOropert{BotName} - Ms until next lessson: 1989310. Next lesson have id: 223 and time 31.10.2020 18:00:00
+2020-10-31 17:21:50,689 [1] INFO INFOropert{BotName} - Timer setted up. LinkSenderTimer end
+2020-10-31 17:22:36,066 [1] INFO INFOropert{BotName} - Creating menu...
+2020-10-31 17:22:36,067 [1] INFO INFOropert{BotName} - Menu created
+2020-10-31 17:22:36,067 [1] INFO INFOropert{BotName} - Bot started
+2020-10-31 17:23:11,472 [1] INFO INFOropert{BotName} - Starting bot...
+2020-10-31 17:23:11,493 [1] INFO INFOropert{BotName} - Loading from database...
+2020-10-31 17:23:26,804 [1] INFO INFOropert{BotName} - Loading from database completed
+2020-10-31 17:23:26,804 [1] INFO INFOropert{BotName} - Loaded
+2020-10-31 17:23:26,805 [1] INFO INFOropert{BotName} - Adding all commands...
+2020-10-31 17:23:26,853 [1] INFO INFOropert{BotName} - Commands added
+2020-10-31 17:23:26,854 [1] INFO INFOropert{BotName} - Update DB timer
+2020-10-31 17:23:26,854 [1] INFO INFOropert{BotName} - Update DB timer end
+2020-10-31 17:23:26,855 [1] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-31 17:23:26,856 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:23:26,859 [1] INFO INFOropert{BotName} - Tiemr setted up. HMNotificationTimer end
+2020-10-31 17:23:26,859 [1] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-31 17:23:26,859 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:23:26,859 [1] INFO INFOropert{BotName} - Timer setted up. WebinarNotificationTimer end
+2020-10-31 17:23:26,860 [1] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-31 17:23:26,860 [1] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-31 17:23:26,861 [1] INFO INFOropert{BotName} - Timer setted up. InitializeTestTimer end
+2020-10-31 17:23:26,862 [1] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-31 17:23:26,862 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:23:26,862 [1] INFO INFOropert{BotName} - Ms until next lessson: 1893137. Next lesson have id: 223 and time 31.10.2020 18:00:00
+2020-10-31 17:23:26,862 [1] INFO INFOropert{BotName} - Timer setted up. LinkSenderTimer end
+2020-10-31 17:23:27,586 [1] INFO INFOropert{BotName} - Creating menu...
+2020-10-31 17:23:27,587 [1] INFO INFOropert{BotName} - Menu created
+2020-10-31 17:23:27,587 [1] INFO INFOropert{BotName} - Bot started
+2020-10-31 17:40:01,206 [1] INFO INFOropert{BotName} - Starting bot...
+2020-10-31 17:40:01,227 [1] INFO INFOropert{BotName} - Loading from database...
+2020-10-31 17:40:16,234 [1] INFO INFOropert{BotName} - Loading from database completed
+2020-10-31 17:40:16,235 [1] INFO INFOropert{BotName} - Loaded
+2020-10-31 17:40:16,236 [1] INFO INFOropert{BotName} - Adding all commands...
+2020-10-31 17:40:16,239 [1] INFO INFOropert{BotName} - Commands added
+2020-10-31 17:40:16,240 [1] INFO INFOropert{BotName} - Update DB timer
+2020-10-31 17:40:16,241 [1] INFO INFOropert{BotName} - Update DB timer end
+2020-10-31 17:40:16,241 [1] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-31 17:40:16,242 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:40:16,247 [1] INFO INFOropert{BotName} - Tiemr setted up. HMNotificationTimer end
+2020-10-31 17:40:16,247 [1] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-31 17:40:16,247 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:40:16,248 [1] INFO INFOropert{BotName} - Timer setted up. WebinarNotificationTimer end
+2020-10-31 17:40:16,248 [1] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-31 17:40:16,250 [1] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-31 17:40:16,252 [1] INFO INFOropert{BotName} - Timer setted up. InitializeTestTimer end
+2020-10-31 17:40:16,252 [1] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-31 17:40:16,252 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-31 17:40:16,253 [1] INFO INFOropert{BotName} - Ms until next lessson: 883747. Next lesson have id: 224 and time 31.10.2020 18:00:00
+2020-10-31 17:40:16,253 [1] INFO INFOropert{BotName} - Timer setted up. LinkSenderTimer end
+2020-10-31 17:40:17,341 [1] INFO INFOropert{BotName} - Creating menu...
+2020-10-31 17:40:17,343 [1] INFO INFOropert{BotName} - Menu created
+2020-10-31 17:40:17,343 [1] INFO INFOropert{BotName} - Bot started

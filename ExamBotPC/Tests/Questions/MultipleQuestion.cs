@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -22,14 +23,37 @@ namespace ExamBotPC.Tests.Questions
 
         public async override void Ask(long id)
         {
-            User user = Program.GetCurrentUser(id);
-            if (image == "#")
-                await Program.bot.SendTextMessageAsync(user.id, text + rule);
-            else
+            try
             {
-                InputOnlineFile imageFile = new InputOnlineFile(new MemoryStream(Convert.FromBase64String(image.Split(",")[1])));
-                await Program.bot.SendPhotoAsync(user.id, imageFile);
-                await Program.bot.SendTextMessageAsync(user.id, text + rule);
+                User user = Program.GetCurrentUser(id);
+                int qcount = user.currentlesson.test.questions.Count;
+                string prefix = "";
+
+                if (user.currentquestion == 0)
+                    prefix = Program.presets[0];
+                else if (user.currentquestion == qcount)
+                    prefix = Program.presets[1];
+                else
+                {
+                    Random rnd = new Random();
+                    prefix = Program.presets[rnd.Next(2, Program.presets.Length)];
+                }
+
+                string premsg = $"{prefix} Завдання {user.currentquestion + 1}/{qcount}\n\n";
+
+                if (image == "#")
+                    await Program.bot.SendTextMessageAsync(user.id, premsg + text + rule);
+                else
+                {
+                    InputOnlineFile imageFile = new InputOnlineFile(new MemoryStream(Convert.FromBase64String(image.Split(",")[1])));
+                    await Program.bot.SendPhotoAsync(user.id, imageFile);
+                    await Program.bot.SendTextMessageAsync(user.id, premsg + text + rule);
+                }
+            }
+            catch (Exception ex)
+            {
+                ILog log = LogManager.GetLogger(typeof(Program));
+                log.Error(ex.Message + "\n" + ex.StackTrace);
             }
         }
 

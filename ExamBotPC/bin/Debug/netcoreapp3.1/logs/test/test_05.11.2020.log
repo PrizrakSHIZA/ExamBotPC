@@ -1,0 +1,66 @@
+2020-11-05 17:43:51,269 [1] INFO test - Starting bot...
+2020-11-05 17:43:53,193 [1] INFO test - Loading from database...
+2020-11-05 17:44:07,407 [1] INFO test - Loading from database completed
+2020-11-05 17:44:07,407 [1] INFO test - Loaded
+2020-11-05 17:44:07,408 [1] INFO test - Adding all commands...
+2020-11-05 17:44:07,425 [1] INFO test - Commands added
+2020-11-05 17:44:07,427 [1] INFO test - Update DB timer
+2020-11-05 17:44:07,504 [1] INFO test - Update DB timer end
+2020-11-05 17:44:07,504 [1] INFO test - In HMNotificationTimer
+2020-11-05 17:44:07,506 [1] INFO test - Get next lesson
+2020-11-05 17:44:07,541 [1] INFO test - Get next lesson end
+2020-11-05 17:44:07,542 [1] INFO test - No lesson found. HMNotification end
+2020-11-05 17:44:07,543 [1] INFO test - In WebinarNotificationTimer
+2020-11-05 17:44:07,543 [1] INFO test - Get next lesson
+2020-11-05 17:44:07,544 [1] INFO test - Get next lesson end
+2020-11-05 17:44:07,544 [1] INFO test - No lesson found. WebinarNotification end
+2020-11-05 17:44:07,548 [1] INFO test - In InitializeTestTimer
+2020-11-05 17:44:07,549 [1] INFO test - Get next lesson(hour)
+2020-11-05 17:44:07,550 [1] INFO test - Get next lesson(hour) end
+2020-11-05 17:44:07,550 [1] INFO test - No lesson found. InitializeTimer end
+2020-11-05 17:44:07,551 [1] INFO test - In LinkSenderTimer
+2020-11-05 17:44:07,552 [1] INFO test - Get next lesson
+2020-11-05 17:44:07,552 [1] INFO test - Get next lesson end
+2020-11-05 17:44:07,552 [1] INFO test - No lesson found. LinkSender end
+2020-11-05 17:44:13,690 [1] INFO test - Creating menu...
+2020-11-05 17:44:13,692 [1] INFO test - Menu created
+2020-11-05 17:44:13,692 [1] INFO test - Bot started
+2020-11-05 17:44:14,578 [8] INFO test - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 1027138714
+2020-11-05 17:44:14,854 [8] INFO test - On message from 1027138714 end
+2020-11-05 17:44:18,153 [8] INFO test - On message recieved 'Мій рейтинг 📈' from 1027138714
+2020-11-05 17:44:18,203 [8] INFO test - On message from 1027138714 end
+2020-11-05 17:44:20,836 [8] INFO test - On message recieved 'Статистика помилок ❗' from 1027138714
+2020-11-05 17:44:20,896 [8] INFO test - On message from 1027138714 end
+2020-11-05 17:49:07,567 [13] INFO test - Checking for updates...
+2020-11-05 17:49:07,576 [13] INFO test - Updates checked
+2020-11-05 17:50:35,740 [1] INFO test - Starting bot...
+2020-11-05 17:50:35,950 [1] INFO test - Loading from database...
+2020-11-05 17:50:36,902 [1] INFO test - Loading from database completed
+2020-11-05 17:50:36,902 [1] INFO test - Loaded
+2020-11-05 17:50:36,904 [1] INFO test - Adding all commands...
+2020-11-05 17:50:36,908 [1] INFO test - Commands added
+2020-11-05 17:50:36,914 [1] INFO test - Update DB timer
+2020-11-05 17:50:36,916 [1] INFO test - Update DB timer end
+2020-11-05 17:50:36,917 [1] INFO test - In HMNotificationTimer
+2020-11-05 17:50:36,919 [1] INFO test - Get next lesson
+2020-11-05 17:50:36,921 [1] INFO test - Get next lesson end
+2020-11-05 17:50:36,921 [1] INFO test - No lesson found. HMNotification end
+2020-11-05 17:50:36,922 [1] INFO test - In WebinarNotificationTimer
+2020-11-05 17:50:36,923 [1] INFO test - Get next lesson
+2020-11-05 17:50:36,923 [1] INFO test - Get next lesson end
+2020-11-05 17:50:36,923 [1] INFO test - No lesson found. WebinarNotification end
+2020-11-05 17:50:36,924 [1] INFO test - In InitializeTestTimer
+2020-11-05 17:50:36,926 [1] INFO test - Get next lesson(hour)
+2020-11-05 17:50:36,926 [1] INFO test - Get next lesson(hour) end
+2020-11-05 17:50:36,926 [1] INFO test - No lesson found. InitializeTimer end
+2020-11-05 17:50:36,927 [1] INFO test - In LinkSenderTimer
+2020-11-05 17:50:36,928 [1] INFO test - Get next lesson
+2020-11-05 17:50:36,930 [1] INFO test - Get next lesson end
+2020-11-05 17:50:36,938 [1] INFO test - No lesson found. LinkSender end
+2020-11-05 17:50:38,954 [1] INFO test - Creating menu...
+2020-11-05 17:50:38,955 [1] INFO test - Menu created
+2020-11-05 17:50:38,956 [1] INFO test - Bot started
+2020-11-05 17:51:21,083 [7] INFO test - On message recieved 'Мій рейтинг 📈' from 1027138714
+2020-11-05 17:51:21,168 [7] INFO test - On message from 1027138714 end
+2020-11-05 17:51:22,427 [7] INFO test - On message recieved 'Статистика помилок ❗' from 1027138714
+2020-11-05 17:51:22,521 [7] INFO test - On message from 1027138714 end

@@ -1,0 +1,40 @@
+2020-11-07 17:23:12,969 [1] INFO test - Starting bot...
+2020-11-07 17:23:13,249 [1] INFO test - Loading from database...
+2020-11-07 17:23:16,390 [1] INFO test - Loading from database completed
+2020-11-07 17:23:16,392 [1] INFO test - Loaded
+2020-11-07 17:23:16,395 [1] INFO test - Adding all commands...
+2020-11-07 17:23:16,400 [1] INFO test - Commands added
+2020-11-07 17:23:16,401 [1] INFO test - Update DB timer
+2020-11-07 17:23:16,430 [1] INFO test - Update DB timer end
+2020-11-07 17:23:16,432 [1] INFO test - In HMNotificationTimer
+2020-11-07 17:23:16,433 [1] INFO test - Get next lesson(hour)
+2020-11-07 17:23:16,484 [1] INFO test - Next lesson is 31
+2020-11-07 17:23:16,485 [1] INFO test - Tiemr setted up. HMNotificationTimer end
+2020-11-07 17:23:16,485 [1] INFO test - In WebinarNotificationTimer
+2020-11-07 17:23:16,485 [1] INFO test - Get next lesson(hour)
+2020-11-07 17:23:16,486 [1] INFO test - Next lesson is 31
+2020-11-07 17:23:16,486 [1] INFO test - Timer setted up. WebinarNotificationTimer end
+2020-11-07 17:23:16,486 [1] INFO test - In InitializeTestTimer
+2020-11-07 17:23:16,487 [1] INFO test - Get next lesson(hour)
+2020-11-07 17:23:16,487 [1] INFO test - Next lesson is 31
+2020-11-07 17:23:16,487 [1] INFO test - Timer setted up. InitializeTestTimer end
+2020-11-07 17:23:16,488 [1] INFO test - In LinkSenderTimer
+2020-11-07 17:23:16,490 [1] INFO test - Get next lesson(min,hour)
+2020-11-07 17:23:16,491 [1] INFO test - Next lesson is 31
+2020-11-07 17:23:16,491 [1] INFO test - Ms until next lessson: 338923508. Next lesson have id: 31 and time 11.11.2020 15:37:00
+2020-11-07 17:23:16,491 [1] INFO test - Timer setted up. LinkSenderTimer end
+2020-11-07 17:23:18,829 [1] INFO test - Creating menu...
+2020-11-07 17:23:18,830 [1] INFO test - Menu created
+2020-11-07 17:23:18,831 [1] INFO test - Bot started
+2020-11-07 17:23:42,182 [8] INFO test - On message recieved 'Статистика помилок ❗' from 1027138714
+2020-11-07 17:23:42,388 [8] INFO test - On message from 1027138714 end
+2020-11-07 17:28:16,482 [13] INFO test - Checking for updates...
+2020-11-07 17:28:16,502 [13] INFO test - Updating users...
+2020-11-07 17:28:16,553 [13] INFO test - Users updated
+2020-11-07 17:28:16,554 [13] INFO test - Updates checked
+2020-11-07 17:33:16,432 [5] INFO test - Checking for updates...
+2020-11-07 17:33:16,455 [5] INFO test - Updates checked
+2020-11-07 17:38:16,445 [22] INFO test - Checking for updates...
+2020-11-07 17:38:16,449 [22] INFO test - Updates checked
+2020-11-07 17:43:16,442 [23] INFO test - Checking for updates...
+2020-11-07 17:43:16,475 [23] INFO test - Updates checked

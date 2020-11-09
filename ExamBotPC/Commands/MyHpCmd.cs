@@ -16,9 +16,16 @@ namespace ExamBotPC.Commands
             User user = Program.GetCurrentUser(e);
 
             string msg = "Ваші життя:\n\n";
-            for (int i = 0; i < user.health[Program.Type - 1]; i++)
+            if (user.health[Program.Type - 1] == -7)
             {
-                msg += "♥";
+                msg += "Система життів відключена.";
+            }
+            else
+            {
+                for (int i = 0; i < user.health[Program.Type - 1]; i++)
+                {
+                    msg += "♥";
+                }
             }
 
             await Program.bot.SendTextMessageAsync(user.id, msg);

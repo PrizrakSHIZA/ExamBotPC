@@ -1,0 +1,1002 @@
+2020-10-30 13:45:09,589 [1] INFO INFOropert{BotName} - Starting bot...
+2020-10-30 13:45:09,604 [1] INFO INFOropert{BotName} - Loading from database...
+2020-10-30 13:45:24,640 [1] INFO INFOropert{BotName} - Loading from database completed
+2020-10-30 13:45:24,640 [1] INFO INFOropert{BotName} - Loaded
+2020-10-30 13:45:24,641 [1] INFO INFOropert{BotName} - Adding all commands...
+2020-10-30 13:45:24,643 [1] INFO INFOropert{BotName} - Commands added
+2020-10-30 13:45:24,643 [1] INFO INFOropert{BotName} - Update DB timer
+2020-10-30 13:45:24,643 [1] INFO INFOropert{BotName} - Update DB timer end
+2020-10-30 13:45:24,644 [1] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-30 13:45:24,645 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:45:24,648 [1] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:45:24,648 [1] INFO INFOropert{BotName} - No lesson found. HMNotification end
+2020-10-30 13:45:24,649 [1] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-30 13:45:24,649 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:45:24,649 [1] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:45:24,649 [1] INFO INFOropert{BotName} - No lesson found. WebinarNotification end
+2020-10-30 13:45:24,650 [1] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-30 13:45:24,650 [1] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-30 13:45:24,650 [1] INFO INFOropert{BotName} - Get next lesson(hour) end
+2020-10-30 13:45:24,650 [1] INFO INFOropert{BotName} - No lesson found. InitializeTimer end
+2020-10-30 13:45:24,651 [1] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-30 13:45:24,651 [1] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:45:24,651 [1] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:45:24,651 [1] INFO INFOropert{BotName} - No lesson found. LinkSender end
+2020-10-30 13:45:25,433 [1] INFO INFOropert{BotName} - Creating menu...
+2020-10-30 13:45:25,434 [1] INFO INFOropert{BotName} - Menu created
+2020-10-30 13:45:25,435 [1] INFO INFOropert{BotName} - Bot started
+2020-10-30 13:46:24,648 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:46:24,738 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:46:25,043 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:46:25,044 [9] INFO INFOropert{BotName} - Updating lessons...
+2020-10-30 13:46:38,721 [9] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-30 13:46:38,722 [9] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:46:38,723 [9] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:46:38,724 [9] INFO INFOropert{BotName} - No lesson found. HMNotification end
+2020-10-30 13:46:38,724 [9] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-30 13:46:38,724 [9] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:46:38,724 [9] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:46:38,725 [9] INFO INFOropert{BotName} - No lesson found. WebinarNotification end
+2020-10-30 13:46:38,725 [9] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-30 13:46:38,725 [9] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-30 13:46:38,725 [9] INFO INFOropert{BotName} - Get next lesson(hour) end
+2020-10-30 13:46:38,725 [9] INFO INFOropert{BotName} - No lesson found. InitializeTimer end
+2020-10-30 13:46:38,726 [9] INFO INFOropert{BotName} - In InitializeStopTimer
+2020-10-30 13:46:38,727 [9] INFO INFOropert{BotName} - Get next lesson(min,hour)
+2020-10-30 13:46:38,727 [9] INFO INFOropert{BotName} - Get next lesson(min,hour) end
+2020-10-30 13:46:38,727 [9] INFO INFOropert{BotName} - No lesson found. StopTimer end
+2020-10-30 13:46:38,728 [9] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-30 13:46:38,728 [9] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:46:38,728 [9] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:46:38,728 [9] INFO INFOropert{BotName} - No lesson found. LinkSender end
+2020-10-30 13:46:38,728 [9] INFO INFOropert{BotName} - Lessons updated
+2020-10-30 13:46:38,728 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:47:24,647 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:47:24,729 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:47:24,870 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:47:24,870 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:48:24,696 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:48:24,780 [13] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:48:24,923 [13] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:48:24,924 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:49:24,645 [4] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:49:24,727 [4] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:49:24,867 [4] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:49:24,867 [4] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:50:24,662 [12] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:50:24,745 [12] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:50:24,883 [12] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:50:24,883 [12] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:51:24,657 [4] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:51:24,736 [4] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:51:24,877 [4] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:51:24,877 [4] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:52:24,655 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:52:24,737 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:52:24,875 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:52:24,875 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:53:24,645 [15] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:53:24,723 [15] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:53:24,864 [15] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:53:24,864 [15] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:54:24,644 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:54:24,728 [13] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:54:24,863 [13] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:54:24,863 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:55:24,645 [4] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:55:24,725 [4] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:55:24,864 [4] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:55:24,864 [4] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:56:03,830 [8] INFO INFOropert{BotName} - On callback querry '2' from 577691955
+2020-10-30 13:56:03,831 [8] INFO INFOropert{BotName} - Old callback. Callback from 577691955 end
+2020-10-30 13:56:06,596 [8] INFO INFOropert{BotName} - On message recieved 'Повторити запитання з тесту 🔄' from 577691955
+2020-10-30 13:56:06,597 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:56:06,682 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:56:06,926 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 13:56:06,926 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 13:56:07,039 [8] INFO INFOropert{BotName} - On message from 577691955 end
+2020-10-30 13:56:08,676 [8] INFO INFOropert{BotName} - On callback querry '2' from 577691955
+2020-10-30 13:56:08,835 [8] INFO INFOropert{BotName} - Answer '2' from 577691955 on 200/8 was right!
+2020-10-30 13:56:08,973 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 13:56:08,973 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 13:56:08,975 [8] INFO INFOropert{BotName} - Saving state for 577691955
+2020-10-30 13:56:08,975 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:56:09,055 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:56:09,055 [8] INFO INFOropert{BotName} - State saved
+2020-10-30 13:56:09,055 [8] INFO INFOropert{BotName} - CallbackQuerry from 577691955 end
+2020-10-30 13:56:24,647 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:56:24,732 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:56:24,897 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:56:24,897 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:57:21,821 [8] INFO INFOropert{BotName} - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 577691955
+2020-10-30 13:57:21,821 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:57:21,901 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:57:21,959 [8] INFO INFOropert{BotName} - On message from 577691955 end
+2020-10-30 13:57:24,339 [8] INFO INFOropert{BotName} - On message recieved 'Головне меню ◀' from 577691955
+2020-10-30 13:57:24,341 [8] INFO INFOropert{BotName} - On message from 577691955 end
+2020-10-30 13:57:24,649 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:57:24,734 [13] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:57:24,871 [13] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:57:24,871 [13] INFO INFOropert{BotName} - Updating lessons...
+2020-10-30 13:57:25,245 [8] INFO INFOropert{BotName} - On message recieved 'Повторити запитання з тесту 🔄' from 577691955
+2020-10-30 13:57:25,245 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:57:25,488 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:57:25,488 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 13:57:25,488 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 13:57:25,490 [8] INFO INFOropert{BotName} - On message from 577691955 end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - No lesson found. HMNotification end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - No lesson found. WebinarNotification end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson(hour) end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - No lesson found. InitializeTimer end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - In InitializeStopTimer
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson(min,hour)
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson(min,hour) end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - No lesson found. StopTimer end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - No lesson found. LinkSender end
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Lessons updated
+2020-10-30 13:57:38,925 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:58:24,657 [5] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:58:24,734 [5] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:58:24,869 [5] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:58:24,870 [5] INFO INFOropert{BotName} - Updates checked
+2020-10-30 13:58:49,987 [8] INFO INFOropert{BotName} - On callback querry '2' from 577691955
+2020-10-30 13:58:49,988 [8] INFO INFOropert{BotName} - Answer '2' from 577691955 on 200/9 was right!
+2020-10-30 13:58:50,093 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 13:58:50,093 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 13:58:50,096 [8] INFO INFOropert{BotName} - Saving state for 577691955
+2020-10-30 13:58:50,096 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:58:50,183 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:58:50,183 [8] INFO INFOropert{BotName} - State saved
+2020-10-30 13:58:50,183 [8] INFO INFOropert{BotName} - CallbackQuerry from 577691955 end
+2020-10-30 13:59:05,595 [18] INFO INFOropert{BotName} - On callback querry '2' from 577691955
+2020-10-30 13:59:05,595 [18] INFO INFOropert{BotName} - Answer '2' from 577691955 on 200/10 was right!
+2020-10-30 13:59:05,726 [18] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:59:05,805 [18] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:59:05,913 [18] INFO INFOropert{BotName} - Saving state for 577691955
+2020-10-30 13:59:05,913 [18] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 13:59:05,990 [18] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 13:59:05,990 [18] INFO INFOropert{BotName} - State saved
+2020-10-30 13:59:05,990 [18] INFO INFOropert{BotName} - CallbackQuerry from 577691955 end
+2020-10-30 13:59:24,645 [20] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 13:59:24,726 [20] INFO INFOropert{BotName} - Updating users...
+2020-10-30 13:59:24,863 [20] INFO INFOropert{BotName} - Users updated
+2020-10-30 13:59:24,863 [20] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:00:24,651 [19] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:00:24,730 [19] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:00:24,866 [19] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:00:24,866 [19] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:01:24,653 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:01:24,735 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:01:24,871 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:01:24,871 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:02:06,406 [18] INFO INFOropert{BotName} - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 640036939
+2020-10-30 14:02:06,406 [18] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:02:06,482 [18] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:02:06,483 [18] INFO INFOropert{BotName} - On message from 640036939 end
+2020-10-30 14:02:08,654 [18] INFO INFOropert{BotName} - On message recieved 'Оплата 💳' from 640036939
+2020-10-30 14:02:08,665 [18] INFO INFOropert{BotName} - On message from 640036939 end
+2020-10-30 14:02:24,657 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:02:24,738 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:02:24,878 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:02:24,878 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:03:24,653 [5] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:03:24,730 [5] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:03:24,874 [5] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:03:24,874 [5] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:04:03,698 [13] INFO INFOropert{BotName} - On callback querry '2' from 640036939
+2020-10-30 14:04:03,698 [13] INFO INFOropert{BotName} - Old callback. Callback from 640036939 end
+2020-10-30 14:04:18,662 [13] INFO INFOropert{BotName} - On message recieved 'Б' from 640036939
+2020-10-30 14:04:18,678 [13] INFO INFOropert{BotName} - Answer 'Б' from 640036939 on 203/1 was wrong! Right answer is В
+2020-10-30 14:04:18,769 [13] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:04:18,769 [13] INFO INFOropert{BotName} - KB created
+2020-10-30 14:04:18,770 [13] INFO INFOropert{BotName} - Saving state for 640036939
+2020-10-30 14:04:18,770 [13] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:04:18,850 [13] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:04:18,850 [13] INFO INFOropert{BotName} - State saved
+2020-10-30 14:04:18,850 [13] INFO INFOropert{BotName} - On message from 640036939 end
+2020-10-30 14:04:24,649 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:04:24,730 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:04:24,861 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:04:24,861 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:05:08,797 [13] INFO INFOropert{BotName} - On callback querry '3' from 640036939
+2020-10-30 14:05:08,797 [13] INFO INFOropert{BotName} - Answer '3' from 640036939 on 203/2 was wrong!
+2020-10-30 14:05:08,896 [13] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:05:08,896 [13] INFO INFOropert{BotName} - KB created
+2020-10-30 14:05:08,896 [13] INFO INFOropert{BotName} - Saving state for 640036939
+2020-10-30 14:05:08,896 [13] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:05:08,979 [13] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:05:08,979 [13] INFO INFOropert{BotName} - State saved
+2020-10-30 14:05:08,979 [13] INFO INFOropert{BotName} - CallbackQuerry from 640036939 end
+2020-10-30 14:05:24,645 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:05:24,723 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:05:24,864 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:05:24,864 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:06:24,648 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:06:24,728 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:06:24,870 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:06:24,871 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:07:24,666 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:07:24,743 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:07:24,913 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:07:24,913 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:08:24,645 [19] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:08:24,724 [19] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:08:24,864 [19] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:08:24,864 [19] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:09:16,429 [4] INFO INFOropert{BotName} - On message recieved 'Головне меню ◀' from 412024505
+2020-10-30 14:09:16,429 [4] INFO INFOropert{BotName} - On message from 412024505 end
+2020-10-30 14:09:24,651 [5] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:09:24,729 [5] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:09:24,871 [5] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:09:24,871 [5] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:10:24,656 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:10:24,735 [13] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:10:24,875 [13] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:10:24,875 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:11:24,653 [10] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:11:24,734 [10] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:11:24,874 [10] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:11:24,875 [10] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:12:24,647 [5] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:12:24,728 [5] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:12:24,870 [5] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:12:24,870 [5] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:13:24,656 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:13:24,731 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:14:24,646 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:14:24,728 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:15:24,657 [10] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:15:24,738 [10] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:15:24,873 [10] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:15:24,873 [10] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:16:24,651 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:16:24,732 [13] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:16:24,865 [13] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:16:24,865 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:17:24,658 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:17:24,737 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:17:24,871 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:17:24,871 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:18:24,649 [15] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:18:24,733 [15] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:18:24,871 [15] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:18:24,871 [15] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:19:24,656 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:19:24,735 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:19:24,869 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:19:24,869 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:20:24,650 [19] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:20:24,733 [19] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:21:24,644 [18] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:21:24,720 [18] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:22:24,645 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:22:24,728 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:23:24,644 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:23:24,727 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:23:24,861 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:23:24,861 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:24:24,657 [23] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:24:24,735 [23] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:24:24,869 [23] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:24:24,869 [23] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:25:24,646 [24] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:25:24,728 [24] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:25:24,862 [24] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:25:24,862 [24] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:26:24,676 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:26:24,763 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:27:24,655 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:27:24,735 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:28:24,656 [20] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:28:24,741 [20] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:28:24,882 [20] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:28:24,882 [20] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:29:13,149 [16] INFO INFOropert{BotName} - On callback querry '1' from 609395535
+2020-10-30 14:29:13,149 [16] INFO INFOropert{BotName} - Old callback. Callback from 609395535 end
+2020-10-30 14:29:15,331 [16] INFO INFOropert{BotName} - On message recieved 'Повторити запитання з тесту 🔄' from 609395535
+2020-10-30 14:29:15,331 [16] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:29:15,331 [16] INFO INFOropert{BotName} - KB created
+2020-10-30 14:29:15,332 [16] INFO INFOropert{BotName} - On message from 609395535 end
+2020-10-30 14:29:17,118 [16] INFO INFOropert{BotName} - On callback querry '1' from 609395535
+2020-10-30 14:29:17,118 [16] INFO INFOropert{BotName} - Answer '1' from 609395535 on 203/9 was right!
+2020-10-30 14:29:17,242 [16] INFO INFOropert{BotName} - Saving state for 609395535
+2020-10-30 14:29:17,242 [16] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:29:17,320 [16] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:29:17,320 [16] INFO INFOropert{BotName} - State saved
+2020-10-30 14:29:17,320 [16] INFO INFOropert{BotName} - CallbackQuerry from 609395535 end
+2020-10-30 14:29:24,658 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:29:24,736 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:29:24,878 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:29:24,878 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:30:24,659 [20] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:30:24,739 [20] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:30:24,884 [20] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:30:24,884 [20] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:31:09,548 [18] INFO INFOropert{BotName} - On message recieved '50-40х' from 609395535
+2020-10-30 14:31:09,553 [18] INFO INFOropert{BotName} - Answer '50-40х' from 609395535 on 203/10 was right!
+2020-10-30 14:31:09,636 [18] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:31:09,720 [18] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:31:09,907 [18] INFO INFOropert{BotName} - Saving state for 609395535
+2020-10-30 14:31:09,907 [18] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:31:10,009 [18] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:31:10,009 [18] INFO INFOropert{BotName} - State saved
+2020-10-30 14:31:10,009 [18] INFO INFOropert{BotName} - On message from 609395535 end
+2020-10-30 14:31:24,645 [19] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:31:24,726 [19] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:31:24,883 [19] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:31:24,884 [19] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:32:24,645 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:32:24,727 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:32:24,862 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:32:24,862 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:33:24,663 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:33:24,743 [13] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:33:24,883 [13] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:33:24,883 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:34:24,714 [22] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:34:24,802 [22] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:34:24,944 [22] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:34:24,944 [22] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:35:24,648 [15] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:35:24,738 [15] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:35:24,883 [15] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:35:24,883 [15] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:36:24,645 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:36:24,727 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:36:24,864 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:36:24,864 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:37:03,460 [19] INFO INFOropert{BotName} - On message recieved 'Повторити запитання з тесту 🔄' from 591672884
+2020-10-30 14:37:03,460 [19] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:37:03,460 [19] INFO INFOropert{BotName} - KB created
+2020-10-30 14:37:03,466 [19] INFO INFOropert{BotName} - On message from 591672884 end
+2020-10-30 14:37:09,157 [19] INFO INFOropert{BotName} - On callback querry '1' from 591672884
+2020-10-30 14:37:09,157 [19] INFO INFOropert{BotName} - Answer '1' from 591672884 on 200/6 was right!
+2020-10-30 14:37:09,248 [19] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:37:09,248 [19] INFO INFOropert{BotName} - KB created
+2020-10-30 14:37:09,249 [19] INFO INFOropert{BotName} - Saving state for 591672884
+2020-10-30 14:37:09,249 [19] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:37:09,330 [19] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:37:09,330 [19] INFO INFOropert{BotName} - State saved
+2020-10-30 14:37:09,330 [19] INFO INFOropert{BotName} - CallbackQuerry from 591672884 end
+2020-10-30 14:37:24,657 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:37:24,736 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:37:24,879 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:37:24,879 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:38:21,697 [15] INFO INFOropert{BotName} - On callback querry '2' from 591672884
+2020-10-30 14:38:21,697 [15] INFO INFOropert{BotName} - Answer '2' from 591672884 on 200/7 was right!
+2020-10-30 14:38:21,793 [15] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:38:21,793 [15] INFO INFOropert{BotName} - KB created
+2020-10-30 14:38:21,830 [15] INFO INFOropert{BotName} - Saving state for 591672884
+2020-10-30 14:38:21,830 [15] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:38:21,908 [15] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:38:21,908 [15] INFO INFOropert{BotName} - State saved
+2020-10-30 14:38:21,908 [15] INFO INFOropert{BotName} - CallbackQuerry from 591672884 end
+2020-10-30 14:38:24,650 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:38:24,734 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:38:24,871 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:38:24,871 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:39:24,648 [22] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:39:24,727 [22] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:39:24,863 [22] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:39:24,863 [22] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:39:27,505 [18] INFO INFOropert{BotName} - On callback querry '2' from 591672884
+2020-10-30 14:39:27,505 [18] INFO INFOropert{BotName} - Answer '2' from 591672884 on 200/8 was right!
+2020-10-30 14:39:27,672 [18] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:39:27,672 [18] INFO INFOropert{BotName} - KB created
+2020-10-30 14:39:27,674 [18] INFO INFOropert{BotName} - Saving state for 591672884
+2020-10-30 14:39:27,674 [18] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:39:27,760 [18] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:39:27,760 [18] INFO INFOropert{BotName} - State saved
+2020-10-30 14:39:27,760 [18] INFO INFOropert{BotName} - CallbackQuerry from 591672884 end
+2020-10-30 14:40:24,646 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:40:24,727 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:40:24,863 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:40:24,864 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:41:24,656 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:41:24,739 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:41:24,877 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:41:24,877 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:42:24,656 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:42:24,736 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:42:38,897 [17] INFO INFOropert{BotName} - On callback querry '2' from 591672884
+2020-10-30 14:42:38,897 [17] INFO INFOropert{BotName} - Answer '2' from 591672884 on 200/9 was right!
+2020-10-30 14:42:39,018 [17] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:42:39,018 [17] INFO INFOropert{BotName} - KB created
+2020-10-30 14:42:39,024 [17] INFO INFOropert{BotName} - Saving state for 591672884
+2020-10-30 14:42:39,024 [17] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:42:39,103 [17] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:42:39,103 [17] INFO INFOropert{BotName} - State saved
+2020-10-30 14:42:39,103 [17] INFO INFOropert{BotName} - CallbackQuerry from 591672884 end
+2020-10-30 14:43:24,648 [24] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:43:24,731 [24] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:43:24,872 [24] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:43:24,872 [24] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:43:47,052 [17] INFO INFOropert{BotName} - On callback querry '1' from 591672884
+2020-10-30 14:43:47,052 [17] INFO INFOropert{BotName} - Answer '1' from 591672884 on 200/10 was wrong!
+2020-10-30 14:43:47,156 [17] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:43:47,233 [17] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:43:47,313 [17] INFO INFOropert{BotName} - Saving state for 591672884
+2020-10-30 14:43:47,313 [17] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:43:47,394 [17] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:43:47,394 [17] INFO INFOropert{BotName} - State saved
+2020-10-30 14:43:47,394 [17] INFO INFOropert{BotName} - CallbackQuerry from 591672884 end
+2020-10-30 14:44:24,653 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:44:24,734 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:44:24,867 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:44:24,868 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:45:24,649 [18] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:45:24,728 [18] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:45:24,863 [18] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:45:24,863 [18] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:46:24,645 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:46:24,727 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:47:24,667 [13] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:47:24,745 [13] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:48:24,650 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:48:24,731 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:48:24,872 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:48:24,872 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:49:24,647 [15] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:49:24,723 [15] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:49:24,865 [15] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:49:24,865 [15] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:50:24,656 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:50:24,734 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:50:24,874 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:50:24,874 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:51:24,649 [26] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:51:24,725 [26] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:51:24,866 [26] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:51:24,866 [26] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:52:24,647 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:52:24,726 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:52:24,864 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:52:24,864 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:53:24,645 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:53:24,721 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:54:24,646 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:54:24,729 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:54:24,868 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:54:24,868 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:55:24,657 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:55:24,734 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:55:24,870 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:55:24,870 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:56:24,659 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:56:24,741 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:56:24,885 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:56:24,885 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:57:16,352 [8] INFO INFOropert{BotName} - On message recieved 'Головне меню ◀' from 523976156
+2020-10-30 14:57:16,353 [8] INFO INFOropert{BotName} - On message from 523976156 end
+2020-10-30 14:57:18,143 [8] INFO INFOropert{BotName} - On message recieved 'Повторити запитання з тесту 🔄' from 523976156
+2020-10-30 14:57:18,143 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:57:18,143 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 14:57:18,144 [8] INFO INFOropert{BotName} - On message from 523976156 end
+2020-10-30 14:57:24,648 [25] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:57:24,724 [25] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:57:24,859 [25] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:57:24,859 [25] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:58:04,959 [8] INFO INFOropert{BotName} - On callback querry '3' from 523976156
+2020-10-30 14:58:04,959 [8] INFO INFOropert{BotName} - Answer '3' from 523976156 on 203/1 was right!
+2020-10-30 14:58:05,048 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:58:05,048 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 14:58:05,048 [8] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 14:58:05,048 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:58:05,131 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:58:05,131 [8] INFO INFOropert{BotName} - State saved
+2020-10-30 14:58:05,131 [8] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 14:58:24,656 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:58:24,738 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:58:24,869 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:58:24,869 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:59:24,656 [24] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 14:59:24,738 [24] INFO INFOropert{BotName} - Updating users...
+2020-10-30 14:59:24,873 [24] INFO INFOropert{BotName} - Users updated
+2020-10-30 14:59:24,873 [24] INFO INFOropert{BotName} - Updates checked
+2020-10-30 14:59:47,346 [8] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 14:59:47,346 [8] INFO INFOropert{BotName} - Answer '1' from 523976156 on 203/2 was right!
+2020-10-30 14:59:47,436 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 14:59:47,436 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 14:59:47,437 [8] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 14:59:47,437 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 14:59:47,516 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 14:59:47,516 [8] INFO INFOropert{BotName} - State saved
+2020-10-30 14:59:47,516 [8] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:00:24,650 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:00:24,726 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:00:24,865 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:00:24,865 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:00:56,093 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:00:56,093 [22] INFO INFOropert{BotName} - Answer '2' from 523976156 on 203/3 was right!
+2020-10-30 15:00:56,239 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:00:56,239 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:00:56,239 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:00:56,239 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:00:56,321 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:00:56,321 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:00:56,321 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:01:09,489 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:01:09,489 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:01:24,653 [15] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:01:24,735 [15] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:01:24,866 [15] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:01:24,866 [15] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:01:33,918 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:01:33,918 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:01:37,060 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:01:37,060 [22] INFO INFOropert{BotName} - Answer '4' from 523976156 on 203/4 was right!
+2020-10-30 15:01:37,217 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:01:37,217 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:01:37,218 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:01:37,218 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:01:37,297 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:01:37,297 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:01:37,297 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:02:24,656 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:02:24,734 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:02:24,874 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:02:24,874 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:03:01,560 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:01,560 [22] INFO INFOropert{BotName} - Answer '2' from 523976156 on 203/5 was right!
+2020-10-30 15:03:01,661 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:03:01,661 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:03:01,661 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:03:01,661 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:03:01,741 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:03:01,741 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:03:01,741 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:03:10,657 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:10,658 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:14,634 [22] INFO INFOropert{BotName} - On callback querry '3' from 923005341
+2020-10-30 15:03:14,634 [22] INFO INFOropert{BotName} - Old callback. Callback from 923005341 end
+2020-10-30 15:03:17,837 [22] INFO INFOropert{BotName} - On message recieved 'в' from 923005341
+2020-10-30 15:03:17,837 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:03:17,919 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:03:17,919 [22] INFO INFOropert{BotName} - Answer 'в' from 923005341 on 203/1 was right!
+2020-10-30 15:03:18,018 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:03:18,018 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:03:18,019 [22] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:03:18,019 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:03:18,097 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:03:18,097 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:03:18,097 [22] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:03:20,082 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:20,083 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:23,209 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:23,209 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:23,580 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:23,580 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:24,651 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:03:24,729 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:03:24,868 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:03:24,869 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:03:31,812 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:31,812 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:36,046 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:36,046 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:45,719 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:45,719 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:50,705 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:03:50,705 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:03:59,734 [22] INFO INFOropert{BotName} - On message recieved 'а' from 923005341
+2020-10-30 15:03:59,734 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:03:59,810 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:03:59,810 [22] INFO INFOropert{BotName} - Answer 'а' from 923005341 on 203/2 was right!
+2020-10-30 15:03:59,899 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:03:59,899 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:03:59,899 [22] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:03:59,899 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:03:59,981 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:03:59,981 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:03:59,981 [22] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:04:11,429 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:04:11,429 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:04:16,837 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:04:16,837 [22] INFO INFOropert{BotName} - Answer '2' from 523976156 on 203/6 was right!
+2020-10-30 15:04:16,931 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:04:16,931 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:04:16,931 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:04:16,931 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:04:17,010 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:04:17,010 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:04:17,010 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:04:22,381 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:04:22,381 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:04:24,646 [18] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:04:24,722 [18] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:04:24,861 [18] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:04:24,861 [18] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:04:33,684 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:04:33,684 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:04:36,096 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:04:36,096 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:04:51,853 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:04:51,853 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:04:55,021 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:04:55,021 [22] INFO INFOropert{BotName} - Answer '4' from 523976156 on 203/7 was right!
+2020-10-30 15:04:55,104 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:04:55,104 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:04:55,105 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:04:55,105 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:04:55,185 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:04:55,185 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:04:55,185 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:05:07,012 [22] INFO INFOropert{BotName} - On message recieved 'б' from 923005341
+2020-10-30 15:05:07,012 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:05:07,094 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:05:07,094 [22] INFO INFOropert{BotName} - Answer 'б' from 923005341 on 203/3 was right!
+2020-10-30 15:05:07,211 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:05:07,211 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:05:07,212 [22] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:05:07,212 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:05:07,289 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:05:07,289 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:05:07,289 [22] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:05:10,221 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:05:10,221 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:14,290 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:05:14,290 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:18,327 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:05:18,327 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:23,889 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:05:23,889 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:24,645 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:05:24,723 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:05:24,861 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:05:24,861 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:05:26,762 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:05:26,763 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:30,467 [22] INFO INFOropert{BotName} - On callback querry '4' from 523976156
+2020-10-30 15:05:30,467 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:34,319 [22] INFO INFOropert{BotName} - On message recieved 'б' from 923005341
+2020-10-30 15:05:34,320 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:05:34,397 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:05:34,397 [22] INFO INFOropert{BotName} - Answer 'б' from 923005341 on 203/4 was wrong! Right answer is Г
+2020-10-30 15:05:34,502 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:05:34,502 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:05:34,502 [22] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:05:34,503 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:05:34,584 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:05:34,585 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:05:34,585 [22] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:05:34,702 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:05:34,702 [22] INFO INFOropert{BotName} - Answer '2' from 523976156 on 203/8 was right!
+2020-10-30 15:05:34,785 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:05:34,785 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:05:34,785 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:05:34,785 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:05:34,867 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:05:34,867 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:05:34,867 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:05:44,471 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:05:44,471 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:50,865 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:05:50,865 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:05:53,691 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:05:53,691 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:00,496 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:06:00,496 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:04,239 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:06:04,239 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:06,000 [22] INFO INFOropert{BotName} - On message recieved 'б' from 923005341
+2020-10-30 15:06:06,001 [22] INFO INFOropert{BotName} - Answer 'б' from 923005341 on 203/5 was right!
+2020-10-30 15:06:06,103 [22] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:06:06,103 [22] INFO INFOropert{BotName} - KB created
+2020-10-30 15:06:06,103 [22] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:06:06,103 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:06:06,184 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:06:06,184 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:06:06,184 [22] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:06:07,357 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:06:07,357 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:09,628 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:06:09,628 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:16,625 [22] INFO INFOropert{BotName} - On callback querry '2' from 523976156
+2020-10-30 15:06:16,625 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:21,532 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:21,533 [22] INFO INFOropert{BotName} - Answer '1' from 523976156 on 203/9 was right!
+2020-10-30 15:06:21,630 [22] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:06:21,630 [22] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:06:21,711 [22] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:06:21,711 [22] INFO INFOropert{BotName} - State saved
+2020-10-30 15:06:21,711 [22] INFO INFOropert{BotName} - CallbackQuerry from 523976156 end
+2020-10-30 15:06:24,644 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:06:24,723 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:06:24,853 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:06:24,853 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:06:27,570 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:27,570 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:31,512 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:31,512 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:33,476 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:33,476 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:35,345 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:35,345 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:38,828 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:38,828 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:41,967 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:41,967 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:44,817 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:44,817 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:47,287 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:47,287 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:49,919 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:49,919 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:54,130 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:54,130 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:06:56,249 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:06:56,249 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:07:04,722 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:07:04,722 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:07:10,186 [22] INFO INFOropert{BotName} - On callback querry '1' from 523976156
+2020-10-30 15:07:10,186 [22] INFO INFOropert{BotName} - Old callback. Callback from 523976156 end
+2020-10-30 15:07:21,757 [15] INFO INFOropert{BotName} - On message recieved '10(5-4х)' from 523976156
+2020-10-30 15:07:21,757 [15] INFO INFOropert{BotName} - Answer '10(5-4х)' from 523976156 on 203/10 was wrong! Right answer is 50-40х
+2020-10-30 15:07:21,869 [15] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:07:21,951 [15] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:07:22,094 [15] INFO INFOropert{BotName} - Saving state for 523976156
+2020-10-30 15:07:22,094 [15] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:07:22,171 [15] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:07:22,171 [15] INFO INFOropert{BotName} - State saved
+2020-10-30 15:07:22,171 [15] INFO INFOropert{BotName} - On message from 523976156 end
+2020-10-30 15:07:24,645 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:07:24,762 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:07:24,904 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:07:24,904 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:07:26,439 [15] INFO INFOropert{BotName} - On message recieved 'Мій акаунт 🧑🏼‍🎓' from 523976156
+2020-10-30 15:07:26,440 [15] INFO INFOropert{BotName} - On message from 523976156 end
+2020-10-30 15:07:27,980 [15] INFO INFOropert{BotName} - On message recieved 'Статистика помилок ❗' from 523976156
+2020-10-30 15:07:27,982 [15] INFO INFOropert{BotName} - On message from 523976156 end
+2020-10-30 15:08:24,651 [21] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:08:24,727 [21] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:08:24,867 [21] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:08:24,867 [21] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:09:24,648 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:09:24,727 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:09:24,866 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:09:24,866 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:10:24,657 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:10:24,732 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:10:24,873 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:10:24,873 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:11:24,656 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:11:24,734 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:11:24,873 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:11:24,873 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:12:24,650 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:12:24,726 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:12:24,866 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:12:24,866 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:12:54,667 [8] INFO INFOropert{BotName} - On message recieved 'б' from 923005341
+2020-10-30 15:12:54,667 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:12:54,746 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:12:54,746 [8] INFO INFOropert{BotName} - Answer 'б' from 923005341 on 203/6 was right!
+2020-10-30 15:12:54,842 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:12:54,842 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 15:12:54,842 [8] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:12:54,842 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:12:54,924 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:12:54,924 [8] INFO INFOropert{BotName} - State saved
+2020-10-30 15:12:54,924 [8] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:13:24,651 [25] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:13:24,727 [25] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:13:24,862 [25] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:13:24,862 [25] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:14:16,139 [8] INFO INFOropert{BotName} - On callback querry '4' from 923005341
+2020-10-30 15:14:16,139 [8] INFO INFOropert{BotName} - Answer '4' from 923005341 on 203/7 was right!
+2020-10-30 15:14:16,239 [8] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:14:16,239 [8] INFO INFOropert{BotName} - KB created
+2020-10-30 15:14:16,240 [8] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:14:16,240 [8] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:14:16,322 [8] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:14:16,322 [8] INFO INFOropert{BotName} - State saved
+2020-10-30 15:14:16,322 [8] INFO INFOropert{BotName} - CallbackQuerry from 923005341 end
+2020-10-30 15:14:24,656 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:14:24,734 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:14:24,865 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:14:24,865 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:15:24,652 [17] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:15:24,733 [17] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:15:24,865 [17] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:15:24,865 [17] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:16:24,648 [24] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:16:24,727 [24] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:16:24,863 [24] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:16:24,863 [24] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:17:18,849 [21] INFO INFOropert{BotName} - On message recieved 'г' from 923005341
+2020-10-30 15:17:18,849 [21] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:17:18,931 [21] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:17:18,931 [21] INFO INFOropert{BotName} - Answer 'г' from 923005341 on 203/8 was wrong! Right answer is Б
+2020-10-30 15:17:19,039 [21] INFO INFOropert{BotName} - Creating inline KB...
+2020-10-30 15:17:19,039 [21] INFO INFOropert{BotName} - KB created
+2020-10-30 15:17:19,040 [21] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:17:19,040 [21] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:17:19,116 [21] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:17:19,116 [21] INFO INFOropert{BotName} - State saved
+2020-10-30 15:17:19,116 [21] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:17:24,653 [26] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:17:24,732 [26] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:17:24,870 [26] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:17:24,871 [26] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:18:10,669 [21] INFO INFOropert{BotName} - On message recieved 'а' from 923005341
+2020-10-30 15:18:10,669 [21] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:18:10,744 [21] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:18:10,744 [21] INFO INFOropert{BotName} - Answer 'а' from 923005341 on 203/9 was right!
+2020-10-30 15:18:10,844 [21] INFO INFOropert{BotName} - Saving state for 923005341
+2020-10-30 15:18:10,844 [21] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:18:10,925 [21] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:18:10,925 [21] INFO INFOropert{BotName} - State saved
+2020-10-30 15:18:10,925 [21] INFO INFOropert{BotName} - On message from 923005341 end
+2020-10-30 15:18:24,648 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:18:24,727 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:18:24,859 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:18:24,859 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:19:24,647 [9] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:19:24,727 [9] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:19:24,859 [9] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:19:24,859 [9] INFO INFOropert{BotName} - Updating lessons...
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - No lesson found. HMNotification end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - No lesson found. WebinarNotification end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson(hour) end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - No lesson found. InitializeTimer end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - In InitializeStopTimer
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson(min,hour)
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson(min,hour) end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - No lesson found. StopTimer end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Get next lesson end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - No lesson found. LinkSender end
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Lessons updated
+2020-10-30 15:19:49,623 [9] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:20:24,656 [16] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:20:24,733 [16] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:20:24,870 [16] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:20:24,870 [16] INFO INFOropert{BotName} - Updating lessons...
+2020-10-30 15:20:38,997 [16] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-30 15:20:38,998 [16] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Tiemr setted up. HMNotificationTimer end
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Timer setted up. WebinarNotificationTimer end
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Timer setted up. InitializeTestTimer end
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - In InitializeStopTimer
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Get next lesson(min,hour)
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Timer setted up. InitializeStopTimer end
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Timer setted up. LinkSenderTimer end
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Lessons updated
+2020-10-30 15:20:38,999 [16] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:21:24,648 [8] INFO INFOropert{BotName} - Checking for updates...
+2020-10-30 15:21:24,728 [8] INFO INFOropert{BotName} - Updating users...
+2020-10-30 15:21:24,868 [8] INFO INFOropert{BotName} - Users updated
+2020-10-30 15:21:24,868 [8] INFO INFOropert{BotName} - Updating lessons...
+2020-10-30 15:21:38,146 [8] INFO INFOropert{BotName} - In HMNotificationTimer
+2020-10-30 15:21:38,146 [8] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:21:38,146 [8] INFO INFOropert{BotName} - Tiemr setted up. HMNotificationTimer end
+2020-10-30 15:21:38,146 [8] INFO INFOropert{BotName} - In WebinarNotificationTimer
+2020-10-30 15:21:38,146 [8] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:21:38,146 [8] INFO INFOropert{BotName} - Timer setted up. WebinarNotificationTimer end
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - In InitializeTestTimer
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Get next lesson(hour)
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Timer setted up. InitializeTestTimer end
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - In InitializeStopTimer
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Get next lesson(min,hour)
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Timer setted up. InitializeStopTimer end
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - In LinkSenderTimer
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Get next lesson
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Timer setted up. LinkSenderTimer end
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Lessons updated
+2020-10-30 15:21:38,147 [8] INFO INFOropert{BotName} - Updates checked
+2020-10-30 15:21:56,719 [1] INFO INFOropert{BotName} - Saving state for all users...
+2020-10-30 15:21:56,719 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:56,801 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:56,802 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:56,878 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:56,878 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:56,957 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:56,957 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,039 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,040 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,122 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,122 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,206 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,206 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,289 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,289 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,365 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,365 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,444 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,444 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,525 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,525 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,602 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,602 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,681 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,681 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,764 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,764 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,841 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,841 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:57,922 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:57,923 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,004 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,004 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,081 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,081 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,160 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,160 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,241 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,241 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,319 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,319 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,398 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,398 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,479 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,479 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,555 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,555 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,634 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,634 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,716 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,716 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,793 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,793 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,872 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,872 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:58,954 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:58,954 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,030 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,030 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,109 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,109 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,191 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,191 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,267 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,267 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,346 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,346 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,427 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,427 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,504 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,504 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,583 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,583 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,664 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,664 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,741 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,741 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,820 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,820 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,901 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,902 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:21:59,978 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:21:59,978 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:22:00,057 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:22:00,057 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:22:00,139 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:22:00,139 [1] INFO INFOropert{BotName} - In executing mysql
+2020-10-30 15:22:00,215 [1] INFO INFOropert{BotName} - Executing mysql end
+2020-10-30 15:22:00,215 [1] INFO INFOropert{BotName} - States saved

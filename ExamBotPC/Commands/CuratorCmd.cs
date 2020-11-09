@@ -7,7 +7,7 @@ namespace ExamBotPC.Commands
 {
     class CuratorCmd : Command
     {
-        public override string Name => "Допомога 💬";
+        public override string Name => "Мій куратор 💬";
 
         public override bool forAdmin => false;
 
